@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package kck.helpers;
+package kck.prolog;
 
 import kck.models.Sentence;
+import org.jpl7.Query;
 /**
  *
  * @author arkus
@@ -20,10 +21,11 @@ public class PrologManager {
         String[] words = sentence.split(" ");
         String query = "zdanie(X, [" + String.join(",", words) + "], [])";
         // TODO: add JPL to get this code working
-//        if(Query.hasSolution(query)) {
-//            String queryResult = Query.oneSolution().get("X");
-//            return new Sentence(getMove(queryResult), getDirection(queryResult), getGoal(queryResult), getApproach(queryResult));
-//        }
+        if(Query.hasSolution(query)) {
+            Query q = new Query(query);
+            String queryResult = q.oneSolution().get("X").toString();
+            return new Sentence(getMove(queryResult), getDirection(queryResult), getGoal(queryResult), getApproach(queryResult));
+        }
         return new Sentence(); // Delete this
     }
     
