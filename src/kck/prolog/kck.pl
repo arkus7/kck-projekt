@@ -7,7 +7,10 @@ zdanie(move(X,Y,Z)) --> kier(Y), sposob(Z),  czas(X), {SEM=move(Y,Z,X), verify(S
 
 czas(walk) --> [idz].
 czas(turn) --> [skrec].
+czas(turn) --> [odbij].
 czas(walk) --> [kieruj, sie].
+czas(walk) --> [poruszaj, sie].
+czas(walk) --> [jedz].
 
 przyim(dop) --> [w, kierunku].
 przyim(cel) --> [ku].
@@ -15,12 +18,17 @@ przyim(dop) --> [do].
 
 kier(goal(X)) --> przyim(P), cel(P,X).
 
-kier(dir(east)) --> [na,wschod].
+kier(dir(left)) --> [w, lewo].
+kier(dir(right)) --> [w, prawo].
+kier(dir(back)) --> [do, tyl].
+kier(dir(east)) --> [na, wschod].
 kier(dir(west)) --> [na, zachod].
 kier(dir(north)) --> [na, polnoc].
 kier(dir(south)) --> [na, poludnie].
 kier(dir(se)) --> [na, poludniowy, wschod].
 kier(dir(ne)) --> [na, polnocny, wschod].
+kier(dir(sw)) --> [na, poludniowy, zachod].
+kier(dir(nw)) --> [na, polnocny, zachod].
 
 sposob(app(straight)) --> [prosto].
 sposob(app(sl)) --> [lewym, lagodnym, lukiem].
