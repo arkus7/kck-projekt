@@ -5,15 +5,21 @@
  */
 package kck.GUI;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.Timer;
 import kck.models.Sentence;
 import kck.prolog.PrologManager;
 
 /**
  *
- * @author arkus
+ * @author arkus & Shir
  */
 public class MainWindow extends javax.swing.JFrame {
-
+    private String inputLog = "";
+    
     /**
      * Creates new form NewJFrame
      */
@@ -30,43 +36,140 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
+        userInput = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        userOutput = new javax.swing.JTextArea();
+        testLayer1 = new javax.swing.JLayeredPane();
+        testGoal = new javax.swing.JLabel();
+        testCharacter = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 600));
 
-        jTextField1.setText("jTextField1");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+        userInput.setText("Polecenie: ");
+        userInput.setToolTipText("test");
+        userInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                userInputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                userInputFocusLost(evt);
             }
         });
+        userInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userInputActionPerformed(evt);
+            }
+        });
+
+        userOutput.setEditable(false);
+        userOutput.setColumns(20);
+        userOutput.setRows(5);
+        jScrollPane2.setViewportView(userOutput);
+
+        testGoal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/7.png"))); // NOI18N
+
+        testCharacter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        testCharacter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/8.png"))); // NOI18N
+
+        testLayer1.setLayer(testGoal, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        testLayer1.setLayer(testCharacter, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout testLayer1Layout = new javax.swing.GroupLayout(testLayer1);
+        testLayer1.setLayout(testLayer1Layout);
+        testLayer1Layout.setHorizontalGroup(
+            testLayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(testLayer1Layout.createSequentialGroup()
+                .addGap(152, 152, 152)
+                .addComponent(testCharacter, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, testLayer1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(testGoal)
+                .addGap(314, 314, 314))
+        );
+        testLayer1Layout.setVerticalGroup(
+            testLayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, testLayer1Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(testGoal)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                .addComponent(testCharacter, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(243, 243, 243)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(224, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(testLayer1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 168, Short.MAX_VALUE)
+                        .addComponent(userInput, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(533, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
+                .addContainerGap()
+                .addComponent(testLayer1)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(userInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-       PrologManager pm = new PrologManager();
-       Sentence s = pm.getResult(jTextField1.getText());
-//       jTextField1.setText(s.getDirection());
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
+
+        //timer
+        ActionListener taskPerformer = new ActionListener() {
+      public void actionPerformed(ActionEvent evt) { // po tym kod który ma się wykonać co odstęp czasu
+          testCharacter.setLocation(testCharacter.getX(), testCharacter.getY()-5);
+          if (testCharacter.getY() == testGoal.getY()){ //aktualnie idzie to Y celu testowego
+              ((Timer)evt.getSource()).stop();          //zatrzymuje timer
+          }
+       }
+       };
+
+        //PrologManager pm = new PrologManager();
+       //Sentence s = pm.getResult(jTextField1.getText());
+       //jTextField1.setText(s.getDirection());
+              
+        if (userInput.getText().equalsIgnoreCase("Idź prosto")){
+            userOutput.setText("walk, straignht");
+            new Timer(300, taskPerformer).start(); //start timera
+            userInput.setText("");
+        } else {
+        //Wpisywanie do logu
+        inputLog = inputLog + "\n" + userInput.getText();
+        userOutput.setText(inputLog);
+        userInput.setText("");
+        
+        }
+        
+
+
+
+    }//GEN-LAST:event_userInputActionPerformed
+
+    private void userInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userInputFocusGained
+        // TODO add your handling code here:
+        userInput.setText("");
+    }//GEN-LAST:event_userInputFocusGained
+
+    private void userInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userInputFocusLost
+        // TODO add your handling code here:
+        userInput.setText("Polecenie: ");
+    }//GEN-LAST:event_userInputFocusLost
 
     /**
      * @param args the command line arguments
@@ -105,6 +208,11 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel testCharacter;
+    private javax.swing.JLabel testGoal;
+    private javax.swing.JLayeredPane testLayer1;
+    private javax.swing.JTextField userInput;
+    private javax.swing.JTextArea userOutput;
     // End of variables declaration//GEN-END:variables
 }

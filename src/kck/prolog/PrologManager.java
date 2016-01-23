@@ -3,6 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+
+//// TEST CZY IGNOT W NETBIENIE STARCZY
 package kck.prolog;
 
 import kck.models.Sentence;
@@ -17,7 +20,7 @@ import org.jpl7.Variable;
  *
  * @author arkus
  */
-public class PrologManager {
+    public class PrologManager {
     private final String MOVE = "move(";
     private final String DIR = "dir(";
     private final String GOAL = "goal(";
@@ -78,4 +81,4 @@ public class PrologManager {
         }
         return "";
     }
-}
+    }
