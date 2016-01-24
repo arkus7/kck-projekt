@@ -7,6 +7,7 @@ package kck.GUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Timer;
@@ -19,6 +20,11 @@ import kck.prolog.PrologManager;
  */
 public class MainWindow extends javax.swing.JFrame {
     private String inputLog = "";
+    public static String[][] things = new String[2][3];
+    private int moveX;
+    private int moveY;
+    
+
     
     /**
      * Creates new form NewJFrame
@@ -42,9 +48,9 @@ public class MainWindow extends javax.swing.JFrame {
         testLayer1 = new javax.swing.JLayeredPane();
         testGoal = new javax.swing.JLabel();
         testCharacter = new javax.swing.JLabel();
+        testButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
 
         userInput.setText("Polecenie: ");
         userInput.setToolTipText("test");
@@ -98,6 +104,13 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGap(39, 39, 39))
         );
 
+        testButton.setText("Random");
+        testButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                testButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -108,7 +121,9 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(testLayer1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 168, Short.MAX_VALUE)
-                        .addComponent(userInput, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(userInput, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(testButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -121,7 +136,10 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(userInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(userInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(testButton)))
                 .addGap(15, 15, 15))
         );
 
@@ -132,21 +150,56 @@ public class MainWindow extends javax.swing.JFrame {
 
         //timer
         ActionListener taskPerformer = new ActionListener() {
-      public void actionPerformed(ActionEvent evt) { // po tym kod który ma się wykonać co odstęp czasu
-          testCharacter.setLocation(testCharacter.getX(), testCharacter.getY()-5);
-          if (testCharacter.getY() == testGoal.getY()){ //aktualnie idzie to Y celu testowego
+         public void actionPerformed(ActionEvent evt) { // po tym kod który ma się wykonać co odstęp czasu          
+          
+           
+            //System.out.println(moveX+ " " + moveY);
+            if (moveX != 0){
+               if (moveX > 0){
+                    moveX = moveX - 1;
+                    testCharacter.setLocation(testCharacter.getX() - 1, testCharacter.getY());
+                }
+                if (moveX < 0){
+                    moveX = moveX + 1;
+                    testCharacter.setLocation(testCharacter.getX() + 1, testCharacter.getY());
+                }
+            }
+          
+            if (moveY != 0){
+                if (moveY > 0){
+                  moveY = moveY - 1;
+                  testCharacter.setLocation(testCharacter.getX(), testCharacter.getY() - 1);
+                 }
+                if (moveY < 0){
+                  moveY = moveY + 1;
+                  testCharacter.setLocation(testCharacter.getX(), testCharacter.getY() + 1);
+                }
+             }
+          
+            if (moveY ==0 && moveX == 0){ //aktualnie idzie to Y celu testowego
               ((Timer)evt.getSource()).stop();          //zatrzymuje timer
-          }
-       }
-       };
+          
+            }
+         }
+        };
 
         //PrologManager pm = new PrologManager();
        //Sentence s = pm.getResult(jTextField1.getText());
        //jTextField1.setText(s.getDirection());
-              
-        if (userInput.getText().equalsIgnoreCase("Idź prosto")){
+       // wsadzenie do tablicy rzeczy, naszego celu i agenta
+        things[0][0] = "Character";
+        things[0][1] = Integer.toString(testCharacter.getX()); 
+        things[0][2] = Integer.toString(testCharacter.getY()); 
+        things[1][0] = "Goal";
+        things[1][1] = Integer.toString(testGoal.getX());
+        things[1][2] = Integer.toString(testGoal.getY());
+        //ustawienie odległosci o którą mamy się poruszyć
+        moveX = getMove( Integer.parseInt(things[0][1]), Integer.parseInt(things[1][1]));
+        moveY = getMove( Integer.parseInt(things[0][2]), Integer.parseInt(things[1][2]));
+        
+        if (userInput.getText().equalsIgnoreCase("go")){
             userOutput.setText("walk, straignht");
-            new Timer(300, taskPerformer).start(); //start timera
+            new Timer(10, taskPerformer).start(); //start timera
             userInput.setText("");
         } else {
         //Wpisywanie do logu
@@ -171,10 +224,36 @@ public class MainWindow extends javax.swing.JFrame {
         userInput.setText("Polecenie: ");
     }//GEN-LAST:event_userInputFocusLost
 
+    private void testButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_testButtonMouseClicked
+        // wylosowanie nowych lokalizacji
+        int x,y;
+        x = testLayer1.getWidth();
+        y = testLayer1.getHeight();                 
+        
+        testCharacter.setLocation(randInt(0, x), randInt(0, y)); //lowoanie współrzędnych dla agenta             
+        testGoal.setLocation(randInt(0, x), randInt(0, y));        //losowanie współrzędnych celu
+        
+    }//GEN-LAST:event_testButtonMouseClicked
+
+    
+    public static int randInt(int min, int max) {
+    Random rand = new Random();
+    int randomNum = rand.nextInt((max - min) + 1) + min;
+    return randomNum;
+}
+    private int getMove(int charPos, int goalPos){ 
+        // wyliczenie odległości między puntami na tej samej osi;
+        return charPos - goalPos;
+    }
+    
+  
+        
+        
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -206,9 +285,12 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
     }
+    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton testButton;
     private javax.swing.JLabel testCharacter;
     private javax.swing.JLabel testGoal;
     private javax.swing.JLayeredPane testLayer1;
