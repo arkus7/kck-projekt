@@ -39,8 +39,8 @@ public class MainWindow extends javax.swing.JFrame {
         initComponents();
         character = new Goal("Character", testCharacter);
         goals = new ArrayList<>();
-        goals.add(new Goal("Church", Church));
-        goals.add(new Goal("Lamp", Lamp));
+        goals.add(new Goal("Tree", tree));
+        goals.add(new Goal("Stone", stone));
     }
 
     /**
@@ -56,12 +56,13 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         userOutput = new javax.swing.JTextArea();
         testLayer1 = new javax.swing.JLayeredPane();
-        Church = new javax.swing.JLabel();
+        tree = new javax.swing.JLabel();
         testCharacter = new javax.swing.JLabel();
-        Lamp = new javax.swing.JLabel();
+        stone = new javax.swing.JLabel();
         testButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 600));
 
         userInput.setText("Polecenie: ");
         userInput.setToolTipText("test");
@@ -84,16 +85,16 @@ public class MainWindow extends javax.swing.JFrame {
         userOutput.setRows(5);
         jScrollPane2.setViewportView(userOutput);
 
-        Church.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/7.png"))); // NOI18N
+        tree.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/tree.PNG"))); // NOI18N
 
         testCharacter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        testCharacter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/8.png"))); // NOI18N
+        testCharacter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/char.png"))); // NOI18N
 
-        Lamp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/8.gif"))); // NOI18N
+        stone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/stone.PNG"))); // NOI18N
 
-        testLayer1.setLayer(Church, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        testLayer1.setLayer(tree, javax.swing.JLayeredPane.DEFAULT_LAYER);
         testLayer1.setLayer(testCharacter, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        testLayer1.setLayer(Lamp, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        testLayer1.setLayer(stone, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout testLayer1Layout = new javax.swing.GroupLayout(testLayer1);
         testLayer1.setLayout(testLayer1Layout);
@@ -101,13 +102,13 @@ public class MainWindow extends javax.swing.JFrame {
             testLayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, testLayer1Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(Lamp, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Church)
+                .addComponent(stone)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 308, Short.MAX_VALUE)
+                .addComponent(tree)
                 .addGap(314, 314, 314))
             .addGroup(testLayer1Layout.createSequentialGroup()
                 .addGap(152, 152, 152)
-                .addComponent(testCharacter, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(testCharacter)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         testLayer1Layout.setVerticalGroup(
@@ -116,13 +117,13 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(testLayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(testLayer1Layout.createSequentialGroup()
                         .addGap(45, 45, 45)
-                        .addComponent(Church))
+                        .addComponent(tree))
                     .addGroup(testLayer1Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
-                        .addComponent(Lamp, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
-                .addComponent(testCharacter, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39))
+                        .addComponent(stone)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
+                .addComponent(testCharacter)
+                .addGap(95, 95, 95))
         );
 
         testButton.setText("Random");
@@ -139,14 +140,14 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(testLayer1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(testLayer1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 168, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(userInput, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(testButton))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(testButton, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                            .addComponent(userInput))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -169,7 +170,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     ActionListener taskPerformer = new ActionListener() {
          public void actionPerformed(ActionEvent evt) { // po tym kod który ma się wykonać co odstęp czasu          
-          
+          testButton.setEnabled(false);
            
             //System.out.println(moveX+ " " + moveY);
             if (moveX != 0){
@@ -195,6 +196,8 @@ public class MainWindow extends javax.swing.JFrame {
              }
           
             if (moveY ==0 && moveX == 0){ //aktualnie idzie to Y celu testowego
+              testButton.setEnabled(true);
+              
               ((Timer)evt.getSource()).stop();          //zatrzymuje timer
           
             }
@@ -202,7 +205,7 @@ public class MainWindow extends javax.swing.JFrame {
         };
     
     private boolean goalExist(String goal){
-        for (int i = 0; i < 3 ; i++){
+        for (int i = 0; i < goals.size() ; i++){
             System.out.println(goals.get(i).getName());
             System.out.println(pm.getResult(userInput.getText()).getGoal());
             if (goals.get(i).getName().equalsIgnoreCase(goal)) {
@@ -229,15 +232,16 @@ public class MainWindow extends javax.swing.JFrame {
         things[2][2] = Integer.toString(Lamp.getY());
        */
         testLayer1.setLayer(testCharacter, 3);
-        testLayer1.setLayer(Church, 2);
-        testLayer1.setLayer(Lamp, 1);
+        testLayer1.setLayer(tree, 2);
+        testLayer1.setLayer(stone, 1);
         //ustawienie odległosci o którą mamy się poruszyć
                
         if (goalExist(pm.getResult(userInput.getText()).getGoal())){
+            inputLog = inputLog + "\n" + pm.getResult(userInput.getText()).getGoal();
+            userOutput.setText(inputLog);
             new Timer(10, taskPerformer).start(); //start timera
             userInput.setText("");
         } else {
-            System.out.println("notgoal");
         inputLog = inputLog + "\n" + pm.getResult(userInput.getText()).getGoal(); //userInput.getText();
         userOutput.setText(inputLog);
         userInput.setText("");
@@ -262,8 +266,8 @@ public class MainWindow extends javax.swing.JFrame {
     private void testButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_testButtonMouseClicked
         // wylosowanie nowych lokalizacji
         int x,y;
-        x = testLayer1.getWidth();
-        y = testLayer1.getHeight();                 
+        x = testLayer1.getWidth()-64;
+        y = testLayer1.getHeight()-64;                 
         
         character.setLocation(randInt(0, x), randInt(0, y)); //lowoanie współrzędnych dla agenta             
         for(int i = 0; i < goals.size(); i++) {
@@ -326,12 +330,12 @@ public class MainWindow extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Church;
-    private javax.swing.JLabel Lamp;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel stone;
     private javax.swing.JButton testButton;
     private javax.swing.JLabel testCharacter;
     private javax.swing.JLayeredPane testLayer1;
+    private javax.swing.JLabel tree;
     private javax.swing.JTextField userInput;
     private javax.swing.JTextArea userOutput;
     // End of variables declaration//GEN-END:variables
