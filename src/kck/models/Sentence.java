@@ -41,5 +41,9 @@ public class Sentence {
     public String getMove() {
         return move;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Sentence{" + "move=" + move + ", goal=" + goal + ", direction=" + direction + ", approach=" + approach + '}';
+    }
 }

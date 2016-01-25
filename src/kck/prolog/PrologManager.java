@@ -9,18 +9,13 @@
 package kck.prolog;
 
 import kck.models.Sentence;
-import org.jpl7.Atom;
-import org.jpl7.Compound;
 import org.jpl7.JPL;
 import org.jpl7.Query;
-import org.jpl7.Term;
-import org.jpl7.Util;
-import org.jpl7.Variable;
 /**
  *
  * @author arkus
  */
-    public class PrologManager {
+public class PrologManager {
     private final String MOVE = "move(";
     private final String DIR = "dir(";
     private final String GOAL = "goal(";
@@ -81,4 +76,4 @@ import org.jpl7.Variable;
         }
         return "";
     }
-    }
+}
