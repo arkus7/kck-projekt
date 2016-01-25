@@ -1,5 +1,4 @@
 zdanie(move(X,Y)) --> czas(X), kier(Y).
-zdanie(move(X,Y,Z,A) --> czas(X), sposob(Y), kier(Z), cel(A). 
 zdanie(SEM) --> czas(X), sposob(Y), {SEM=move(X,Y), verify(SEM) }.
 zdanie(SEM) --> sposob(Y),czas(X), {SEM=move(Y,X), verify(SEM) }.
 zdanie(move(X,Y,Z)) --> czas(X), sposob(Z), kier(Y), {SEM=move(X,Z,Y), verify(SEM) }.
