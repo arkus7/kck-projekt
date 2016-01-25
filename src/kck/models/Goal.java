@@ -5,6 +5,8 @@
  */
 package kck.models;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author arkus
@@ -18,6 +20,7 @@ public class Goal {
     private String name;
     private int x;
     private int y;
+    private JLabel label;
     private String iconPath;
 
     public String getName() {
@@ -52,10 +55,10 @@ public class Goal {
         this.iconPath = iconPath;
     }
 
-    public Goal(String name, int x, int y) {
+    public Goal(String name, JLabel label) {
         this.name = name;
-        this.x = x;
-        this.y = y;
+        this.x = label.getX();
+        this.y = label.getY();
         switch(name) {
             case "church":
                 this.iconPath = CHURCH;
@@ -63,6 +66,12 @@ public class Goal {
             default:
                 this.iconPath = PLACEHOLDER;
         }
+    }
+    
+    public void setLocation(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.label.setLocation(x, y);
     }
 
     @Override
