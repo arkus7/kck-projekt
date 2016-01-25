@@ -17,10 +17,10 @@ import kck.GUI.MainWindow;
 public class Goal {
     
     // TODO: add imgs path
-    private static final String CHURCH = "/kck/GUI/7.png";
-    private static final String PLACEHOLDER = "/kck/GUI/7.png";
+    private static final String CHURCH = "/kck/GUI/church.png";
+    private static final String PLACEHOLDER = "/kck/GUI/error.png";
     private static final String CHARACTER = "/kck/GUI/char.png";
-    private static final String LAMP = "/kck/GUI/8.gif";
+    private static final String LAMP = "/kck/GUI/lamp.png";
     private static final String TREE = "/kck/GUI/tree.png";
     private static final String STONE = "/kck/GUI/stone.png";
     
@@ -79,6 +79,9 @@ public class Goal {
                 break;
             case "tree":
                 this.iconPath = TREE;
+                break;
+            case "lamp":
+                this.iconPath = LAMP;
                 break;
             default:
                 this.iconPath = PLACEHOLDER;
