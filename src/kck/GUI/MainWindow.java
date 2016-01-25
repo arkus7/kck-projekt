@@ -20,10 +20,10 @@ import kck.prolog.PrologManager;
  */
 public class MainWindow extends javax.swing.JFrame {
     private String inputLog = "";
-    public static String[][] things = new String[2][3];
+    public static String[][] things = new String[3][3];
     private int moveX;
     private int moveY;
-    
+    private PrologManager pm = new PrologManager();
 
     
     /**
@@ -46,8 +46,9 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         userOutput = new javax.swing.JTextArea();
         testLayer1 = new javax.swing.JLayeredPane();
-        testGoal = new javax.swing.JLabel();
+        Church = new javax.swing.JLabel();
         testCharacter = new javax.swing.JLabel();
+        Lamp = new javax.swing.JLabel();
         testButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -73,33 +74,43 @@ public class MainWindow extends javax.swing.JFrame {
         userOutput.setRows(5);
         jScrollPane2.setViewportView(userOutput);
 
-        testGoal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/7.png"))); // NOI18N
+        Church.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/7.png"))); // NOI18N
 
         testCharacter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         testCharacter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/8.png"))); // NOI18N
 
-        testLayer1.setLayer(testGoal, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        Lamp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/8.gif"))); // NOI18N
+
+        testLayer1.setLayer(Church, javax.swing.JLayeredPane.DEFAULT_LAYER);
         testLayer1.setLayer(testCharacter, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        testLayer1.setLayer(Lamp, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout testLayer1Layout = new javax.swing.GroupLayout(testLayer1);
         testLayer1.setLayout(testLayer1Layout);
         testLayer1Layout.setHorizontalGroup(
             testLayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, testLayer1Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(Lamp, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Church)
+                .addGap(314, 314, 314))
             .addGroup(testLayer1Layout.createSequentialGroup()
                 .addGap(152, 152, 152)
                 .addComponent(testCharacter, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, testLayer1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(testGoal)
-                .addGap(314, 314, 314))
         );
         testLayer1Layout.setVerticalGroup(
             testLayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, testLayer1Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(testGoal)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                .addGroup(testLayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(testLayer1Layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(Church))
+                    .addGroup(testLayer1Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(Lamp, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
                 .addComponent(testCharacter, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
         );
@@ -146,10 +157,7 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
-
-        //timer
-        ActionListener taskPerformer = new ActionListener() {
+    ActionListener taskPerformer = new ActionListener() {
          public void actionPerformed(ActionEvent evt) { // po tym kod który ma się wykonać co odstęp czasu          
           
            
@@ -182,28 +190,44 @@ public class MainWindow extends javax.swing.JFrame {
             }
          }
         };
-
-        //PrologManager pm = new PrologManager();
-       //Sentence s = pm.getResult(jTextField1.getText());
-       //jTextField1.setText(s.getDirection());
+    
+    private boolean goalExist(String goal){
+        for (int i = 0; i < 3 ; i++){
+            System.out.println(things[i][0]);
+            System.out.println(pm.getResult(userInput.getText()).getGoal());
+            if (things[i][0].equalsIgnoreCase(goal)) {
+                moveX = difMove( Integer.parseInt(things[0][1]), Integer.parseInt(things[i][1]));
+                moveY = difMove( Integer.parseInt(things[0][2]), Integer.parseInt(things[i][2]));  
+               
+                return true; 
+            }
+        }        
+        return false;
+    }
+    
+    private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
        // wsadzenie do tablicy rzeczy, naszego celu i agenta
         things[0][0] = "Character";
         things[0][1] = Integer.toString(testCharacter.getX()); 
         things[0][2] = Integer.toString(testCharacter.getY()); 
-        things[1][0] = "Goal";
-        things[1][1] = Integer.toString(testGoal.getX());
-        things[1][2] = Integer.toString(testGoal.getY());
+        things[1][0] = "Church";
+        things[1][1] = Integer.toString(Church.getX());
+        things[1][2] = Integer.toString(Church.getY());
+        things[2][0] = "Lamp";
+        things[2][1] = Integer.toString(Lamp.getX());
+        things[2][2] = Integer.toString(Lamp.getY());
+        testLayer1.setLayer(testCharacter, 3);
+        testLayer1.setLayer(Church, 2);
+        testLayer1.setLayer(Lamp, 1);
         //ustawienie odległosci o którą mamy się poruszyć
-        moveX = getMove( Integer.parseInt(things[0][1]), Integer.parseInt(things[1][1]));
-        moveY = getMove( Integer.parseInt(things[0][2]), Integer.parseInt(things[1][2]));
-        
-        if (userInput.getText().equalsIgnoreCase("go")){
-            userOutput.setText("walk, straignht");
+               
+        if (goalExist(pm.getResult(userInput.getText()).getGoal())){
+            System.out.println("geoal");
             new Timer(10, taskPerformer).start(); //start timera
             userInput.setText("");
         } else {
-        //Wpisywanie do logu
-        inputLog = inputLog + "\n" + userInput.getText();
+            System.out.println("notgoal");
+        inputLog = inputLog + "\n" + pm.getResult(userInput.getText()).getGoal(); //userInput.getText();
         userOutput.setText(inputLog);
         userInput.setText("");
         
@@ -231,7 +255,8 @@ public class MainWindow extends javax.swing.JFrame {
         y = testLayer1.getHeight();                 
         
         testCharacter.setLocation(randInt(0, x), randInt(0, y)); //lowoanie współrzędnych dla agenta             
-        testGoal.setLocation(randInt(0, x), randInt(0, y));        //losowanie współrzędnych celu
+        Church.setLocation(randInt(0, x), randInt(0, y));        //losowanie współrzędnych celu
+        Lamp.setLocation(randInt(0, x), randInt(0, y));        //losowanie współrzędnych celu
         
     }//GEN-LAST:event_testButtonMouseClicked
 
@@ -241,7 +266,8 @@ public class MainWindow extends javax.swing.JFrame {
     int randomNum = rand.nextInt((max - min) + 1) + min;
     return randomNum;
 }
-    private int getMove(int charPos, int goalPos){ 
+    
+    private int difMove(int charPos, int goalPos){ 
         // wyliczenie odległości między puntami na tej samej osi;
         return charPos - goalPos;
     }
@@ -289,10 +315,11 @@ public class MainWindow extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Church;
+    private javax.swing.JLabel Lamp;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton testButton;
     private javax.swing.JLabel testCharacter;
-    private javax.swing.JLabel testGoal;
     private javax.swing.JLayeredPane testLayer1;
     private javax.swing.JTextField userInput;
     private javax.swing.JTextArea userOutput;
