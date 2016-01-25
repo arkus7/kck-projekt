@@ -20,7 +20,7 @@ kier(goal(X)) --> przyim(P), cel(P,X).
 
 kier(dir(left)) --> [w, lewo].
 kier(dir(right)) --> [w, prawo].
-kier(dir(back)) --> [do, tyl].
+kier(dir(back)) --> [do, tylu].
 kier(dir(east)) --> [na, wschod].
 kier(dir(west)) --> [na, zachod].
 kier(dir(north)) --> [na, polnoc].
@@ -46,6 +46,14 @@ cel(dop, house) --> [domu].
 cel(dop, tunnel) --> [tunelu].
 cel(dop, church) --> [kosciola].
 cel(dop, bench) --> [lawki].
+cel(dop, river) --> [rzeki].
+cel(dop, busstop) --> [przystanku].
+cel(dop, monument) --> [pomnika].
+cel(dop, mountain) --> [gory].
+cel(dop, car) --> [samochod].
+cel(dop, tracks) --> [tory].
+cel(dop, graveyard) --> [cmentarz].
+
 
 cel(cel, light) --> [lampie].
 cel(cel, lake) --> [jezioru].
@@ -57,6 +65,14 @@ cel(cel, house) --> [domu].
 cel(cel, tunnel) --> [tunelu].
 cel(cel, church) --> [kosciolowi].
 cel(cel, bench) --> [lawce].
+cel(cel, river) --> [rzece].
+cel(cel, busstop) --> [przystankowi].
+cel(cel, monument) --> [pomnikowi].
+cel(cel, mountain) --> [gorze].
+cel(cel, car) --> [samochodowi].
+cel(cel, tracks) --> [torom].
+cel(cel, graveyard) --> [cmantarzowi].
+
 
 
 
