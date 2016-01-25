@@ -5,7 +5,10 @@
  */
 package kck.models;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import kck.GUI.MainWindow;
 
 /**
  *
@@ -14,8 +17,10 @@ import javax.swing.JLabel;
 public class Goal {
     
     // TODO: add imgs path
-    private static final String CHURCH = "";
-    private static final String PLACEHOLDER = "";
+    private static final String CHURCH = "/kck/GUI/7.png";
+    private static final String PLACEHOLDER = "/kck/GUI/7.png";
+    private static final String CHARACTER = "/kck/GUI/8.png";
+    private static final String LAMP = "/kck/GUI/8.gif";
     
     private String name;
     private int x;
@@ -59,6 +64,7 @@ public class Goal {
         this.name = name;
         this.x = label.getX();
         this.y = label.getY();
+        this.label = label;
         switch(name) {
             case "church":
                 this.iconPath = CHURCH;
@@ -66,12 +72,17 @@ public class Goal {
             default:
                 this.iconPath = PLACEHOLDER;
         }
+        /*
+        ImageIcon icon = new ImageIcon("/src" + iconPath);
+        System.out.println(icon.toString());
+        this.label.setIcon(icon);
+        */
     }
     
     public void setLocation(int x, int y) {
-        this.x = x;
-        this.y = y;
         this.label.setLocation(x, y);
+        this.x = label.getX();
+        this.y = label.getY();
     }
 
     @Override

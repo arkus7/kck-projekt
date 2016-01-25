@@ -7,10 +7,14 @@ package kck.GUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.Timer;
+import kck.models.Goal;
 import kck.models.Sentence;
 import kck.prolog.PrologManager;
 
@@ -24,6 +28,8 @@ public class MainWindow extends javax.swing.JFrame {
     private int moveX;
     private int moveY;
     private PrologManager pm = new PrologManager();
+    private List<Goal> goals;
+    private Goal character;
 
     
     /**
@@ -31,6 +37,10 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
+        character = new Goal("Character", testCharacter);
+        goals = new ArrayList<>();
+        goals.add(new Goal("Church", Church));
+        goals.add(new Goal("Lamp", Lamp));
     }
 
     /**
@@ -165,22 +175,22 @@ public class MainWindow extends javax.swing.JFrame {
             if (moveX != 0){
                if (moveX > 0){
                     moveX = moveX - 1;
-                    testCharacter.setLocation(testCharacter.getX() - 1, testCharacter.getY());
+                    character.setLocation(character.getX() - 1, character.getY());
                 }
                 if (moveX < 0){
                     moveX = moveX + 1;
-                    testCharacter.setLocation(testCharacter.getX() + 1, testCharacter.getY());
+                    character.setLocation(character.getX() + 1, character.getY());
                 }
             }
           
             if (moveY != 0){
                 if (moveY > 0){
                   moveY = moveY - 1;
-                  testCharacter.setLocation(testCharacter.getX(), testCharacter.getY() - 1);
+                  character.setLocation(character.getX(), character.getY() - 1);
                  }
                 if (moveY < 0){
                   moveY = moveY + 1;
-                  testCharacter.setLocation(testCharacter.getX(), testCharacter.getY() + 1);
+                  character.setLocation(character.getX(), character.getY() + 1);
                 }
              }
           
@@ -193,12 +203,12 @@ public class MainWindow extends javax.swing.JFrame {
     
     private boolean goalExist(String goal){
         for (int i = 0; i < 3 ; i++){
-            System.out.println(things[i][0]);
+            System.out.println(goals.get(i).getName());
             System.out.println(pm.getResult(userInput.getText()).getGoal());
-            if (things[i][0].equalsIgnoreCase(goal)) {
-                moveX = difMove( Integer.parseInt(things[0][1]), Integer.parseInt(things[i][1]));
-                moveY = difMove( Integer.parseInt(things[0][2]), Integer.parseInt(things[i][2]));  
-               
+            if (goals.get(i).getName().equalsIgnoreCase(goal)) {
+                moveX = difMove(character.getX(), goals.get(i).getX());
+                moveY = difMove(character.getY(), goals.get(i).getY());  
+                System.out.println("X = " + moveX + " Y = " + moveY);
                 return true; 
             }
         }        
@@ -207,22 +217,23 @@ public class MainWindow extends javax.swing.JFrame {
     
     private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
        // wsadzenie do tablicy rzeczy, naszego celu i agenta
+       /*
         things[0][0] = "Character";
-        things[0][1] = Integer.toString(testCharacter.getX()); 
-        things[0][2] = Integer.toString(testCharacter.getY()); 
+        things[0][1] = Integer.toString(testCharacter.getX());
+        things[0][2] = Integer.toString(testCharacter.getY());
         things[1][0] = "Church";
         things[1][1] = Integer.toString(Church.getX());
         things[1][2] = Integer.toString(Church.getY());
         things[2][0] = "Lamp";
         things[2][1] = Integer.toString(Lamp.getX());
         things[2][2] = Integer.toString(Lamp.getY());
+       */
         testLayer1.setLayer(testCharacter, 3);
         testLayer1.setLayer(Church, 2);
         testLayer1.setLayer(Lamp, 1);
         //ustawienie odległosci o którą mamy się poruszyć
                
         if (goalExist(pm.getResult(userInput.getText()).getGoal())){
-            System.out.println("geoal");
             new Timer(10, taskPerformer).start(); //start timera
             userInput.setText("");
         } else {
@@ -254,10 +265,10 @@ public class MainWindow extends javax.swing.JFrame {
         x = testLayer1.getWidth();
         y = testLayer1.getHeight();                 
         
-        testCharacter.setLocation(randInt(0, x), randInt(0, y)); //lowoanie współrzędnych dla agenta             
-        Church.setLocation(randInt(0, x), randInt(0, y));        //losowanie współrzędnych celu
-        Lamp.setLocation(randInt(0, x), randInt(0, y));        //losowanie współrzędnych celu
-        
+        character.setLocation(randInt(0, x), randInt(0, y)); //lowoanie współrzędnych dla agenta             
+        for(int i = 0; i < goals.size(); i++) {
+            goals.get(i).setLocation(randInt(0, x), randInt(0, y));//losowanie współrzędnych celu
+        }
     }//GEN-LAST:event_testButtonMouseClicked
 
     
