@@ -19,8 +19,10 @@ public class Goal {
     // TODO: add imgs path
     private static final String CHURCH = "/kck/GUI/7.png";
     private static final String PLACEHOLDER = "/kck/GUI/7.png";
-    private static final String CHARACTER = "/kck/GUI/8.png";
+    private static final String CHARACTER = "/kck/GUI/char.png";
     private static final String LAMP = "/kck/GUI/8.gif";
+    private static final String TREE = "/kck/GUI/tree.png";
+    private static final String STONE = "/kck/GUI/stone.png";
     
     private String name;
     private int x;
@@ -61,22 +63,29 @@ public class Goal {
     }
 
     public Goal(String name, JLabel label) {
-        this.name = name;
+        this.name = name.toLowerCase();
         this.x = label.getX();
         this.y = label.getY();
         this.label = label;
-        switch(name) {
+        switch(this.name) {
             case "church":
                 this.iconPath = CHURCH;
+                break;
+            case "stone":
+                this.iconPath = STONE;
+                break;
+            case "character":
+                this.iconPath = CHARACTER;
+                break;
+            case "tree":
+                this.iconPath = TREE;
                 break;
             default:
                 this.iconPath = PLACEHOLDER;
         }
-        /*
-        ImageIcon icon = new ImageIcon("/src" + iconPath);
+        ImageIcon icon = createImageIcon(iconPath, this.name);
         System.out.println(icon.toString());
         this.label.setIcon(icon);
-        */
     }
     
     public void setLocation(int x, int y) {
@@ -88,5 +97,15 @@ public class Goal {
     @Override
     public String toString() {
         return "Goal{" + "name=" + name + ", x=" + x + ", y=" + y + ", iconPath=" + iconPath + '}';
+    }
+    
+    protected ImageIcon createImageIcon(String path, String description) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL, description);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
     }
 }

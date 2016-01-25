@@ -40,7 +40,7 @@ public class MainWindow extends javax.swing.JFrame {
         character = new Goal("Character", testCharacter);
         goals = new ArrayList<>();
         goals.add(new Goal("Tree", tree));
-        goals.add(new Goal("Stone", stone));
+        goals.add(new Goal("stone", stone));
     }
 
     /**
@@ -207,7 +207,7 @@ public class MainWindow extends javax.swing.JFrame {
     private boolean goalExist(String goal){
         for (int i = 0; i < goals.size() ; i++){
             System.out.println(goals.get(i).getName());
-            System.out.println(pm.getResult(userInput.getText()).getGoal());
+            System.out.println(pm.getResult(userInput.getText()).toString());
             if (goals.get(i).getName().equalsIgnoreCase(goal)) {
                 moveX = difMove(character.getX(), goals.get(i).getX());
                 moveY = difMove(character.getY(), goals.get(i).getY());  
