@@ -24,6 +24,7 @@ public class PrologManager {
     private final String COMMA = ",";
     
     public Sentence getResult(String sentence) { 
+        sentence = getSentenceWithoutSpacesAndTails(sentence);
         String[] words = sentence.split(" ");
         String query = "zdanie(X, [" + String.join(",", words) + "], []).";
         System.out.println("Query: " + query);
@@ -75,5 +76,19 @@ public class PrologManager {
             return sentence.substring(appStart, appEnd);
         }
         return "";
+    }
+    
+    protected String getSentenceWithoutSpacesAndTails(String sentence) {
+        return sentence.toLowerCase()  
+                .trim()                     // returns a copy of the string, with leading and trailing whitespace omitted
+                .replaceAll(" +", " ")      // replaces 2 or more spaces with one space
+                .replaceAll("[żź]", "z")
+                .replaceAll("ą", "a")
+                .replaceAll("ł", "l")
+                .replaceAll("ę", "e")
+                .replaceAll("ó", "o")
+                .replaceAll("ś", "s")
+                .replaceAll("ć", "c")
+                .replaceAll("ń", "n");
     }
 }
