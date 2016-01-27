@@ -8,6 +8,8 @@ zdanie(move(X,Y,Z,A)) --> czas(X), kier(Y,A), sposob(Z).
 zdanie(move(X,Y,Z,A)) --> czas(X), sposob(Z), kier(Y,A).
 zdanie(move(X,Y,Z,A)) --> kier(Y,A), sposob(Z), czas(X).
 zdanie(move(X,Y,Z,A)) --> sposob(Z), czas(X), kier(Y,A).
+zdanie(move(X,Y,A)) --> czas(X), kier(Y,A).
+zdanie(move(X,Y,A)) --> kier(Y,A), czas(X).
 
 czas(walk) --> [idz].
 czas(turn) --> [skrec].
