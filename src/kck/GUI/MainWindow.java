@@ -50,6 +50,7 @@ public class MainWindow extends javax.swing.JFrame {
         }
     };
     
+      
     
     /**
      * Creates new form NewJFrame
@@ -255,6 +256,8 @@ public class MainWindow extends javax.swing.JFrame {
     private void testButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_testButtonMouseClicked
         // wylosowanie nowych lokalizacji
         int z=0; 
+        
+        //ustawienie lokazliacji w orginalnych miejscach
         icons.get(0).setLocation(0, 0);
         icons.get(1).setLocation(128, 0);
         icons.get(2).setLocation(128, 128);
@@ -266,21 +269,21 @@ public class MainWindow extends javax.swing.JFrame {
 //            goals.get(j).setLocation(randInt(0, x), randInt(0, y));//losowanie współrzędnych celu
 //        }
         
-        z = randInt(0, 4);        
-        exclude.add(z);
-        character.setLabel(icons.get(z));
-        character.setLocation(icons.get(z).getX(), icons.get(z).getY());
-        testLayer1.setLayer(icons.get(z), 10);
-        for(int j = 0; j < goals.size(); j++) {
-            while(exclude.contains(z)){
-                z = randInt(0,4);
+        z = randInt(0, 4);                                                      //losowanie liczby z zakresu ilości labeli     
+        exclude.add(z);                                                         // dodanie wylosowanej liczby do zbioru liczb zuzytych
+        character.setLabel(icons.get(z));                                       //ustawienie postaci nowego labela
+        character.setLocation(icons.get(z).getX(), icons.get(z).getY());        //ustawienie postaci nowej pozycji
+        testLayer1.setLayer(icons.get(z), 10);                                  //ustawienie postaci nowej pozycji, aby była widoczna nad innymi
+        for(int j = 0; j < goals.size(); j++) {                                 //przydzielanie nowej lokalizacji kazdemu celowi po kolei
+            while(exclude.contains(z)){                                         //dopóki nie wylosuje liczby, która jeszcze ani razu sie nie pojawiła
+                z = randInt(0,4); 
             }
-            exclude.add(z);
-            goals.get(j).setLabel(icons.get(z));
-            testLayer1.setLayer(icons.get(z),5);
-            goals.get(j).setLocation(icons.get(z).getX(), icons.get(z).getY());
+            exclude.add(z);                                                     //dodanie do zbioru wykloczonych
+            goals.get(j).setLabel(icons.get(z));                                //ustawienie celowi nowego labela
+            testLayer1.setLayer(icons.get(z),5);                                // ustawienie nowego poziomu aby cele były pod postacią
+            goals.get(j).setLocation(icons.get(z).getX(), icons.get(z).getY()); //ustawienie nowej lokazlicaji
         }
-        exclude.clear();
+        exclude.clear();                                                        //wyczyszczenie listy wykluczonych liczb
         for (int i = 0; i < goals.size();i++){
             System.err.println(goals.get(i).getName()+ " : " +goals.get(i).getX() + " " + goals.get(i).getY());
         }
