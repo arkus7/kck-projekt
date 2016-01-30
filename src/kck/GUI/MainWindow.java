@@ -26,22 +26,69 @@ import kck.prolog.PrologManager;
  */
 public class MainWindow extends javax.swing.JFrame {
     private String inputLog = "";
-    public static String[][] things = new String[3][3];
     private PrologManager pm = new PrologManager();
     private List<Goal> goals;
     private Character character;
+    private List<Integer> exclude;
+    private List<JLabel> icons;
+    private final int DELAY_TIME = 5;
+    private int timer1 = 0;
+    private int timer2 = 0;
+    
+    ActionListener inputBlockade = new ActionListener() {
+        public void actionPerformed(ActionEvent evt) {
+            testButton.setEnabled(false);
+            userInput.setEnabled(false);
+            timer1--;
+            timer2--;
+            System.out.println(timer1+ " " + timer2);
+            if(timer1 <= 0 && timer2 <= 0){
+                testButton.setEnabled(true);
+                userInput.setEnabled(true);
+                ((Timer)evt.getSource()).stop(); 
+            }
+        }
+    };
+    
     
     /**
      * Creates new form NewJFrame
      */
     public MainWindow() {
         initComponents();
-        character = new Character("Character", testCharacter);
         goals = new ArrayList<>();
-        goals.add(new Goal("Tree", tree));
-        goals.add(new Goal("stone", stone));
-        goals.add(new Goal("Church", church));
-        goals.add(new Goal("Lamp", lamp));
+        exclude = new ArrayList<>();
+        icons = new ArrayList<>();
+        
+        icons.add(goal1);
+        icons.add(goal2);
+        icons.add(goal3);
+        icons.add(goal4);
+        icons.add(goal5);
+        icons.get(0).setLocation(0, 0);
+        icons.get(1).setLocation(128, 0);
+        icons.get(2).setLocation(128, 128);
+        icons.get(3).setLocation(256, 0);
+        icons.get(4).setLocation(256, 128);
+      
+//        goals.add(new Goal("Tree", tree));
+//        goals.add(new Goal("stone", stone));
+//        goals.add(new Goal("Church", church));
+//        goals.add(new Goal("Lamp", lamp));
+//        character = new Character("Character", testCharacter);
+
+        goals.add(new Goal("Tree", goal1));
+        goals.add(new Goal("stone", goal2));
+        goals.add(new Goal("Church", goal3));
+        goals.add(new Goal("Lamp", goal4));
+        character = new Character("Character", goal5);
+        testLayer1.setLayer(goal5,10);
+        
+        for (int i = 0; i < goals.size();i++){
+            System.err.println(goals.get(i).getName()+ " : " +goals.get(i).getX() + " " + goals.get(i).getY());
+        }
+         System.err.println("Character: " +character.getX() + " " + character.getY());
+        
     }
 
     /**
@@ -57,15 +104,15 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         userOutput = new javax.swing.JTextArea();
         testLayer1 = new javax.swing.JLayeredPane();
-        tree = new javax.swing.JLabel();
-        testCharacter = new javax.swing.JLabel();
-        stone = new javax.swing.JLabel();
-        church = new javax.swing.JLabel();
-        lamp = new javax.swing.JLabel();
+        goal1 = new javax.swing.JLabel();
+        goal2 = new javax.swing.JLabel();
+        goal3 = new javax.swing.JLabel();
+        goal4 = new javax.swing.JLabel();
+        goal5 = new javax.swing.JLabel();
         testButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(1100, 700));
         setResizable(false);
 
         userInput.setText("Polecenie: ");
@@ -89,63 +136,25 @@ public class MainWindow extends javax.swing.JFrame {
         userOutput.setRows(5);
         jScrollPane2.setViewportView(userOutput);
 
-        tree.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/tree.PNG"))); // NOI18N
+        goal1.setText("jLabel1");
+        testLayer1.add(goal1);
+        goal1.setBounds(334, 197, 64, 64);
 
-        testCharacter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        testCharacter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/char.png"))); // NOI18N
+        goal2.setText("jLabel1");
+        testLayer1.add(goal2);
+        goal2.setBounds(208, 21, 64, 64);
 
-        stone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/stone.PNG"))); // NOI18N
+        goal3.setText("jLabel1");
+        testLayer1.add(goal3);
+        goal3.setBounds(322, 95, 64, 64);
 
-        church.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/church.png"))); // NOI18N
+        goal4.setText("jLabel1");
+        testLayer1.add(goal4);
+        goal4.setBounds(334, 11, 64, 64);
 
-        lamp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/kck/GUI/lamp.png"))); // NOI18N
-
-        testLayer1.setLayer(tree, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        testLayer1.setLayer(testCharacter, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        testLayer1.setLayer(stone, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        testLayer1.setLayer(church, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        testLayer1.setLayer(lamp, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout testLayer1Layout = new javax.swing.GroupLayout(testLayer1);
-        testLayer1.setLayout(testLayer1Layout);
-        testLayer1Layout.setHorizontalGroup(
-            testLayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, testLayer1Layout.createSequentialGroup()
-                .addGroup(testLayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(testLayer1Layout.createSequentialGroup()
-                        .addGap(152, 152, 152)
-                        .addComponent(testCharacter)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(church))
-                    .addGroup(testLayer1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(stone)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 308, Short.MAX_VALUE)
-                        .addComponent(tree)))
-                .addGap(314, 314, 314))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, testLayer1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lamp)
-                .addGap(210, 210, 210))
-        );
-        testLayer1Layout.setVerticalGroup(
-            testLayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, testLayer1Layout.createSequentialGroup()
-                .addGroup(testLayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(testLayer1Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(tree))
-                    .addGroup(testLayer1Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(stone)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
-                .addGroup(testLayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(testCharacter, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(church, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(29, 29, 29)
-                .addComponent(lamp)
-                .addGap(52, 52, 52))
-        );
+        goal5.setText("jLabel1");
+        testLayer1.add(goal5);
+        goal5.setBounds(199, 115, 64, 64);
 
         testButton.setText("Reload");
         testButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -161,9 +170,11 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(testLayer1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(testLayer1)
+                        .addGap(68, 68, 68))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 20, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(testButton, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
                             .addComponent(userInput))
@@ -197,7 +208,9 @@ public class MainWindow extends javax.swing.JFrame {
             System.out.println(pm.getResult(userInput.getText()).toString());
             if (goals.get(i).getName().equalsIgnoreCase(goal)) {
                 character.setMoveX(difMove(character.getX(), goals.get(i).getX()));
-                character.setMoveY(difMove(character.getY(), goals.get(i).getY()));  
+                character.setMoveY(difMove(character.getY(), goals.get(i).getY()));
+                timer1 = Math.abs(character.getMoveX());
+                timer2 = Math.abs(character.getMoveY());                
                 System.out.println("X = " + character.getMoveX() + " Y = " + character.getMoveY());
                 return true; 
             }
@@ -206,27 +219,16 @@ public class MainWindow extends javax.swing.JFrame {
     }
     
     private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
-       // wsadzenie do tablicy rzeczy, naszego celu i agenta
-       /*
-        things[0][0] = "Character";
-        things[0][1] = Integer.toString(testCharacter.getX());
-        things[0][2] = Integer.toString(testCharacter.getY());
-        things[1][0] = "Church";
-        things[1][1] = Integer.toString(Church.getX());
-        things[1][2] = Integer.toString(Church.getY());
-        things[2][0] = "Lamp";
-        things[2][1] = Integer.toString(Lamp.getX());
-        things[2][2] = Integer.toString(Lamp.getY());
-       */
-        testLayer1.setLayer(testCharacter, 3);
-        testLayer1.setLayer(tree, 2);
-        testLayer1.setLayer(stone, 1);
+
         //ustawienie odległosci o którą mamy się poruszyć
                
         if (goalExist(pm.getResult(userInput.getText()).getGoal())){
             inputLog = inputLog + "\n" + userInput.getText();
             userOutput.setText(inputLog);
+            
             character.moveStraightToGoal(); //start timera
+            new Timer(DELAY_TIME, inputBlockade).start();
+            
             userInput.setText("");
         } else {
         inputLog = inputLog + "\n" + userInput.getText(); 
@@ -252,14 +254,37 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void testButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_testButtonMouseClicked
         // wylosowanie nowych lokalizacji
-        int x,y;
-        x = testLayer1.getWidth()-64;
-        y = testLayer1.getHeight()-64;                 
+        int z=0; 
+        icons.get(0).setLocation(0, 0);
+        icons.get(1).setLocation(128, 0);
+        icons.get(2).setLocation(128, 128);
+        icons.get(3).setLocation(256, 0);
+        icons.get(4).setLocation(256, 128);
+            
+//        character.setLocation(randInt(0, x), randInt(0, y)); //lowoanie współrzędnych dla agenta             
+//        for(int j = 0; j < goals.size(); j++) {
+//            goals.get(j).setLocation(randInt(0, x), randInt(0, y));//losowanie współrzędnych celu
+//        }
         
-        character.setLocation(randInt(0, x), randInt(0, y)); //lowoanie współrzędnych dla agenta             
-        for(int i = 0; i < goals.size(); i++) {
-            goals.get(i).setLocation(randInt(0, x), randInt(0, y));//losowanie współrzędnych celu
+        z = randInt(0, 4);        
+        exclude.add(z);
+        character.setLabel(icons.get(z));
+        character.setLocation(icons.get(z).getX(), icons.get(z).getY());
+        testLayer1.setLayer(icons.get(z), 10);
+        for(int j = 0; j < goals.size(); j++) {
+            while(exclude.contains(z)){
+                z = randInt(0,4);
+            }
+            exclude.add(z);
+            goals.get(j).setLabel(icons.get(z));
+            testLayer1.setLayer(icons.get(z),5);
+            goals.get(j).setLocation(icons.get(z).getX(), icons.get(z).getY());
         }
+        exclude.clear();
+        for (int i = 0; i < goals.size();i++){
+            System.err.println(goals.get(i).getName()+ " : " +goals.get(i).getX() + " " + goals.get(i).getY());
+        }
+        System.err.println("Character: " +character.getX() + " " + character.getY());
     }//GEN-LAST:event_testButtonMouseClicked
 
     
@@ -317,14 +342,14 @@ public class MainWindow extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel church;
+    private javax.swing.JLabel goal1;
+    private javax.swing.JLabel goal2;
+    private javax.swing.JLabel goal3;
+    private javax.swing.JLabel goal4;
+    private javax.swing.JLabel goal5;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lamp;
-    private javax.swing.JLabel stone;
     private javax.swing.JButton testButton;
-    private javax.swing.JLabel testCharacter;
     private javax.swing.JLayeredPane testLayer1;
-    private javax.swing.JLabel tree;
     private javax.swing.JTextField userInput;
     private javax.swing.JTextArea userOutput;
     // End of variables declaration//GEN-END:variables

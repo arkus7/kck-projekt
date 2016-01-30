@@ -24,6 +24,32 @@ public class Goal extends Object {
     private static final String TREE = "/kck/GUI/tree.png";
     private static final String STONE = "/kck/GUI/stone.png";
 
+    public void setLabel(JLabel label) {
+        this.label = label;
+        switch(this.name) {
+            case "church":
+                this.iconPath = CHURCH;
+                break;
+            case "stone":
+                this.iconPath = STONE;
+                break;
+            case "character":
+                this.iconPath = CHARACTER;
+                break;
+            case "tree":
+                this.iconPath = TREE;
+                break;
+            case "lamp":
+                this.iconPath = LAMP;
+                break;
+            default:
+                this.iconPath = PLACEHOLDER;
+        }
+        ImageIcon icon = createImageIcon(iconPath, this.name);
+        System.out.println(icon.toString());
+        this.label.setIcon(icon);
+    } 
+        
     public Goal(String name, JLabel label) {
         super(name, label);
         switch(this.name) {
@@ -51,18 +77,5 @@ public class Goal extends Object {
     }
     
 
-    @Override
-    public String toString() {
-        return "Goal{" + "name=" + name + ", x=" + x + ", y=" + y + ", iconPath=" + iconPath + '}';
-    }
     
-    protected ImageIcon createImageIcon(String path, String description) {
-        java.net.URL imgURL = getClass().getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL, description);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
-        }
-    }
 }

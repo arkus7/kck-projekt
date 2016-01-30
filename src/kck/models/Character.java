@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.Timer;
+import kck.GUI.MainWindow;
 
 /**
  *
@@ -22,9 +23,7 @@ public class Character extends Object {
     
     ActionListener straightToGoal = new ActionListener() {
         public void actionPerformed(ActionEvent evt) { // po tym kod który ma się wykonać co odstęp czasu          
-        //testButton.setEnabled(false);
-        //userInput.setEnabled(false);
-        System.out.println(moveX+ " " + moveY);
+//        System.out.println(moveX+ " " + moveY);
             if (moveX != 0){
                 if (moveX > 0){
                     moveX = moveX - 1;
@@ -48,13 +47,23 @@ public class Character extends Object {
             }
           
             if (moveY == 0 && moveX == 0){ //aktualnie idzie to Y celu testowego moveY ==0 && moveX == 0
-              //testButton.setEnabled(true);
-              //userInput.setEnabled(true);
-              ((Timer)evt.getSource()).stop();          //zatrzymuje timer
+              ((Timer)evt.getSource()).stop(); 
+              //zatrzymuje timer
             }
         }
     };
     
+    ActionListener softToGoal = new ActionListener() {
+        public void actionPerformed(ActionEvent evt) {
+        //wywoływany kod tutaj
+        
+        
+        }};
+    
+    ActionListener sharpToGoal = new ActionListener() {
+        public void actionPerformed(ActionEvent evt) {
+        //wywoływany kod tutaj
+        }};
    
     
     public void moveStraightToGoal(){
@@ -81,8 +90,19 @@ public class Character extends Object {
         this.moveY = y;
     }
     
+    public void setLabel(JLabel label) {
+        this.label = label;
+        ImageIcon icon = createImageIcon("/kck/GUI/char.png", this.name);
+        System.out.println(icon.toString());
+        this.label.setIcon(icon);
+    } 
+    
+    
     public Character(String name, JLabel label) {
         super(name, label);
+        ImageIcon icon = createImageIcon("/kck/GUI/char.png", this.name);
+        System.out.println(icon.toString());
+        this.label.setIcon(icon);
     }
     
 
