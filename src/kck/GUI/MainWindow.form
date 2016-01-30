@@ -131,7 +131,7 @@
                           <Component id="stone" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="95" max="32767" attributes="0"/>
+                  <EmptySpace pref="98" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="testCharacter" alignment="1" min="-2" max="-2" attributes="0"/>
                       <Component id="church" alignment="1" min="-2" max="-2" attributes="0"/>

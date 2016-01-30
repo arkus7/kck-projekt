@@ -14,7 +14,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.Timer;
+import kck.models.Object;
 import kck.models.Goal;
+import kck.models.Character;
 import kck.models.Sentence;
 import kck.prolog.PrologManager;
 
@@ -25,19 +27,16 @@ import kck.prolog.PrologManager;
 public class MainWindow extends javax.swing.JFrame {
     private String inputLog = "";
     public static String[][] things = new String[3][3];
-    private int moveX;
-    private int moveY;
     private PrologManager pm = new PrologManager();
     private List<Goal> goals;
-    private Goal character;
-    private final int DELAY_TIME = 5;
+    private Character character;
     
     /**
      * Creates new form NewJFrame
      */
     public MainWindow() {
         initComponents();
-        character = new Goal("Character", testCharacter);
+        character = new Character("Character", testCharacter);
         goals = new ArrayList<>();
         goals.add(new Goal("Tree", tree));
         goals.add(new Goal("stone", stone));
@@ -139,7 +138,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addGroup(testLayer1Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addComponent(stone)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
                 .addGroup(testLayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(testCharacter, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(church, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -190,50 +189,16 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    ActionListener taskPerformer = new ActionListener() {
-         public void actionPerformed(ActionEvent evt) { // po tym kod który ma się wykonać co odstęp czasu          
-          testButton.setEnabled(false);
-          userInput.setEnabled(false);
-            //System.out.println(moveX+ " " + moveY);
-            if (moveX != 0){
-               if (moveX > 0){
-                    moveX = moveX - 1;
-                    character.setLocation(character.getX() - 1, character.getY());
-                }
-                if (moveX < 0){
-                    moveX = moveX + 1;
-                    character.setLocation(character.getX() + 1, character.getY());
-                }
-            }
-          
-            if (moveY != 0){
-                if (moveY > 0){
-                  moveY = moveY - 1;
-                  character.setLocation(character.getX(), character.getY() - 1);
-                 }
-                if (moveY < 0){
-                  moveY = moveY + 1;
-                  character.setLocation(character.getX(), character.getY() + 1);
-                }
-             }
-          
-            if (moveY ==0 && moveX == 0){ //aktualnie idzie to Y celu testowego moveY ==0 && moveX == 0
-              testButton.setEnabled(true);
-              userInput.setEnabled(true);
-              ((Timer)evt.getSource()).stop();          //zatrzymuje timer
-          
-            }
-         }
-        };
+    
     
     private boolean goalExist(String goal){
         for (int i = 0; i < goals.size() ; i++){
             System.out.println(goals.get(i).getName());
             System.out.println(pm.getResult(userInput.getText()).toString());
             if (goals.get(i).getName().equalsIgnoreCase(goal)) {
-                moveX = difMove(character.getX(), goals.get(i).getX());
-                moveY = difMove(character.getY(), goals.get(i).getY());  
-                System.out.println("X = " + moveX + " Y = " + moveY);
+                character.setMoveX(difMove(character.getX(), goals.get(i).getX()));
+                character.setMoveY(difMove(character.getY(), goals.get(i).getY()));  
+                System.out.println("X = " + character.getMoveX() + " Y = " + character.getMoveY());
                 return true; 
             }
         }        
@@ -261,7 +226,7 @@ public class MainWindow extends javax.swing.JFrame {
         if (goalExist(pm.getResult(userInput.getText()).getGoal())){
             inputLog = inputLog + "\n" + userInput.getText();
             userOutput.setText(inputLog);
-            new Timer(DELAY_TIME, taskPerformer).start(); //start timera
+            character.moveStraightToGoal(); //start timera
             userInput.setText("");
         } else {
         inputLog = inputLog + "\n" + userInput.getText(); 
