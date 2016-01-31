@@ -5,6 +5,7 @@
  */
 package kck.GUI;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -211,7 +212,9 @@ public class MainWindow extends javax.swing.JFrame {
                 character.setMoveX(difMove(character.getX(), goals.get(i).getX()));
                 character.setMoveY(difMove(character.getY(), goals.get(i).getY()));
                 timer1 = Math.abs(character.getMoveX());
-                timer2 = Math.abs(character.getMoveY());                
+                timer2 = Math.abs(character.getMoveY());
+                character.setStartPoint(new Point(character.getX(), character.getY()));
+                character.setEndPoint(new Point(goals.get(i).getX(), goals.get(i).getY()));
                 System.out.println("X = " + character.getMoveX() + " Y = " + character.getMoveY());
                 return true; 
             }
@@ -222,13 +225,25 @@ public class MainWindow extends javax.swing.JFrame {
     private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
 
         //ustawienie odległosci o którą mamy się poruszyć
-               
-        if (goalExist(pm.getResult(userInput.getText()).getGoal())){
+        Sentence sentence = pm.getResult(userInput.getText());
+        if (goalExist(sentence.getGoal())){
             inputLog = inputLog + "\n" + userInput.getText();
             userOutput.setText(inputLog);
-            
-            character.moveStraightToGoal(); //start timera
-            new Timer(DELAY_TIME, inputBlockade).start();
+            switch(sentence.getMove()) {
+                case "walk":
+                    System.err.println("switch(move): walk");
+                    character.moveStraightToGoal(); //start timera
+                    new Timer(DELAY_TIME, inputBlockade).start();
+                    break;
+                case "turn":
+                    System.err.println("switch(move): turn");
+                    switch(sentence.getApproach()) {
+                        default:
+                            System.err.println("switch(turn): default");
+                            character.moveSoftToGoal();
+                            break;
+                    }
+            }
             
             userInput.setText("");
         } else {

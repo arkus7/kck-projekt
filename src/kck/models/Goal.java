@@ -46,7 +46,6 @@ public class Goal extends Object {
                 this.iconPath = PLACEHOLDER;
         }
         ImageIcon icon = createImageIcon(iconPath, this.name);
-        System.out.println(icon.toString());
         this.label.setIcon(icon);
     } 
         
@@ -72,7 +71,6 @@ public class Goal extends Object {
                 this.iconPath = PLACEHOLDER;
         }
         ImageIcon icon = createImageIcon(iconPath, this.name);
-        System.out.println(icon.toString());
         this.label.setIcon(icon);
     }
     

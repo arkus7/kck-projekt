@@ -5,6 +5,8 @@
  */
 package kck.models;
 
+import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
@@ -18,6 +20,30 @@ import kck.GUI.MainWindow;
  */
 public class Character extends Object {
     private int moveX,moveY;
+    private int halfX, halfY;
+    private Point startPoint;
+    private Point endPoint;
+    private double actualT = 0.0;
+
+    public void setActualT(double actualT) {
+        this.actualT = actualT;
+    }
+
+    public Point getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(Point endPoint) {
+        this.endPoint = endPoint;
+    }
+
+    public Point getStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(Point startPoint) {
+        this.startPoint = startPoint;
+    }
     private final int DELAY_TIME = 5;
     
     
@@ -53,14 +79,34 @@ public class Character extends Object {
         }
     };
     
-    ActionListener softToGoal = new ActionListener() {
+    ActionListener softLeftToGoal = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent evt) {
-        //wywoływany kod tutaj
-        
-        
+            //wywoływany kod tutaj
+            double k = 0.001;
+            if(moveX > 0) { // w lewo
+                Point arcPoint = new Point(startPoint.x - halfX, startPoint.y + (halfY == 0 ? 32 : halfY));
+                int newX = (int) (Math.pow(1 - actualT, 2) * getX() + 2 * (1 - actualT) * actualT * arcPoint.x + Math.pow(actualT, 2) * endPoint.x);
+                System.err.println("double newX = " + String.valueOf(Math.pow(1 - actualT, 2) * getX() + 2 * (1 - actualT) * actualT * arcPoint.x + Math.pow(actualT, 2) * endPoint.x));
+                System.err.println("int newX = " + newX);
+                int newY = (int) (Math.pow(1 - actualT, 2) * getY() + 2 * (1 - actualT) * actualT * arcPoint.y + Math.pow(actualT, 2) * endPoint.y);
+                setLocation(newX, newY);
+                actualT += k;
+                System.err.println("startPoint = " + startPoint);
+                System.err.println("arcPoint = " + arcPoint);
+                System.err.println("endPoint = " + endPoint);
+            }
+            if(moveX < 0) { // w prawo
+                
+            }
+            if(actualT > 1.0) {
+                actualT = 0;
+                ((Timer)evt.getSource()).stop();
+            }
         }};
     
     ActionListener sharpToGoal = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent evt) {
         //wywoływany kod tutaj
         }};
@@ -70,10 +116,9 @@ public class Character extends Object {
         new Timer(DELAY_TIME, straightToGoal).start();
     }
     
-    
-    
-    
-    
+    public void moveSoftToGoal() {
+        new Timer(DELAY_TIME, softLeftToGoal).start();
+    }
     
     public int getMoveX() {
         return moveX;
@@ -81,6 +126,7 @@ public class Character extends Object {
 
     public void setMoveX(int x) {
         this.moveX = x;
+        this.halfX = x/2;
     }
     public int getMoveY() {
         return moveY;
@@ -88,20 +134,19 @@ public class Character extends Object {
 
     public void setMoveY(int y) {
         this.moveY = y;
+        this.halfY = y/2;
     }
     
     public void setLabel(JLabel label) {
         this.label = label;
-        ImageIcon icon = createImageIcon("/kck/GUI/char.png", this.name);
-        System.out.println(icon.toString());
+        ImageIcon icon = super.createImageIcon("/kck/GUI/char.png", this.name);
         this.label.setIcon(icon);
     } 
     
     
     public Character(String name, JLabel label) {
         super(name, label);
-        ImageIcon icon = createImageIcon("/kck/GUI/char.png", this.name);
-        System.out.println(icon.toString());
+        ImageIcon icon = super.createImageIcon("/kck/GUI/char.png", this.name);
         this.label.setIcon(icon);
     }
     
