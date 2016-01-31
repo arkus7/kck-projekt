@@ -79,17 +79,17 @@ public class MainWindow extends javax.swing.JFrame {
 //        character = new Character("Character", testCharacter);
 
         goals.add(new Goal("Tree", goal1));
-        goals.add(new Goal("stone", goal2));
-        goals.add(new Goal("Church", goal3));
+        goals.add(new Goal("Mountain", goal2));
+        goals.add(new Goal("House", goal3));
         goals.add(new Goal("Lamp", goal4));
         character = new Character("Character", goal5);
         testLayer1.setLayer(goal5,10);
         
-        for (int i = 0; i < goals.size();i++){
-            System.err.println(goals.get(i).getName()+ " : " +goals.get(i).getX() + " " + goals.get(i).getY());
-        }
-         System.err.println("Character: " +character.getX() + " " + character.getY());
-        
+//        for (int i = 0; i < goals.size();i++){
+//            System.err.println(goals.get(i).getName()+ " : " +goals.get(i).getX() + " " + goals.get(i).getY());
+//        }
+//         System.err.println("Character: " +character.getX() + " " + character.getY());
+//        
     }
 
     /**
@@ -284,10 +284,10 @@ public class MainWindow extends javax.swing.JFrame {
             goals.get(j).setLocation(icons.get(z).getX(), icons.get(z).getY()); //ustawienie nowej lokazlicaji
         }
         exclude.clear();                                                        //wyczyszczenie listy wykluczonych liczb
-        for (int i = 0; i < goals.size();i++){
-            System.err.println(goals.get(i).getName()+ " : " +goals.get(i).getX() + " " + goals.get(i).getY());
-        }
-        System.err.println("Character: " +character.getX() + " " + character.getY());
+//        for (int i = 0; i < goals.size();i++){
+//            System.err.println(goals.get(i).getName()+ " : " +goals.get(i).getX() + " " + goals.get(i).getY());
+//        }
+//        System.err.println("Character: " +character.getX() + " " + character.getY());
     }//GEN-LAST:event_testButtonMouseClicked
 
     
