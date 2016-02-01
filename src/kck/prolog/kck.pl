@@ -67,7 +67,7 @@ cel(dop, car) --> [samochodu].
 cel(dop, tracks) --> [torow].
 cel(dop, graveyard) --> [cmentarza].
 
-cel(cel, light) --> [lampie].
+cel(cel, lamp) --> [lampie].
 cel(cel, lake) --> [jezioru].
 cel(cel, fountain) --> [fontannie].
 cel(cel, pitch) --> [boisku].
