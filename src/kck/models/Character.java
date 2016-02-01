@@ -43,6 +43,8 @@ public class Character extends Object {
                 }
                 break;
             case "west":
+            case "sw":
+            case "nw":
                 if ((moveX >= 0 && moveY >= 0) || (moveX >= 0 && moveY <= 0)){
                     if (moveX == 0  && moveY > 0 ) {
                         this.label.setIcon(createImageIcon(C1N, this.name));
@@ -67,6 +69,8 @@ public class Character extends Object {
                 }
                 break;
             case "east":
+            case "se":
+            case "ne":
                 if ((moveX <= 0 && moveY >= 0) || (moveX <= 0 && moveY <= 0)){
                     if (moveX == 0  && moveY > 0 ) {
                         this.label.setIcon(createImageIcon(C1N, this.name));
@@ -91,10 +95,14 @@ public class Character extends Object {
             case "left":
                 switch (this.turnSide){
                     case "north":
+                    case "nw":
+                    case "ne":
                         return "west";
                     case "west":
                         return "south";
                     case "south":
+                    case "se":
+                    case "sw":
                         return "east";
                     case "east":
                         return "north";
@@ -104,10 +112,14 @@ public class Character extends Object {
             case "right":
                 switch (this.turnSide){
                     case "north":
+                    case "nw":
+                    case "ne":
                         return "east";
                     case "east":
                         return "south";
                     case "south":
+                    case "se":
+                    case "sw":
                         return "west";
                     case "west":
                         return "north";
@@ -147,6 +159,49 @@ public class Character extends Object {
         ImageIcon icon = createImageIcon(iconPath, this.name);
         System.out.println(icon.toString());
         this.label.setIcon(icon);
+    }
+    
+    public void moveToDirection(String direction, int lenght){
+        switch (direction)
+        {
+            case "north":
+                moveX = 0;
+                moveY = lenght;
+                break;
+            case "nw":
+                moveX = lenght;
+                moveY = lenght;
+                break;
+            case "west":
+                moveX = lenght;
+                moveY = 0;
+                break;
+            case "sw": 
+                moveX = lenght;
+                moveY = -lenght;
+                break;
+            case "south":
+                moveX = 0;
+                moveY = -lenght;
+                break;
+            case "se":
+                moveX = -lenght;
+                moveY = -lenght;
+                break;
+            case "east":
+                moveX = -lenght;
+                moveY = 0;
+                break;
+            case "ne": 
+                moveX = -lenght;
+                moveY = lenght;
+                break;
+            default:
+                moveX = 0;
+                moveY = 0;
+        }      
+        this.setTurnSide(direction);
+        moveStraightToGoal();
     }
     
     
