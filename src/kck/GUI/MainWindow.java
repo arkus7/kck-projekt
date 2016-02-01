@@ -34,8 +34,8 @@ public class MainWindow extends javax.swing.JFrame {
     private List<String> history;
     private int historyIndex = 0;
     private final int DELAY_TIME = 5;
-    private int timer1 = 0;
-    private int timer2 = 0;
+    public static int timer1 = 0;
+    public static int timer2 = 0;
     
     private final int DISTANCE = 128;
     private final int VIEW_RANGE = ((int) java.lang.Math.sqrt(2)*DISTANCE)+ 10;
@@ -45,6 +45,9 @@ public class MainWindow extends javax.swing.JFrame {
     private final int KEY_UP = 38;
     private final int KEY_DOWN = 40;
     private final int KEY_ENTER = 10;
+
+    private final Timer timer;
+
     
     public JLabel testLabel;
 
@@ -64,8 +67,6 @@ public class MainWindow extends javax.swing.JFrame {
         }
     };
     
-      
-    
     /**
      * Creates new form NewJFrame
      */
@@ -76,7 +77,7 @@ public class MainWindow extends javax.swing.JFrame {
         icons = new ArrayList<>();
         history = new ArrayList<>();
         addIcons();
-        
+        timer = new Timer(DELAY_TIME, inputBlockade);
         randomIconsLocation();
         
         randomIcons();
@@ -203,9 +204,7 @@ public class MainWindow extends javax.swing.JFrame {
         for (int i = 0; i < goals.size() ; i++){
             if (goals.get(i).getName().equalsIgnoreCase(goal) && Math.abs(difMove(character.getX(), goals.get(i).getX())) < VIEW_RANGE && Math.abs(difMove(character.getY(), goals.get(i).getY())) < VIEW_RANGE) {
                 character.setMoveX(difMove(character.getX(), goals.get(i).getX()));
-                character.setMoveY(difMove(character.getY(), goals.get(i).getY()));
-                timer1 = Math.abs(character.getMoveX());
-                timer2 = Math.abs(character.getMoveY());                
+                character.setMoveY(difMove(character.getY(), goals.get(i).getY()));          
                 System.out.println("X = " + character.getMoveX() + " Y = " + character.getMoveY());
                 System.out.println(VIEW_RANGE);
                 return true; 
@@ -221,6 +220,7 @@ public class MainWindow extends javax.swing.JFrame {
      if (sentance.isCorrect()){   
         if (sentance.getMove().equalsIgnoreCase("walk") && !sentance.getDirection().isEmpty() && sentance.getGoal().isEmpty()){
             character.moveToDirection(sentance.getDirection(), DISTANCE);       //np idź na zachód
+            timer.start();
             inputLog = inputLog + "\n" + userInput.getText();
         } else if (sentance.getMove().equalsIgnoreCase("turn") && !sentance.getDirection().equalsIgnoreCase(null) && sentance.getGoal().isEmpty()){
             character.setTurnSide(sentance.getDirection());                      // np. skręć w lewo; skręć na zachód
@@ -232,7 +232,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
             if (character.canSee()){                                            //sprawdza czy agent widzi cel
                 character.moveStraightToGoal(); //start timera
-                new Timer(DELAY_TIME, inputBlockade).start();
+                timer.start();
                 inputLog = inputLog + "\n" + userInput.getText();
                 userInput.setText("");
             } else{
