@@ -17,8 +17,138 @@ import kck.GUI.MainWindow;
  * @author Shirru
  */
 public class Character extends Object {
+    private static final String C1N = "/kck/GUI/c1N.png";
+    private static final String C1E = "/kck/GUI/c1E.png";
+    private static final String C1S = "/kck/GUI/c1S.png";
+    private static final String C1W = "/kck/GUI/c1W.png";
+    //private static final String CHURCH = "/kck/GUI/church.png";
+        
     private int moveX,moveY;
     private final int DELAY_TIME = 5;
+    private String turnSide = "north";
+    
+    public boolean canSee (){
+        System.out.println(moveX + " " + moveY + " " + turnSide);
+        switch (this.turnSide){
+            case "north":
+                if ((moveX >= 0 && moveY >= 0) || (moveX <= 0 && moveY >= 0)){
+                    if (moveY == 0  && moveX > 0 ) {
+                        this.label.setIcon(createImageIcon(C1W, this.name));
+                        this.turnSide = "west";
+                    } else if (moveY == 0  && moveX < 0 ){
+                        this.label.setIcon(createImageIcon(C1E, this.name));
+                        this.turnSide = "east";
+                    }
+                    return true;
+                }
+                break;
+            case "west":
+                if ((moveX >= 0 && moveY >= 0) || (moveX >= 0 && moveY <= 0)){
+                    if (moveX == 0  && moveY > 0 ) {
+                        this.label.setIcon(createImageIcon(C1N, this.name));
+                        this.turnSide = "north";
+                    } else if (moveX == 0  && moveY < 0 ) {
+                        this.label.setIcon(createImageIcon(C1S, this.name));
+                        this.turnSide = "south";
+                    }
+                    return true;
+                }
+                break;
+            case "south":
+                if ((moveX >= 0 && moveY <= 0) || (moveX <= 0 && moveY <= 0)){
+                    if (moveY == 0  && moveX > 0 ) {
+                        this.label.setIcon(createImageIcon(C1W, this.name));
+                        this.turnSide = "west";
+                    } else if (moveY == 0  && moveX < 0 ){
+                        this.label.setIcon(createImageIcon(C1E, this.name));
+                        this.turnSide = "east";
+                    }
+                    return true;
+                }
+                break;
+            case "east":
+                if ((moveX <= 0 && moveY >= 0) || (moveX <= 0 && moveY <= 0)){
+                    if (moveX == 0  && moveY > 0 ) {
+                        this.label.setIcon(createImageIcon(C1N, this.name));
+                        turnSide = "north";
+                    } else if (moveX == 0  && moveY < 0 ){
+                        this.label.setIcon(createImageIcon(C1S, this.name));
+                        turnSide = "south";
+                    }                    
+                    return true;   
+                }
+                break;
+            }
+        return false;
+    }
+
+    public String getTurnSide() {
+        return turnSide;
+    }
+    
+    public String nextSide(String dir){
+        switch (dir){
+            case "left":
+                switch (this.turnSide){
+                    case "north":
+                        return "west";
+                    case "west":
+                        return "south";
+                    case "south":
+                        return "east";
+                    case "east":
+                        return "north";
+                    default:
+                        return "north";
+                }
+            case "right":
+                switch (this.turnSide){
+                    case "north":
+                        return "east";
+                    case "east":
+                        return "south";
+                    case "south":
+                        return "west";
+                    case "west":
+                        return "north";
+                    default:
+                        return "north";
+                }
+        }
+        return dir;
+    }
+
+    public void setTurnSide(String turnSide) {
+        System.out.println("Przed : "+ turnSide);
+        System.out.println("przed : " +this.turnSide); 
+        this.turnSide = nextSide(turnSide);
+        System.out.println("po : " +this.turnSide);        
+        switch(this.turnSide.toLowerCase()) {
+            case "west":
+            case "sw":
+                this.iconPath = C1W;
+                break;            
+            case "east":
+            case "ne":
+                this.iconPath = C1E;
+                break;
+            case "north":
+            case "nw":
+                this.iconPath = C1N;
+                break;
+            case "back":
+            case "south":
+            case "se":
+                this.iconPath = C1S;
+                break;
+            default:
+                this.iconPath = C1N;
+        }
+        ImageIcon icon = createImageIcon(iconPath, this.name);
+        System.out.println(icon.toString());
+        this.label.setIcon(icon);
+    }
+    
     
     
     ActionListener straightToGoal = new ActionListener() {
@@ -92,7 +222,7 @@ public class Character extends Object {
     
     public void setLabel(JLabel label) {
         this.label = label;
-        ImageIcon icon = createImageIcon("/kck/GUI/char.png", this.name);
+        ImageIcon icon = createImageIcon("/kck/GUI/c1N.png", this.name);
         System.out.println(icon.toString());
         this.label.setIcon(icon);
     } 
@@ -100,7 +230,7 @@ public class Character extends Object {
     
     public Character(String name, JLabel label) {
         super(name, label);
-        ImageIcon icon = createImageIcon("/kck/GUI/char.png", this.name);
+        ImageIcon icon = createImageIcon("/kck/GUI/c1N.png", this.name);
         System.out.println(icon.toString());
         this.label.setIcon(icon);
     }

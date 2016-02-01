@@ -46,4 +46,9 @@ public class Sentence {
     public String toString() {
         return "Sentence{" + "move=" + move + ", goal=" + goal + ", direction=" + direction + ", approach=" + approach + '}';
     }
+    
+    public boolean isCorrect() {
+        if(move != null) return true;
+        return false;
+    }
 }

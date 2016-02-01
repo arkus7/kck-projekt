@@ -34,6 +34,8 @@ public class MainWindow extends javax.swing.JFrame {
     private final int DELAY_TIME = 5;
     private int timer1 = 0;
     private int timer2 = 0;
+    private final int DISTANCE = 128;
+    private final int VIEW_RANGE = ((int) java.lang.Math.sqrt(2)*DISTANCE)+ 10;
     
     ActionListener inputBlockade = new ActionListener() {
         public void actionPerformed(ActionEvent evt) {
@@ -41,10 +43,11 @@ public class MainWindow extends javax.swing.JFrame {
             userInput.setEnabled(false);
             timer1--;
             timer2--;
-            System.out.println(timer1+ " " + timer2);
+            //System.out.println(timer1+ " " + timer2);
             if(timer1 <= 0 && timer2 <= 0){
                 testButton.setEnabled(true);
                 userInput.setEnabled(true);
+                userInput.requestFocus();
                 ((Timer)evt.getSource()).stop(); 
             }
         }
@@ -84,6 +87,8 @@ public class MainWindow extends javax.swing.JFrame {
         goals.add(new Goal("Lamp", goal4));
         character = new Character("Character", goal5);
         testLayer1.setLayer(goal5,10);
+        
+        
         
 //        for (int i = 0; i < goals.size();i++){
 //            System.err.println(goals.get(i).getName()+ " : " +goals.get(i).getX() + " " + goals.get(i).getY());
@@ -205,38 +210,50 @@ public class MainWindow extends javax.swing.JFrame {
     
     private boolean goalExist(String goal){
         for (int i = 0; i < goals.size() ; i++){
-            System.out.println(goals.get(i).getName());
-            System.out.println(pm.getResult(userInput.getText()).toString());
-            if (goals.get(i).getName().equalsIgnoreCase(goal)) {
+            if (goals.get(i).getName().equalsIgnoreCase(goal) && Math.abs(difMove(character.getX(), goals.get(i).getX())) < VIEW_RANGE && Math.abs(difMove(character.getY(), goals.get(i).getY())) < VIEW_RANGE) {
                 character.setMoveX(difMove(character.getX(), goals.get(i).getX()));
                 character.setMoveY(difMove(character.getY(), goals.get(i).getY()));
                 timer1 = Math.abs(character.getMoveX());
                 timer2 = Math.abs(character.getMoveY());                
                 System.out.println("X = " + character.getMoveX() + " Y = " + character.getMoveY());
+                System.out.println(VIEW_RANGE);
                 return true; 
             }
-        }        
+        }       
         return false;
     }
+    private boolean turnExist(String turn, String direction){
+        System.out.println(turn + " " + direction);
+        return turn.equalsIgnoreCase("turn") && !direction.equalsIgnoreCase(null);
+    }
+ 
     
     private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
-
-        //ustawienie odległosci o którą mamy się poruszyć
-               
-        if (goalExist(pm.getResult(userInput.getText()).getGoal())){
-            inputLog = inputLog + "\n" + userInput.getText();
+       
+        Sentence sentacnce = pm.getResult(userInput.getText());
+        
+        if (sentacnce.isCorrect() && turnExist(sentacnce.getMove(), sentacnce.getDirection())){
+            character.setTurnSide(sentacnce.getDirection());
+        } 
+        
+        if (goalExist(sentacnce.getGoal())){
             userOutput.setText(inputLog);
-            
-            character.moveStraightToGoal(); //start timera
-            new Timer(DELAY_TIME, inputBlockade).start();
-            
-            userInput.setText("");
-        } else {
-        inputLog = inputLog + "\n" + userInput.getText(); 
+            if (sentacnce.getMove().equalsIgnoreCase("walk") && !sentacnce.getDirection().isEmpty()){
+                System.out.println("P1: " + character.getTurnSide());
+                character.setTurnSide(sentacnce.getDirection());
+                System.out.println("P2: " + character.getTurnSide());
+            }
+            if (character.canSee()){
+                character.moveStraightToGoal(); //start timera
+                new Timer(DELAY_TIME, inputBlockade).start();
+                inputLog = inputLog + "\n" + userInput.getText();
+                userInput.setText("");
+             } else{
+            inputLog = inputLog + "\n" + userInput.getText() + " - Nie widzę celu"; 
+            }
+        }
         userOutput.setText(inputLog);
         userInput.setText("");
-        
-        }
         
 
 
