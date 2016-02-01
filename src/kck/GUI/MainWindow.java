@@ -219,18 +219,18 @@ public class MainWindow extends javax.swing.JFrame {
         if (goalExist(sentacnce.getGoal())){
             userOutput.setText(inputLog);
             if (sentacnce.getMove().equalsIgnoreCase("walk") && !sentacnce.getDirection().isEmpty()){
-                System.out.println("P1: " + character.getTurnSide());
                 character.setTurnSide(sentacnce.getDirection());
-                System.out.println("P2: " + character.getTurnSide());
             }
             if (character.canSee()){
                 character.moveStraightToGoal(); //start timera
                 new Timer(DELAY_TIME, inputBlockade).start();
                 inputLog = inputLog + "\n" + userInput.getText();
                 userInput.setText("");
-             } else{
+            } else{
+                inputLog = inputLog + "\n" + userInput.getText() + " - Nie widzę celu"; 
+            } 
+        } else {
             inputLog = inputLog + "\n" + userInput.getText() + " - Nie widzę celu"; 
-            }
         }
         userOutput.setText(inputLog);
         userInput.setText("");
