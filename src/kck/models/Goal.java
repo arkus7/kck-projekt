@@ -28,6 +28,7 @@ public class Goal extends Object {
     private static final String STONE = "/kck/GUI/stone.png";
     private static final String HOUSE = "/kck/GUI/house.png";
     private static final String MOUNTAIN = "/kck/GUI/mountain.png";
+    private static final String MONUMENT = "/kck/GUI/statue.png";
     
     public static final String[] NAMES = {
         "character",
@@ -73,6 +74,9 @@ public class Goal extends Object {
                 break;
             case "mountain":
                 this.iconPath = MOUNTAIN;
+                break;
+            case "monument":
+                this.iconPath = MONUMENT;
                 break;
             default:
                 this.iconPath = PLACEHOLDER;
