@@ -31,6 +31,8 @@ public class MainWindow extends javax.swing.JFrame {
     private Character character;
     private List<Integer> exclude;
     private List<JLabel> icons;
+    private List<String> history;
+    private int historyIndex = 0;
     private final int DELAY_TIME = 5;
     private int timer1 = 0;
     private int timer2 = 0;
@@ -40,6 +42,9 @@ public class MainWindow extends javax.swing.JFrame {
     private final int LABEL_COUNT = 5;
     private final int ICON_HEIGHT = 64;
     private final int ICON_WIDTH = 64;
+    private final int KEY_UP = 38;
+    private final int KEY_DOWN = 40;
+    private final int KEY_ENTER = 10;
     
     public JLabel testLabel;
 
@@ -69,6 +74,7 @@ public class MainWindow extends javax.swing.JFrame {
         goals = new ArrayList<>();
         exclude = new ArrayList<>();
         icons = new ArrayList<>();
+        history = new ArrayList<>();
         addIcons();
         
         randomIconsLocation();
@@ -134,6 +140,11 @@ public class MainWindow extends javax.swing.JFrame {
         userInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 userInputActionPerformed(evt);
+            }
+        });
+        userInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                userInputKeyPressed(evt);
             }
         });
 
@@ -254,6 +265,30 @@ public class MainWindow extends javax.swing.JFrame {
         randomIconsLocation();
     }//GEN-LAST:event_testButtonMouseClicked
 
+    private void userInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userInputKeyPressed
+        // TODO add your handling code here:
+        switch(evt.getKeyCode()) {
+            case KEY_DOWN:
+                if(history.size() > 0 && historyIndex > 0) {
+                    userInput.setText(history.get(--historyIndex));
+                } else if(history.size() > 0 && historyIndex == 0) {
+                    userInput.setText(history.get(0));
+               }
+                break;
+            case KEY_UP:
+                if(history.size() - 1 > historyIndex) {
+                    userInput.setText(history.get(++historyIndex));
+                } else {
+                    userInput.setText("");
+                }
+                break;
+            case KEY_ENTER:
+                history.add(userInput.getText());
+                historyIndex = history.size();
+                break;
+        }
+    }//GEN-LAST:event_userInputKeyPressed
+
     public void randomIconsLocation() {
         // wylosowanie nowych lokalizacji
         int locationNumber=0; 
@@ -281,8 +316,6 @@ public class MainWindow extends javax.swing.JFrame {
         character = new Character("character", icons.get(randInt(0,icons.size() - 1)));     // randomowa pozycja agenta
         locationNumber = randInt(0, icons.size()-1);                                                      //losowanie liczby z zakresu ilości labeli     
         exclude.add(locationNumber);        // dodanie wylosowanej liczby do zbioru liczb zuzytych
-       // System.err.println(locationNumber);
-     //   System.err.println(icons.get(locationNumber));
         character.setLabel(icons.get(locationNumber));                                       //ustawienie postaci nowego labela
         character.setLocation(icons.get(locationNumber).getX(), icons.get(locationNumber).getY());        //ustawienie postaci nowej pozycji
         testLayer1.setLayer(icons.get(locationNumber), 10);                                  //ustawienie postaci nowej pozycji, aby była widoczna nad innymi
@@ -331,8 +364,8 @@ public class MainWindow extends javax.swing.JFrame {
         // wyliczenie odległości między puntami na tej samej osi;
         return charPos - goalPos;
     }
-    
-  
+        
+        
         
         
     /**
