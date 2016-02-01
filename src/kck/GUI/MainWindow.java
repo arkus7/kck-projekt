@@ -39,7 +39,7 @@ public class MainWindow extends javax.swing.JFrame {
     
     private final int DISTANCE = 128;
     private final int VIEW_RANGE = ((int) java.lang.Math.sqrt(2)*DISTANCE)+ 10;
-    private final int LABEL_COUNT = 5;
+    private final int LABEL_COUNT = 15;
     private final int ICON_HEIGHT = 64;
     private final int ICON_WIDTH = 64;
     private final int KEY_UP = 38;
@@ -72,19 +72,25 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
+        initFields();
+        
+        timer = new Timer(DELAY_TIME, inputBlockade);
+        
+        addIcons();
+        randomIconsLocation();
+        randomIcons();
+    }
+
+    private void initFields() {
         goals = new ArrayList<>();
         exclude = new ArrayList<>();
         icons = new ArrayList<>();
         history = new ArrayList<>();
-        addIcons();
-        timer = new Timer(DELAY_TIME, inputBlockade);
-        randomIconsLocation();
-        
-        randomIcons();
     }
 
     private void randomIcons() {
         ArrayList<Integer> randIcons = randomIntegers(1, Goal.NAMES.length - 1, LABEL_COUNT - 1);
+        goals.clear();
         System.out.println(randIcons);
         for(int i = 0; i < LABEL_COUNT; i++) {
             if(i == 0) {
@@ -109,6 +115,13 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
 
+    private void removeIcons() {
+        testLayer1.removeAll();
+        testLayer1.repaint();
+        System.err.println("Layer cleared");
+        icons.clear();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -262,6 +275,9 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_userInputFocusLost
 
     private void testButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_testButtonMouseClicked
+        removeIcons();
+        addIcons();
+        randomIcons();
         randomIconsLocation();
     }//GEN-LAST:event_testButtonMouseClicked
 
@@ -313,8 +329,9 @@ public class MainWindow extends javax.swing.JFrame {
             y = 0;
             x += 128;
         }
-        character = new Character("character", icons.get(randInt(0,icons.size() - 1)));     // randomowa pozycja agenta
+        
         locationNumber = randInt(0, icons.size()-1);                                                      //losowanie liczby z zakresu ilości labeli     
+        character = new Character("character", icons.get(locationNumber));     // randomowa pozycja agenta
         exclude.add(locationNumber);        // dodanie wylosowanej liczby do zbioru liczb zuzytych
         character.setLabel(icons.get(locationNumber));                                       //ustawienie postaci nowego labela
         character.setLocation(icons.get(locationNumber).getX(), icons.get(locationNumber).getY());        //ustawienie postaci nowej pozycji
@@ -329,10 +346,6 @@ public class MainWindow extends javax.swing.JFrame {
             goals.get(j).setLocation(icons.get(locationNumber).getX(), icons.get(locationNumber).getY()); //ustawienie nowej lokazlicaji
         }
         exclude.clear();                                                        //wyczyszczenie listy wykluczonych liczb
-//        for (int i = 0; i < goals.size();i++){
-//            System.err.println(goals.get(i).getName()+ " : " +goals.get(i).getX() + " " + goals.get(i).getY());
-//        }
-//        System.err.println("Character: " +character.getX() + " " + character.getY());
     }
     
     public static int randInt(int min, int max) {
