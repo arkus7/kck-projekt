@@ -24,6 +24,9 @@ public class Character extends Object {
     private Point startPoint;
     private Point endPoint;
     private double actualT = 0.0;
+    
+    private final static int TURN_LEFT = 1;
+    private final static int TURN_RIGHT = 2;
 
     public void setActualT(double actualT) {
         this.actualT = actualT;
@@ -84,23 +87,28 @@ public class Character extends Object {
         public void actionPerformed(ActionEvent evt) {
             //wywoływany kod tutaj
             double k = 0.001;
+            double maxT = 1;
+            Point arcPoint = new Point();
             if(moveX > 0) { // w lewo
-                Point arcPoint = new Point(startPoint.x - halfX, startPoint.y + (halfY == 0 ? 32 : halfY));
-                int newX = (int) (Math.pow(1 - actualT, 2) * getX() + 2 * (1 - actualT) * actualT * arcPoint.x + Math.pow(actualT, 2) * endPoint.x);
-                System.err.println("double newX = " + String.valueOf(Math.pow(1 - actualT, 2) * getX() + 2 * (1 - actualT) * actualT * arcPoint.x + Math.pow(actualT, 2) * endPoint.x));
+//                arcPoint = new Point((startPoint.x + endPoint.x)/2 + halfY, (startPoint.y + endPoint.y)/2 + halfX);
+                arcPoint = new Point(0,256);
+                int newX = (int) (Math.pow(maxT - actualT, 2) * getX() + 2 * (maxT - actualT) * actualT * arcPoint.x + Math.pow(actualT, 2) * endPoint.x);
+                System.err.println("double newX = " + String.valueOf(Math.pow(maxT - actualT, 2) * getX() + 2 * (maxT - actualT) * actualT * arcPoint.x + Math.pow(actualT, 2) * endPoint.x));
                 System.err.println("int newX = " + newX);
-                int newY = (int) (Math.pow(1 - actualT, 2) * getY() + 2 * (1 - actualT) * actualT * arcPoint.y + Math.pow(actualT, 2) * endPoint.y);
+                int newY = (int) (Math.pow(maxT - actualT, 2) * getY() + 2 * (maxT - actualT) * actualT * arcPoint.y + Math.pow(actualT, 2) * endPoint.y);
                 setLocation(newX, newY);
                 actualT += k;
-                System.err.println("startPoint = " + startPoint);
-                System.err.println("arcPoint = " + arcPoint);
-                System.err.println("endPoint = " + endPoint);
+                System.err.println("arcPoint = " + (arcPoint));
             }
             if(moveX < 0) { // w prawo
                 
             }
-            if(actualT > 1.0) {
+            System.out.println(".actionPerformed()" + actualT);
+            if(actualT > maxT) {
                 actualT = 0;
+                System.err.println("startPoint = " + startPoint);
+                System.err.println("arcPoint = " + (arcPoint));
+                System.err.println("endPoint = " + endPoint);
                 ((Timer)evt.getSource()).stop();
             }
         }};

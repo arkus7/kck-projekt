@@ -23,8 +23,10 @@ public class Goal extends Object {
     private static final String LAMP = "/kck/GUI/lamp.png";
     private static final String TREE = "/kck/GUI/tree.png";
     private static final String STONE = "/kck/GUI/stone.png";
+    private static final String HOUSE = "/kck/GUI/house.png";
+    private static final String MOUNTAIN = "/kck/GUI/mountain.png";
 
-    public void setLabel(JLabel label) {
+    public final void setLabel(JLabel label) {
         this.label = label;
         switch(this.name) {
             case "church":
@@ -41,6 +43,12 @@ public class Goal extends Object {
                 break;
             case "lamp":
                 this.iconPath = LAMP;
+                break;
+            case "house":
+                this.iconPath = HOUSE;
+                break;
+            case "mountain":
+                this.iconPath = MOUNTAIN;
                 break;
             default:
                 this.iconPath = PLACEHOLDER;
@@ -72,6 +80,7 @@ public class Goal extends Object {
         }
         ImageIcon icon = createImageIcon(iconPath, this.name);
         this.label.setIcon(icon);
+        setLabel(label);
     }
     
 
