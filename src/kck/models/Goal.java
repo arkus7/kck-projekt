@@ -79,7 +79,8 @@ public class Goal extends Object {
                 this.iconPath = MONUMENT;
                 break;
             default:
-                this.iconPath = PLACEHOLDER;
+                this.iconPath = "";
+                this.label.setText(name);
         }
         ImageIcon icon = createImageIcon(iconPath, this.name);
         System.out.println(icon.toString());
