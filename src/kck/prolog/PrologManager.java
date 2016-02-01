@@ -28,7 +28,7 @@ public class PrologManager {
         String[] words = sentence.split(" ");
         String query = "zdanie(X, [" + String.join(",", words) + "], []).";
         System.out.println("Query: " + query);
-        JPL.init(new String[] {"swipl", "-g", "true", "-nosignals", "src/kck/prolog/kck.pl"});
+        JPL.init(new String[] {"swipl", "-g", "true", "-nosignals", "src/kck/prolog/kck2.pl"});
         Query q = new Query(query);
         if(q.hasSolution()) {
             String queryResult = q.oneSolution().get("X").toString();
