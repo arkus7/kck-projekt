@@ -94,7 +94,7 @@ public class MainWindow extends javax.swing.JFrame {
         System.out.println(randIcons);
         for(int i = 0; i < LABEL_COUNT; i++) {
             if(i == 0) {
-                character = new Character("Character", icons.get(i));
+                character = new Character("Character", icons.get(i),testLayer1.getWidth()-64,testLayer1.getHeight()-64);
             } else {
                 String name = Goal.NAMES[randIcons.get(i)];
                 System.err.println("RANDOM NAME = " + name);
@@ -185,7 +185,7 @@ public class MainWindow extends javax.swing.JFrame {
                         .addComponent(testLayer1)
                         .addGap(68, 68, 68))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 20, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(testButton, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
                             .addComponent(userInput))
@@ -329,9 +329,9 @@ public class MainWindow extends javax.swing.JFrame {
             y = 0;
             x += 128;
         }
-        
+
         locationNumber = randInt(0, icons.size()-1);                                                      //losowanie liczby z zakresu ilości labeli     
-        character = new Character("character", icons.get(locationNumber));     // randomowa pozycja agenta
+        character = new Character("character", icons.get(locationNumber), testLayer1.getWidth() - 64, testLayer1.getHeight() - 64);     // randomowa pozycja agenta
         exclude.add(locationNumber);        // dodanie wylosowanej liczby do zbioru liczb zuzytych
         character.setLabel(icons.get(locationNumber));                                       //ustawienie postaci nowego labela
         character.setLocation(icons.get(locationNumber).getX(), icons.get(locationNumber).getY());        //ustawienie postaci nowej pozycji
