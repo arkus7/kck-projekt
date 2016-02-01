@@ -200,10 +200,17 @@ public class Character extends Object {
                 moveX = 0;
                 moveY = 0;
         }      
+        MainWindow.timer1 = Math.abs(moveX);
+        MainWindow.timer2 = Math.abs(moveY);
         this.setTurnSide(direction);
         moveStraightToGoal();
     }
     
+     public void moveStraightToGoal(){
+        MainWindow.timer1 = Math.abs(moveX);
+        MainWindow.timer2 = Math.abs(moveY);
+        new Timer(DELAY_TIME, straightToGoal).start();
+    }
     
     
     ActionListener straightToGoal = new ActionListener() {
@@ -251,9 +258,7 @@ public class Character extends Object {
         }};
    
     
-    public void moveStraightToGoal(){
-        new Timer(DELAY_TIME, straightToGoal).start();
-    }
+   
     
     
     
