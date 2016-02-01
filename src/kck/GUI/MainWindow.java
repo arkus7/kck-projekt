@@ -281,8 +281,8 @@ public class MainWindow extends javax.swing.JFrame {
         character = new Character("character", icons.get(randInt(0,icons.size() - 1)));     // randomowa pozycja agenta
         locationNumber = randInt(0, icons.size()-1);                                                      //losowanie liczby z zakresu ilości labeli     
         exclude.add(locationNumber);        // dodanie wylosowanej liczby do zbioru liczb zuzytych
-        System.err.println(locationNumber);
-        System.err.println(icons.get(locationNumber));
+       // System.err.println(locationNumber);
+     //   System.err.println(icons.get(locationNumber));
         character.setLabel(icons.get(locationNumber));                                       //ustawienie postaci nowego labela
         character.setLocation(icons.get(locationNumber).getX(), icons.get(locationNumber).getY());        //ustawienie postaci nowej pozycji
         testLayer1.setLayer(icons.get(locationNumber), 10);                                  //ustawienie postaci nowej pozycji, aby była widoczna nad innymi
