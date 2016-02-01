@@ -5,6 +5,9 @@
  */
 package kck.models;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -19,7 +22,7 @@ public class Goal extends Object {
     // TODO: add imgs path
     private static final String CHURCH = "/kck/GUI/church.png";
     private static final String PLACEHOLDER = "/kck/GUI/error.png";
-    private static final String CHARACTER = "/kck/GUI/char.png";
+    private static final String CHARACTER = "/kck/GUI/c1N.png";
     private static final String LAMP = "/kck/GUI/lamp.png";
     private static final String TREE = "/kck/GUI/tree.png";
     private static final String STONE = "/kck/GUI/stone.png";
@@ -28,12 +31,23 @@ public class Goal extends Object {
     
     public static final String[] NAMES = {
         "character",
-        "church",
         "lamp",
+        "lake",
+        "church",
         "tree",
         "stone",
         "house",
-        "mountain"
+        "mountain",
+        "fountain",
+        "pitch",
+        "tunnel",
+        "bench",
+        "river",
+        "busstop",
+        "monument",
+        "car",
+        "tracks",
+        "graveyard"
     };
 
     public final void setLabel(JLabel label) {
