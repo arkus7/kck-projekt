@@ -34,6 +34,11 @@ public class MainWindow extends javax.swing.JFrame {
     private final int DELAY_TIME = 5;
     private int timer1 = 0;
     private int timer2 = 0;
+    private final int LABEL_COUNT = 5;
+    private final int ICON_HEIGHT = 64;
+    private final int ICON_WIDTH = 64;
+    
+    public JLabel testLabel;
     
     ActionListener inputBlockade = new ActionListener() {
         public void actionPerformed(ActionEvent evt) {
@@ -60,36 +65,37 @@ public class MainWindow extends javax.swing.JFrame {
         goals = new ArrayList<>();
         exclude = new ArrayList<>();
         icons = new ArrayList<>();
+        addIcons();
         
-        icons.add(goal1);
-        icons.add(goal2);
-        icons.add(goal3);
-        icons.add(goal4);
-        icons.add(goal5);
-        icons.get(0).setLocation(0, 0);
-        icons.get(1).setLocation(128, 0);
-        icons.get(2).setLocation(128, 128);
-        icons.get(3).setLocation(256, 0);
-        icons.get(4).setLocation(256, 128);
-      
-//        goals.add(new Goal("Tree", tree));
-//        goals.add(new Goal("stone", stone));
-//        goals.add(new Goal("Church", church));
-//        goals.add(new Goal("Lamp", lamp));
-//        character = new Character("Character", testCharacter);
+        randomIconsLocation();
+        
+        randomIcons();
+    }
 
-        goals.add(new Goal("Tree", goal1));
-        goals.add(new Goal("Mountain", goal2));
-        goals.add(new Goal("House", goal3));
-        goals.add(new Goal("Lamp", goal4));
-        character = new Character("Character", goal5);
-        testLayer1.setLayer(goal5,10);
-        
-//        for (int i = 0; i < goals.size();i++){
-//            System.err.println(goals.get(i).getName()+ " : " +goals.get(i).getX() + " " + goals.get(i).getY());
-//        }
-//         System.err.println("Character: " +character.getX() + " " + character.getY());
-//        
+    private void randomIcons() {
+        ArrayList<Integer> randIcons = randomIntegers(1, Goal.NAMES.length - 1, LABEL_COUNT - 1);
+        System.out.println(randIcons);
+        for(int i = 0; i < LABEL_COUNT; i++) {
+            if(i == 0) {
+                character = new Character("Character", icons.get(i));
+            } else {
+                String name = Goal.NAMES[randIcons.get(i)];
+                System.err.println("RANDOM NAME = " + name);
+                goals.add(new Goal(name, icons.get(i)));
+            }
+        }      
+    }
+
+    private void addIcons() {
+        for(int i = 0; i < LABEL_COUNT; i++) {
+            String labelName = "goal" + String.valueOf(i);
+            testLabel = new JLabel(labelName);
+            testLabel.setText(labelName);
+            testLayer1.add(testLabel);
+            testLabel.setBounds(0,0, ICON_HEIGHT, ICON_WIDTH);
+            testLayer1.setLayer(testLabel, (i == 0 ? 10 : 5)); // agent 10, inne 5
+            icons.add(testLabel);
+        }
     }
 
     /**
@@ -105,11 +111,6 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         userOutput = new javax.swing.JTextArea();
         testLayer1 = new javax.swing.JLayeredPane();
-        goal1 = new javax.swing.JLabel();
-        goal2 = new javax.swing.JLabel();
-        goal3 = new javax.swing.JLabel();
-        goal4 = new javax.swing.JLabel();
-        goal5 = new javax.swing.JLabel();
         testButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -136,26 +137,6 @@ public class MainWindow extends javax.swing.JFrame {
         userOutput.setColumns(20);
         userOutput.setRows(5);
         jScrollPane2.setViewportView(userOutput);
-
-        goal1.setText("jLabel1");
-        testLayer1.add(goal1);
-        goal1.setBounds(334, 197, 64, 64);
-
-        goal2.setText("jLabel1");
-        testLayer1.add(goal2);
-        goal2.setBounds(208, 21, 64, 64);
-
-        goal3.setText("jLabel1");
-        testLayer1.add(goal3);
-        goal3.setBounds(322, 95, 64, 64);
-
-        goal4.setText("jLabel1");
-        testLayer1.add(goal4);
-        goal4.setBounds(334, 11, 64, 64);
-
-        goal5.setText("jLabel1");
-        testLayer1.add(goal5);
-        goal5.setBounds(199, 115, 64, 64);
 
         testButton.setText("Reload");
         testButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -254,48 +235,81 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_userInputFocusLost
 
     private void testButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_testButtonMouseClicked
+        randomIconsLocation();
+    }//GEN-LAST:event_testButtonMouseClicked
+
+    public void randomIconsLocation() {
         // wylosowanie nowych lokalizacji
-        int z=0; 
+        int locationNumber=0; 
         
         //ustawienie lokazliacji w orginalnych miejscach
-        icons.get(0).setLocation(0, 0);
-        icons.get(1).setLocation(128, 0);
-        icons.get(2).setLocation(128, 128);
-        icons.get(3).setLocation(256, 0);
-        icons.get(4).setLocation(256, 128);
-            
-//        character.setLocation(randInt(0, x), randInt(0, y)); //lowoanie współrzędnych dla agenta             
-//        for(int j = 0; j < goals.size(); j++) {
-//            goals.get(j).setLocation(randInt(0, x), randInt(0, y));//losowanie współrzędnych celu
-//        }
+        int rowCount = (int) Math.ceil(icons.size()/2.0);                   // dzieli ilość ikon na 2
+        if(rowCount > 5) rowCount = 5;                                      // max ilosc wierszy = 5
+        int columnCount = (int) Math.ceil(icons.size()/(double)rowCount);   // wyznacza ilosc kolumn
+        System.out.println(rowCount + " " + columnCount);
+        int x = 0, y =0, icon = 0;
         
-        z = randInt(0, 4);                                                      //losowanie liczby z zakresu ilości labeli     
-        exclude.add(z);                                                         // dodanie wylosowanej liczby do zbioru liczb zuzytych
-        character.setLabel(icons.get(z));                                       //ustawienie postaci nowego labela
-        character.setLocation(icons.get(z).getX(), icons.get(z).getY());        //ustawienie postaci nowej pozycji
-        testLayer1.setLayer(icons.get(z), 10);                                  //ustawienie postaci nowej pozycji, aby była widoczna nad innymi
-        for(int j = 0; j < goals.size(); j++) {                                 //przydzielanie nowej lokalizacji kazdemu celowi po kolei
-            while(exclude.contains(z)){                                         //dopóki nie wylosuje liczby, która jeszcze ani razu sie nie pojawiła
-                z = randInt(0,4); 
+        for(int i = 0; i < rowCount; i++) {
+            for(int j = 0; j < columnCount; j++) {
+                System.err.println(x + " " + y);
+                icons.get(icon).setLocation(x, y);
+                icon++;
+                if(icon > icons.size() - 1) {
+                    break;
+                }
+                y += 128;
             }
-            exclude.add(z);                                                     //dodanie do zbioru wykloczonych
-            goals.get(j).setLabel(icons.get(z));                                //ustawienie celowi nowego labela
-            testLayer1.setLayer(icons.get(z),5);                                // ustawienie nowego poziomu aby cele były pod postacią
-            goals.get(j).setLocation(icons.get(z).getX(), icons.get(z).getY()); //ustawienie nowej lokazlicaji
+            y = 0;
+            x += 128;
+        }
+        character = new Character("character", icons.get(randInt(0,icons.size() - 1)));     // randomowa pozycja agenta
+        locationNumber = randInt(0, icons.size()-1);                                                      //losowanie liczby z zakresu ilości labeli     
+        exclude.add(locationNumber);        // dodanie wylosowanej liczby do zbioru liczb zuzytych
+        System.err.println(locationNumber);
+        System.err.println(icons.get(locationNumber));
+        character.setLabel(icons.get(locationNumber));                                       //ustawienie postaci nowego labela
+        character.setLocation(icons.get(locationNumber).getX(), icons.get(locationNumber).getY());        //ustawienie postaci nowej pozycji
+        testLayer1.setLayer(icons.get(locationNumber), 10);                                  //ustawienie postaci nowej pozycji, aby była widoczna nad innymi
+        for(int j = 0; j < goals.size(); j++) {                                 //przydzielanie nowej lokalizacji kazdemu celowi po kolei
+            while(exclude.contains(locationNumber)){                                         //dopóki nie wylosuje liczby, która jeszcze ani razu sie nie pojawiła
+                locationNumber = randInt(0,icons.size() - 1); 
+            }
+            exclude.add(locationNumber);                                                     //dodanie do zbioru wykloczonych
+            goals.get(j).setLabel(icons.get(locationNumber));                                //ustawienie celowi nowego labela
+            testLayer1.setLayer(icons.get(locationNumber),5);                                // ustawienie nowego poziomu aby cele były pod postacią
+            goals.get(j).setLocation(icons.get(locationNumber).getX(), icons.get(locationNumber).getY()); //ustawienie nowej lokazlicaji
         }
         exclude.clear();                                                        //wyczyszczenie listy wykluczonych liczb
 //        for (int i = 0; i < goals.size();i++){
 //            System.err.println(goals.get(i).getName()+ " : " +goals.get(i).getX() + " " + goals.get(i).getY());
 //        }
 //        System.err.println("Character: " +character.getX() + " " + character.getY());
-    }//GEN-LAST:event_testButtonMouseClicked
-
+    }
     
     public static int randInt(int min, int max) {
-    Random rand = new Random();
-    int randomNum = rand.nextInt((max - min) + 1) + min;
-    return randomNum;
-}
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
+    }
+    
+    public ArrayList<Integer> randomIntegers(int min, int max, int size) {
+        System.err.println(min + " " + max + " " +  size);
+        System.err.println(Math.abs(max - min));
+        if(Math.abs(max - min) < size) {
+            return null;
+        }
+        ArrayList<Integer> integers = new ArrayList<>();
+        ArrayList<Integer> already = new ArrayList<>();
+        for(int i = 0; i <= size; i++) {
+            int rand = randInt(min, max);
+            while(already.contains(rand)) {
+                rand = randInt(min, max);
+            }
+            integers.add(rand);
+            already.add(rand);
+        }
+        return integers;
+    }
     
     private int difMove(int charPos, int goalPos){ 
         // wyliczenie odległości między puntami na tej samej osi;
@@ -345,11 +359,6 @@ public class MainWindow extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel goal1;
-    private javax.swing.JLabel goal2;
-    private javax.swing.JLabel goal3;
-    private javax.swing.JLabel goal4;
-    private javax.swing.JLabel goal5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton testButton;
     private javax.swing.JLayeredPane testLayer1;

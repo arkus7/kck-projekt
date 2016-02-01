@@ -25,6 +25,16 @@ public class Goal extends Object {
     private static final String STONE = "/kck/GUI/stone.png";
     private static final String HOUSE = "/kck/GUI/house.png";
     private static final String MOUNTAIN = "/kck/GUI/mountain.png";
+    
+    public static final String[] NAMES = {
+        "character",
+        "church",
+        "lamp",
+        "tree",
+        "stone",
+        "house",
+        "mountain"
+    };
 
     public final void setLabel(JLabel label) {
         this.label = label;
