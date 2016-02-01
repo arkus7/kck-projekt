@@ -71,7 +71,6 @@ public class MainWindow extends javax.swing.JFrame {
         addIcons();
         timer = new Timer(DELAY_TIME, inputBlockade);
         randomIconsLocation();
-        
         randomIcons();
     }
 
@@ -80,7 +79,7 @@ public class MainWindow extends javax.swing.JFrame {
         System.out.println(randIcons);
         for(int i = 0; i < LABEL_COUNT; i++) {
             if(i == 0) {
-                character = new Character("Character", icons.get(i));
+                character = new Character("Character", icons.get(i),testLayer1.getWidth()-64,testLayer1.getHeight()-64);
             } else {
                 String name = Goal.NAMES[randIcons.get(i)];
                 System.err.println("RANDOM NAME = " + name);
@@ -159,7 +158,7 @@ public class MainWindow extends javax.swing.JFrame {
                         .addComponent(testLayer1)
                         .addGap(68, 68, 68))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 20, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(testButton, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
                             .addComponent(userInput))
@@ -276,7 +275,7 @@ public class MainWindow extends javax.swing.JFrame {
             y = 0;
             x += 128;
         }
-        character = new Character("character", icons.get(randInt(0,icons.size() - 1)));     // randomowa pozycja agenta
+        character = new Character("character", icons.get(randInt(0,icons.size() - 1)),testLayer1.getWidth()-64,testLayer1.getHeight()-64);     // randomowa pozycja agenta
         locationNumber = randInt(0, icons.size()-1);                                                      //losowanie liczby z zakresu ilości labeli     
         exclude.add(locationNumber);        // dodanie wylosowanej liczby do zbioru liczb zuzytych
        // System.err.println(locationNumber);

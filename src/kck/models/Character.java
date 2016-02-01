@@ -25,6 +25,7 @@ public class Character extends Object {
         
     private int moveX,moveY;
     private final int DELAY_TIME = 5;
+    private int maxX, maxY;
     private String turnSide = "north";
     
     public boolean canSee (){
@@ -200,6 +201,10 @@ public class Character extends Object {
                 moveX = 0;
                 moveY = 0;
         }      
+        if(x - moveX < 0 || y - moveY < 0 || x - moveX >= maxX || y - moveY >= maxY){            
+            moveX = 0;
+            moveY = 0;
+        }
         MainWindow.timer1 = Math.abs(moveX);
         MainWindow.timer2 = Math.abs(moveY);
         this.setTurnSide(direction);
@@ -255,16 +260,8 @@ public class Character extends Object {
     ActionListener sharpToGoal = new ActionListener() {
         public void actionPerformed(ActionEvent evt) {
         //wywoływany kod tutaj
-        }};
+        }};  
    
-    
-   
-    
-    
-    
-    
-    
-    
     public int getMoveX() {
         return moveX;
     }
@@ -286,13 +283,14 @@ public class Character extends Object {
         System.out.println(icon.toString());
         this.label.setIcon(icon);
     } 
-    
-    
-    public Character(String name, JLabel label) {
+ 
+    public Character(String name, JLabel label, int maxX, int maxY) {
         super(name, label);
         ImageIcon icon = createImageIcon("/kck/GUI/c1N.png", this.name);
         System.out.println(icon.toString());
         this.label.setIcon(icon);
+        this.maxX = maxX;
+        this.maxY = maxY;
     }
     
 
