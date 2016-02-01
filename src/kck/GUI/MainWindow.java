@@ -202,26 +202,24 @@ public class MainWindow extends javax.swing.JFrame {
         }       
         return false;
     }
-    private boolean turnExist(String turn, String direction){
-        System.out.println(turn + " " + direction);
-        return turn.equalsIgnoreCase("turn") && !direction.equalsIgnoreCase(null);
-    }
- 
+     
     
     private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
-       
-        Sentence sentacnce = pm.getResult(userInput.getText());
-        
-        if (sentacnce.isCorrect() && turnExist(sentacnce.getMove(), sentacnce.getDirection())){
-            character.setTurnSide(sentacnce.getDirection());
-        } 
-        
-        if (goalExist(sentacnce.getGoal())){
+     Sentence sentance = pm.getResult(userInput.getText());
+     
+     if (sentance.isCorrect()){   
+        if (sentance.getMove().equalsIgnoreCase("walk") && !sentance.getDirection().isEmpty() && sentance.getGoal().isEmpty()){
+            character.moveToDirection(sentance.getDirection(), DISTANCE);       //np idź na zachód
+            inputLog = inputLog + "\n" + userInput.getText();
+        } else if (sentance.getMove().equalsIgnoreCase("turn") && !sentance.getDirection().equalsIgnoreCase(null) && sentance.getGoal().isEmpty()){
+            character.setTurnSide(sentance.getDirection());                      // np. skręć w lewo; skręć na zachód
+            inputLog = inputLog + "\n" + userInput.getText();
+        } else if (goalExist(sentance.getGoal())){                               //jeśli zdanie nie załapało się wyżej to sprawdza czy cel istnieje
             userOutput.setText(inputLog);
-            if (sentacnce.getMove().equalsIgnoreCase("walk") && !sentacnce.getDirection().isEmpty()){
-                character.setTurnSide(sentacnce.getDirection());
+            if (!sentance.getDirection().isEmpty()){                            // sprawdza czy w zdaniu jest kierunek
+                character.setTurnSide(sentance.getDirection());                 //ustawia kierunek
             }
-            if (character.canSee()){
+            if (character.canSee()){                                            //sprawdza czy agent widzi cel
                 character.moveStraightToGoal(); //start timera
                 new Timer(DELAY_TIME, inputBlockade).start();
                 inputLog = inputLog + "\n" + userInput.getText();
@@ -230,11 +228,13 @@ public class MainWindow extends javax.swing.JFrame {
                 inputLog = inputLog + "\n" + userInput.getText() + " - Nie widzę celu"; 
             } 
         } else {
-            inputLog = inputLog + "\n" + userInput.getText() + " - Nie widzę celu"; 
+            inputLog = inputLog + "\n" + userInput.getText() + " - nie ma takiego celu"; 
         }
+     } else{
+         inputLog = inputLog + "\n" + userInput.getText() + " - nie rozumiem polecenia";
+     }
         userOutput.setText(inputLog);
         userInput.setText("");
-        
 
 
 
