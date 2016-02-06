@@ -30,6 +30,9 @@ public class Goal extends Object {
     private static final String MONUMENT = "/kck/GUI/IMG/statue.png";
     private static final String FOUNTAIN = "/kck/GUI/IMG/fountain.png";
     private static final String STADIUM = "/kck/GUI/IMG/stadium.png";
+    private static final String CAR = "/kck/GUI/IMG/car.png";
+    private static final String BENCH = "/kck/GUI/IMG/bench.png";
+    private static final String GRAVEYARD = "/kck/GUI/IMG/graveyard.png";
     
     public static final String[] NAMES = {
         "character",
@@ -81,6 +84,15 @@ public class Goal extends Object {
                 break;
             case "stadium":
                 this.iconPath = STADIUM;
+                break;
+            case "bench":
+                this.iconPath = BENCH;
+                break;
+            case "car":
+                this.iconPath = CAR;
+                break;
+            case "graveyard":
+                this.iconPath = CAR;
                 break;
             default:
                 this.iconPath = "";

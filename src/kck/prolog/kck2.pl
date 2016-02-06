@@ -108,7 +108,7 @@ przyim(dop, [do|A], A).
 cel(dop, lamp, [lampy|A], A).
 cel(dop, lake, [jeziora|A], A).
 cel(dop, fountain, [fontanny|A], A).
-cel(dop, pitch, [boiska|A], A).
+cel(dop, stadium, [boiska|A], A).
 cel(dop, tree, [drzewa|A], A).
 cel(dop, stone, [kamienia|A], A).
 cel(dop, house, [domu|A], A).
@@ -120,12 +120,12 @@ cel(dop, busstop, [przystanku|A], A).
 cel(dop, monument, [pomnika|A], A).
 cel(dop, mountain, [gory|A], A).
 cel(dop, car, [samochodu|A], A).
-cel(dop, tracks, [torow|A], A).
+cel(dop, rails, [torow|A], A).
 cel(dop, graveyard, [cmentarza|A], A).
 cel(cel, lamp, [lampie|A], A).
 cel(cel, lake, [jezioru|A], A).
 cel(cel, fountain, [fontannie|A], A).
-cel(cel, pitch, [boisku|A], A).
+cel(cel, stadium, [boisku|A], A).
 cel(cel, tree, [drzewu|A], A).
 cel(cel, stone, [kamieniu|A], A).
 cel(cel, house, [domu|A], A).
@@ -137,7 +137,7 @@ cel(cel, busstop, [przystankowi|A], A).
 cel(cel, monument, [pomnikowi|A], A).
 cel(cel, mountain, [gorze|A], A).
 cel(cel, car, [samochodowi|A], A).
-cel(cel, tracks, [torom|A], A).
+cel(cel, rails, [torom|A], A).
 cel(cel, graveyard, [cmantarzowi|A], A).
 
 verify(move(walk, _)).
