@@ -279,14 +279,14 @@ public class Character extends Object {
     
     public void setLabel(JLabel label) {
         this.label = label;
-        ImageIcon icon = createImageIcon("/kck/GUI/c1N.png", this.name);
+        ImageIcon icon = createImageIcon("/kck/GUI/IMG/c1N.png", this.name);
         System.out.println(icon.toString());
         this.label.setIcon(icon);
     } 
  
     public Character(String name, JLabel label, int maxX, int maxY) {
         super(name, label);
-        ImageIcon icon = createImageIcon("/kck/GUI/c1N.png", this.name);
+        ImageIcon icon = createImageIcon("/kck/GUI/IMG/c1N.png", this.name);
         System.out.println(icon.toString());
         this.label.setIcon(icon);
         this.maxX = maxX;
