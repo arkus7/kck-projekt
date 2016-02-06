@@ -52,7 +52,7 @@ sposob(app(shl)) --> [ostrym, lewym, lukiem].
 cel(dop, lamp) --> [lampy].
 cel(dop, lake) --> [jeziora].
 cel(dop, fountain) --> [fontanny].
-cel(dop, pitch) --> [boiska].
+cel(dop, stadium) --> [boiska].
 cel(dop, tree) --> [drzewa].
 cel(dop, stone) --> [kamienia].
 cel(dop, house) --> [domu].
@@ -64,13 +64,13 @@ cel(dop, busstop) --> [przystanku].
 cel(dop, monument) --> [pomnika].
 cel(dop, mountain) --> [gory].
 cel(dop, car) --> [samochodu].
-cel(dop, tracks) --> [torow].
+cel(dop, rails) --> [torow].
 cel(dop, graveyard) --> [cmentarza].
 
 cel(cel, lamp) --> [lampie].
 cel(cel, lake) --> [jezioru].
 cel(cel, fountain) --> [fontannie].
-cel(cel, pitch) --> [boisku].
+cel(cel, stadium) --> [boisku].
 cel(cel, tree) --> [drzewu].
 cel(cel, stone) --> [kamieniu].
 cel(cel, house) --> [domu].
@@ -82,7 +82,7 @@ cel(cel, busstop) --> [przystankowi].
 cel(cel, monument) --> [pomnikowi].
 cel(cel, mountain) --> [gorze].
 cel(cel, car) --> [samochodowi].
-cel(cel, tracks) --> [torom].
+cel(cel, rails) --> [torom].
 cel(cel, graveyard) --> [cmantarzowi].
 
 % trzeba ogarnąć te verify, tak, żeby było wiadomo co gdzie i jak
