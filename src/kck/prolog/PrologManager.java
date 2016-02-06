@@ -80,9 +80,17 @@ public class PrologManager {
     }
     
     protected String normalizeSentence(String sentence) {
-        return Normalizer.normalize(sentence, Normalizer.Form.NFD)
-                .toLowerCase()
-                .replaceAll("[^a-z ]+","")
-                .replaceAll(" +", " ");
+        return sentence.toLowerCase()  
+                .trim()                     // returns a copy of the string, with leading and trailing whitespace omitted
+                .replaceAll(" +", " ")      // replaces 2 or more spaces with one space
+                .replaceAll("[żź]", "z")
+                .replaceAll("ą", "a")
+                .replaceAll("ł", "l")
+                .replaceAll("ę", "e")
+                .replaceAll("ó", "o")
+                .replaceAll("ś", "s")
+                .replaceAll("ć", "c")
+                .replaceAll("ń", "n")
+                .replaceAll("[^a-z ]+", "");
     }
 }
