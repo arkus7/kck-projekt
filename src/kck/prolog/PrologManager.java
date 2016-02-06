@@ -82,6 +82,7 @@ public class PrologManager {
     protected String normalizeSentence(String sentence) {
         return Normalizer.normalize(sentence, Normalizer.Form.NFD)
                 .toLowerCase()
-                .replaceAll("[^a-z]+","");
+                .replaceAll("[^a-z ]+","")
+                .replaceAll(" +", " ");
     }
 }
