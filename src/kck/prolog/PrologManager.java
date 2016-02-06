@@ -8,6 +8,7 @@
 ////// TEST CZY IGNOT W NETBIENIE STARCZY
 package kck.prolog;
 
+import java.text.Normalizer;
 import kck.models.Sentence;
 import org.jpl7.JPL;
 import org.jpl7.Query;
@@ -24,7 +25,7 @@ public class PrologManager {
     private final String COMMA = ",";
     
     public Sentence getResult(String sentence) { 
-        sentence = getSentenceWithoutSpacesAndTails(sentence);
+        sentence = normalizeSentence(sentence);
         String[] words = sentence.split(" ");
         String query = "zdanie(X, [" + String.join(",", words) + "], []).";
         System.out.println("Query: " + query);
@@ -78,17 +79,9 @@ public class PrologManager {
         return "";
     }
     
-    protected String getSentenceWithoutSpacesAndTails(String sentence) {
-        return sentence.toLowerCase()  
-                .trim()                     // returns a copy of the string, with leading and trailing whitespace omitted
-                .replaceAll(" +", " ")      // replaces 2 or more spaces with one space
-                .replaceAll("[żź]", "z")
-                .replaceAll("ą", "a")
-                .replaceAll("ł", "l")
-                .replaceAll("ę", "e")
-                .replaceAll("ó", "o")
-                .replaceAll("ś", "s")
-                .replaceAll("ć", "c")
-                .replaceAll("ń", "n");
+    protected String normalizeSentence(String sentence) {
+        return Normalizer.normalize(sentence, Normalizer.Form.NFD)
+                .toLowerCase()
+                .replaceAll("[^a-z]+","");
     }
 }
