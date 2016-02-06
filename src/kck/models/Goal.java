@@ -20,15 +20,16 @@ import kck.GUI.MainWindow;
 public class Goal extends Object {
     
     // TODO: add imgs path
-    private static final String CHURCH = "/kck/GUI/church.png";
-    private static final String PLACEHOLDER = "/kck/GUI/error.png";
-    private static final String CHARACTER = "/kck/GUI/c1N.png";
-    private static final String LAMP = "/kck/GUI/lamp.png";
-    private static final String TREE = "/kck/GUI/tree.png";
-    private static final String STONE = "/kck/GUI/stone.png";
-    private static final String HOUSE = "/kck/GUI/house.png";
-    private static final String MOUNTAIN = "/kck/GUI/mountain.png";
-    private static final String MONUMENT = "/kck/GUI/statue.png";
+    private static final String CHURCH = "/kck/GUI/IMG/church.png";
+    private static final String PLACEHOLDER = "/kck/GUI/IMG/error.png";
+    private static final String LAMP = "/kck/GUI/IMG/lamp.png";
+    private static final String TREE = "/kck/GUI/IMG/tree.png";
+    private static final String STONE = "/kck/GUI/IMG/stone.png";
+    private static final String HOUSE = "/kck/GUI/IMG/house.png";
+    private static final String MOUNTAIN = "/kck/GUI/IMG/mountain.png";
+    private static final String MONUMENT = "/kck/GUI/IMG/statue.png";
+    private static final String FOUNTAIN = "/kck/GUI/IMG/fountain.png";
+    private static final String STADIUM = "/kck/GUI/IMG/stadium.png";
     
     public static final String[] NAMES = {
         "character",
@@ -40,14 +41,14 @@ public class Goal extends Object {
         "house",
         "mountain",
         "fountain",
-        "pitch",
+        "stadium",
         "tunnel",
         "bench",
         "river",
         "busstop",
         "monument",
         "car",
-        "tracks",
+        "rails",
         "graveyard"
     };
 
@@ -59,9 +60,6 @@ public class Goal extends Object {
                 break;
             case "stone":
                 this.iconPath = STONE;
-                break;
-            case "character":
-                this.iconPath = CHARACTER;
                 break;
             case "tree":
                 this.iconPath = TREE;
@@ -77,6 +75,12 @@ public class Goal extends Object {
                 break;
             case "monument":
                 this.iconPath = MONUMENT;
+                break;
+            case "fountain":
+                this.iconPath = FOUNTAIN;
+                break;
+            case "stadium":
+                this.iconPath = STADIUM;
                 break;
             default:
                 this.iconPath = "";
