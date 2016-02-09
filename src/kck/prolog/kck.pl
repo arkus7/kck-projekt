@@ -1,3 +1,19 @@
+:- use_module(library(http/thread_httpd)).
+:- use_module(library(http/http_dispatch)).
+:- use_module(library(http/http_parameters)).
+
+:- http_handler(root(.), reply, []).
+
+server(Port) :-
+        http_server(http_dispatch, [port(Port)]).
+
+reply(Request) :-
+    http_parameters(Request,[ w(Sentence, [ list(atom) ])]), % w = word
+    format('Content-type: text/plain~n~n'),
+    forall(zdanie(X,Sentence, []), format("~w", [X])).
+
+discontiguous kier/3. % removes warning
+
 zdanie(move(X,Y)) --> czas(X), kier(Y).
 zdanie(SEM) --> czas(X), sposob(Y), {SEM=move(X,Y), verify(SEM) }.
 zdanie(SEM) --> sposob(Y),czas(X), {SEM=move(Y,X), verify(SEM) }.
