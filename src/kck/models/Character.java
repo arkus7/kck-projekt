@@ -17,10 +17,10 @@ import kck.GUI.MainWindow;
  * @author Shirru
  */
 public class Character extends Object {
-    private static final String C1N = "/kck/GUI/c1N.png";
-    private static final String C1E = "/kck/GUI/c1E.png";
-    private static final String C1S = "/kck/GUI/c1S.png";
-    private static final String C1W = "/kck/GUI/c1W.png";
+    private static final String C1N = "/kck/GUI/IMG/c1N.png";
+    private static final String C1E = "/kck/GUI/IMG/c1E.png";
+    private static final String C1S = "/kck/GUI/IMG/c1S.png";
+    private static final String C1W = "/kck/GUI/IMG/c1W.png";
     //private static final String CHURCH = "/kck/GUI/church.png";
         
     private int moveX,moveY;
