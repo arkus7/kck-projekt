@@ -8,7 +8,14 @@
 ////// TEST CZY IGNOT W NETBIENIE STARCZY
 package kck.prolog;
 
-import java.text.Normalizer;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import kck.models.Sentence;
 import org.jpl7.JPL;
 import org.jpl7.Query;
@@ -23,20 +30,47 @@ public class PrologManager {
     private final String APPROACH = "app(";
     private final String BRACKET_END = ")";
     private final String COMMA = ",";
+    private boolean initialized = false;
+
+    public PrologManager() {
+        initJPL();
+    }
     
     public Sentence getResult(String sentence) { 
         sentence = normalizeSentence(sentence);
         String[] words = sentence.split(" ");
         String query = "zdanie(X, [" + String.join(",", words) + "], []).";
         System.out.println("Query: " + query);
-        JPL.init(new String[] {"swipl", "-g", "true", "-nosignals", "src/kck/prolog/kck2.pl"});
-        Query q = new Query(query);
-        if(q.hasSolution()) {
-            String queryResult = q.oneSolution().get("X").toString();
-            System.out.println("Result: " + queryResult);
-            return new Sentence(getMove(queryResult), getGoal(queryResult), getDirection(queryResult), getApproach(queryResult));
+        if(initialized) {
+            Query q = new Query(query);
+            if(q.hasSolution()) {
+                String queryResult = q.oneSolution().get("X").toString();
+                System.out.println("Result: " + queryResult);
+                return getSentenceFromResult(queryResult);
+            }
+        } else {
+            try {
+                URL url = new URL("http://localhost:5000/?w=" + String.join("&w=", words));
+                URLConnection con = url.openConnection();
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+                String result = in.readLine();
+                System.err.println("body = " + result);
+                return getSentenceFromResult(result);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(PrologManager.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(PrologManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return new Sentence();
+    }
+
+    private void initJPL() {
+        try {
+            initialized = JPL.init(new String[] {"swipl", "-g", "true", "-nosignals", "src/kck/prolog/kck2.pl"});
+        } catch(Throwable e) {
+            initialized = false;
+        }
     }
     
     protected String getMove(String sentence) {
@@ -92,5 +126,9 @@ public class PrologManager {
                 .replaceAll("ć", "c")
                 .replaceAll("ń", "n")
                 .replaceAll("[^a-z ]+", "");
+    }
+    
+    protected Sentence getSentenceFromResult(String result) {
+        return new Sentence(getMove(result), getGoal(result), getDirection(result), getApproach(result));
     }
 }
