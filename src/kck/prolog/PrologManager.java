@@ -30,6 +30,7 @@ public class PrologManager {
     private final String APPROACH = "app(";
     private final String BRACKET_END = ")";
     private final String COMMA = ",";
+    private final String SERVER_URL = "http://46.101.96.206:5000/?w=";
     private boolean initialized = false;
 
     public PrologManager() {
@@ -50,11 +51,11 @@ public class PrologManager {
             }
         } else {
             try {
-                URL url = new URL("http://localhost:5000/?w=" + String.join("&w=", words));
+                URL url = new URL(SERVER_URL + String.join("&w=", words));
                 URLConnection con = url.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                 String result = in.readLine();
-                System.err.println("body = " + result);
+                System.err.println("result = " + result);
                 return getSentenceFromResult(result);
             } catch (MalformedURLException ex) {
                 Logger.getLogger(PrologManager.class.getName()).log(Level.SEVERE, null, ex);
