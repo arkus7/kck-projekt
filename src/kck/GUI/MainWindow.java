@@ -39,7 +39,7 @@ public class MainWindow extends javax.swing.JFrame {
     
     private final int DISTANCE = 128;
     private final int VIEW_RANGE = ((int) java.lang.Math.sqrt(2)*DISTANCE)+ 10;
-    private final int LABEL_COUNT = 15;
+    private final int LABEL_COUNT = 18;
     private final int ICON_HEIGHT = 64;
     private final int ICON_WIDTH = 64;
     private final int KEY_UP = 38;
@@ -92,14 +92,13 @@ public class MainWindow extends javax.swing.JFrame {
         ArrayList<Integer> randIcons = randomIntegers(1, Goal.NAMES.length - 1, LABEL_COUNT - 1);
         goals.clear();
         System.out.println(randIcons);
-        for(int i = 0; i < LABEL_COUNT; i++) {
-            if(i == 0) {
-                character = new Character("Character", icons.get(i),testLayer1.getWidth()-64,testLayer1.getHeight()-64);
-            } else {
-                String name = Goal.NAMES[randIcons.get(i)];
-                System.err.println("RANDOM NAME = " + name);
-                goals.add(new Goal(name, icons.get(i)));
-            }
+        character = new Character("Character", icons.get(0), testLayer1.getWidth()-64, testLayer1.getHeight()-64);
+        for(int i = 0; i < LABEL_COUNT - 1; i++) {
+            System.out.println("kck.GUI.MainWindow.randomIcons() randIcons = " + randIcons);
+            System.out.println("kck.GUI.MainWindow.randomIcons() i == " + i);
+            String name = Goal.NAMES[randIcons.get(i)];
+            System.err.println("RANDOM NAME = " + name);
+            goals.add(new Goal(name, icons.get(i+1)));
         }      
     }
 
@@ -357,12 +356,12 @@ public class MainWindow extends javax.swing.JFrame {
     public ArrayList<Integer> randomIntegers(int min, int max, int size) {
         System.err.println(min + " " + max + " " +  size);
         System.err.println(Math.abs(max - min));
-        if(Math.abs(max - min) < size) {
+        if(Math.abs(max - min) + 1 < size) {
             return null;
         }
         ArrayList<Integer> integers = new ArrayList<>();
         ArrayList<Integer> already = new ArrayList<>();
-        for(int i = 0; i <= size; i++) {
+        for(int i = 0; i < size; i++) {
             int rand = randInt(min, max);
             while(already.contains(rand)) {
                 rand = randInt(min, max);
