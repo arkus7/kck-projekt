@@ -324,10 +324,10 @@ public class MainWindow extends javax.swing.JFrame {
                 if(icon > icons.size() - 1) {
                     break;
                 }
-                y += 128;
+                y += DISTANCE;
             }
             y = 0;
-            x += 128;
+            x += DISTANCE;
         }
 
         locationNumber = randInt(0, icons.size()-1);                                                      //losowanie liczby z zakresu ilości labeli     
