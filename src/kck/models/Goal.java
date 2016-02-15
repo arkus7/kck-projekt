@@ -92,7 +92,7 @@ public class Goal extends Object {
                 this.iconPath = CAR;
                 break;
             case "graveyard":
-                this.iconPath = CAR;
+                this.iconPath = GRAVEYARD;
                 break;
             default:
                 this.iconPath = "";
