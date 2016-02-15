@@ -3,6 +3,8 @@
 :- use_module(library(http/http_parameters)).
 
 :- http_handler(root(.), reply, []).
+:- http_handler(root(reload), reload, []).
+:- http_handler(root(goal), goal, []).
 
 server(Port) :-
         http_server(http_dispatch, [port(Port)]).
@@ -11,6 +13,16 @@ reply(Request) :-
     http_parameters(Request,[ w(Sentence, [ list(atom) ])]), % w = word
     format('Content-type: text/plain~n~n'),
     forall(zdanie(X,Sentence, []), format("~w", [X])).
+
+goal(Request) :-
+	http_parameters(Request, [ goal(Goal, [ atom ])]), 
+	format('Content-type: text/plain~n~n'),
+	forall(cel(dop, Goal, Y, []), format("~w", Y)).
+
+reload(Request) :-
+    make,
+    format('Content-type: text/plain~n~n'),
+    format('Reloaded succesfully').
 
 discontiguous kier/3. % removes warning
 
