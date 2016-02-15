@@ -40,9 +40,9 @@ public class PrologManager {
         }
     }
     
-    public String getLocalizedGoal(Sentence sentence) {
+    public String getLocalizedGoal(String goalName) {
         if(initialized) {
-            String query = "cel(dop, " + sentence.getGoal() + ", Y, []).";
+            String query = "cel(dop, " + goalName + ", Y, []).";
             Query q = new Query(query);
             if(q.hasSolution()) {
                 return q.oneSolution().get("Y").toString();
@@ -50,7 +50,7 @@ public class PrologManager {
             return null;
         } else {
             try {
-                URL url = new URL(SERVER_URL + "/goal?goal=" + sentence.getGoal());
+                URL url = new URL(SERVER_URL + "/goal?goal=" + goalName);
                 URLConnection con = url.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                 String result = in.readLine();
