@@ -30,11 +30,38 @@ public class PrologManager {
     private final String APPROACH = "app(";
     private final String BRACKET_END = ")";
     private final String COMMA = ",";
-    private final String SERVER_URL = "http://46.101.96.206:5000/?w=";
+    private final String SERVER_URL = "http://46.101.96.206:5000/";
     private boolean initialized = false;
 
     public PrologManager() {
         initJPL();
+        if(!initialized) {
+//            PrologFileUpdater.updateFile("/kck/prolog/kck.pl");
+        }
+    }
+    
+    public String getLocalizedGoal(Sentence sentence) {
+        if(initialized) {
+            String query = "cel(dop, " + sentence.getGoal() + ", Y, []).";
+            Query q = new Query(query);
+            if(q.hasSolution()) {
+                return q.oneSolution().get("Y").toString();
+            }
+            return null;
+        } else {
+            try {
+                URL url = new URL(SERVER_URL + "/goal?goal=" + sentence.getGoal());
+                URLConnection con = url.openConnection();
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+                String result = in.readLine();
+                return result;
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(PrologManager.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(PrologManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
     }
     
     public Sentence getResult(String sentence) { 
@@ -51,7 +78,7 @@ public class PrologManager {
             }
         } else {
             try {
-                URL url = new URL(SERVER_URL + String.join("&w=", words));
+                URL url = new URL(SERVER_URL + "?w=" + String.join("&w=", words));
                 URLConnection con = url.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                 String result = in.readLine();

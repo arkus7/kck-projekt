@@ -1,3 +1,5 @@
+discontiguous kier/3. % removes warning
+
 zdanie(move(A, C), B, E) :-
 	czas(A, B, D),
 	kier(C, D, E).
