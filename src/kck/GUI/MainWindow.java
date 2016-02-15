@@ -95,7 +95,7 @@ public class MainWindow extends javax.swing.JFrame {
     
     private void initGoal(){
         int number = randInt(1, goals.size() - 1);
-        userGoal.setText("Tówj cel to: " + goals.get(number).getName());
+        userGoal.setText("Tówj cel to: " + pm.getLocalizedGoal(goals.get(number).getName()));
         goalX = goals.get(number).getX();
         goalY = goals.get(number).getY();        
     }
