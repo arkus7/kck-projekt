@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import kck.models.Object;
 import kck.models.Goal;
@@ -36,6 +37,8 @@ public class MainWindow extends javax.swing.JFrame {
     private final int DELAY_TIME = 5;
     public static int timer1 = 0;
     public static int timer2 = 0;
+    private int goalX;
+    private int goalY;
     
     private final int DISTANCE = 128;
     private final int VIEW_RANGE = ((int) java.lang.Math.sqrt(2)*DISTANCE)+ 10;
@@ -62,6 +65,7 @@ public class MainWindow extends javax.swing.JFrame {
                 testButton.setEnabled(true);
                 userInput.setEnabled(true);
                 userInput.requestFocus();
+                reachedGoal();
                 ((Timer)evt.getSource()).stop(); 
             }
         }
@@ -79,6 +83,7 @@ public class MainWindow extends javax.swing.JFrame {
         addIcons();
         randomIconsLocation();
         randomIcons();
+        initGoal();
     }
 
     private void initFields() {
@@ -86,6 +91,30 @@ public class MainWindow extends javax.swing.JFrame {
         exclude = new ArrayList<>();
         icons = new ArrayList<>();
         history = new ArrayList<>();
+    }
+    
+    private void initGoal(){
+        int number = randInt(1, goals.size() - 1);
+        userGoal.setText("Tówj cel to: " + goals.get(number).getName());
+        goalX = goals.get(number).getX();
+        goalY = goals.get(number).getY();        
+    }
+    
+    private void reachedGoal(){
+        if (character.getX() == goalX && character.getY() == goalY){
+            System.err.println("cel osiągnięy");
+//            final JOptionPane optionPane = new JOptionPane("Dotarłeś do celu. Chcesz rozpocząć nową gre?",JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
+//            optionPane.setVisible(true);
+           int selectedoption = JOptionPane.showOptionDialog(testLayer1,"Dotarłeś do celu, chcesz zacząć nową gre?","Dotarłeś!!!",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null);
+           if (selectedoption == JOptionPane.YES_OPTION){
+                removeIcons();
+                addIcons();
+                randomIcons();
+                randomIconsLocation();
+                initGoal();
+           }
+    }
+        else System.err.println(character.getX() + " " + goalX  + " " +  character.getY() + " " +  goalY);
     }
 
     private void randomIcons() {
@@ -135,9 +164,10 @@ public class MainWindow extends javax.swing.JFrame {
         userOutput = new javax.swing.JTextArea();
         testLayer1 = new javax.swing.JLayeredPane();
         testButton = new javax.swing.JButton();
+        userGoal = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1100, 700));
+        setPreferredSize(new java.awt.Dimension(790, 700));
         setResizable(false);
 
         userInput.setText("Polecenie: ");
@@ -173,6 +203,10 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        userGoal.setEditable(false);
+        userGoal.setEnabled(false);
+        userGoal.setFocusable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -184,10 +218,10 @@ public class MainWindow extends javax.swing.JFrame {
                         .addComponent(testLayer1)
                         .addGap(68, 68, 68))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(testButton, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-                            .addComponent(userInput))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(testButton, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                            .addComponent(userInput)
+                            .addComponent(userGoal))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -201,9 +235,11 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(userInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(userGoal, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(testButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(userInput)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(testButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(38, 38, 38))
         );
 
@@ -259,13 +295,13 @@ public class MainWindow extends javax.swing.JFrame {
         userOutput.setText(inputLog);
         userInput.setText("");
 
-
-
+     
+        
     }//GEN-LAST:event_userInputActionPerformed
 
     private void userInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userInputFocusGained
         // TODO add your handling code here:
-        userInput.setText("");
+        userInput.setText("");        
     }//GEN-LAST:event_userInputFocusGained
 
     private void userInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userInputFocusLost
@@ -278,6 +314,7 @@ public class MainWindow extends javax.swing.JFrame {
         addIcons();
         randomIcons();
         randomIconsLocation();
+        initGoal();
     }//GEN-LAST:event_testButtonMouseClicked
 
     private void userInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userInputKeyPressed
@@ -423,6 +460,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton testButton;
     private javax.swing.JLayeredPane testLayer1;
+    private javax.swing.JTextField userGoal;
     private javax.swing.JTextField userInput;
     private javax.swing.JTextArea userOutput;
     // End of variables declaration//GEN-END:variables

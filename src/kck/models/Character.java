@@ -23,7 +23,7 @@ public class Character extends Object {
     private static final String C1W = "/kck/GUI/IMG/c1W.png";
     //private static final String CHURCH = "/kck/GUI/church.png";
         
-    private int moveX,moveY;
+    private int moveX,moveY,tempX,tempY;
     private final int DELAY_TIME = 5;
     private int maxX, maxY;
     private String turnSide = "north";
@@ -214,6 +214,8 @@ public class Character extends Object {
      public void moveStraightToGoal(){
         MainWindow.timer1 = Math.abs(moveX);
         MainWindow.timer2 = Math.abs(moveY);
+        tempX = moveX;
+        tempY = moveY;
         new Timer(DELAY_TIME, straightToGoal).start();
     }
     
@@ -244,7 +246,7 @@ public class Character extends Object {
             }
           
             if (moveY == 0 && moveX == 0){ //aktualnie idzie to Y celu testowego moveY ==0 && moveX == 0
-              ((Timer)evt.getSource()).stop(); 
+                ((Timer)evt.getSource()).stop(); 
               //zatrzymuje timer
             }
         }
@@ -272,7 +274,11 @@ public class Character extends Object {
     public int getMoveY() {
         return moveY;
     }
-
+    
+    public JLabel getLabel(){
+        return this.label;
+    }
+    
     public void setMoveY(int y) {
         this.moveY = y;
     }
