@@ -35,9 +35,9 @@ public class MainWindow extends javax.swing.JFrame {
     private int goalX;
     private int goalY;
     
-    private final int DISTANCE = 128;
+    private final int DISTANCE = 160;
     private final int VIEW_RANGE = ((int) java.lang.Math.sqrt(2)*DISTANCE)+ 10;
-    private final int LABEL_COUNT = 23;
+    private final int LABEL_COUNT = 16;
     private final int ICON_HEIGHT = 64;
     private final int ICON_WIDTH = 64;
     private final int KEY_UP = 38;
@@ -336,13 +336,13 @@ public class MainWindow extends javax.swing.JFrame {
         
         //ustawienie lokazliacji w orginalnych miejscach
         int rowCount = (int) Math.ceil(icons.size()/2.0);                   // dzieli ilość ikon na 2
-        if(rowCount > 5) rowCount = 5;                                      // max ilosc wierszy = 5
+        if(rowCount > 3) rowCount = 3;                                      // max ilosc wierszy = 5
         int columnCount = (int) Math.ceil(icons.size()/(double)rowCount);   // wyznacza ilosc kolumn
         //System.out.println(rowCount + " " + columnCount);
         int x = 0, y =0, icon = 0;
         
-        for(int i = 0; i < rowCount; i++) {
-            for(int j = 0; j < columnCount; j++) {
+        for(int i = 0; i < columnCount; i++) {
+            for(int j = 0; j < rowCount; j++) {
                 //System.err.println(x + " " + y);
                 icons.get(icon).setLocation(x, y);
                 icon++;
