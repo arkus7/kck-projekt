@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package kck.GUI;
 
 import java.awt.event.ActionEvent;
@@ -42,7 +37,7 @@ public class MainWindow extends javax.swing.JFrame {
     
     private final int DISTANCE = 128;
     private final int VIEW_RANGE = ((int) java.lang.Math.sqrt(2)*DISTANCE)+ 10;
-    private final int LABEL_COUNT = 20;
+    private final int LABEL_COUNT = 23;
     private final int ICON_HEIGHT = 64;
     private final int ICON_WIDTH = 64;
     private final int KEY_UP = 38;
@@ -102,9 +97,6 @@ public class MainWindow extends javax.swing.JFrame {
     
     private void reachedGoal(){
         if (character.getX() == goalX && character.getY() == goalY){
-            System.err.println("cel osiągnięy");
-//            final JOptionPane optionPane = new JOptionPane("Dotarłeś do celu. Chcesz rozpocząć nową gre?",JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
-//            optionPane.setVisible(true);
            int selectedoption = JOptionPane.showOptionDialog(testLayer1,"Dotarłeś do celu, chcesz zacząć nową gre?","Dotarłeś!!!",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null);
            if (selectedoption == JOptionPane.YES_OPTION){
                 removeIcons();
@@ -113,20 +105,19 @@ public class MainWindow extends javax.swing.JFrame {
                 randomIconsLocation();
                 initGoal();
            }
-    }
-        else System.err.println(character.getX() + " " + goalX  + " " +  character.getY() + " " +  goalY);
+        }
     }
 
     private void randomIcons() {
         ArrayList<Integer> randIcons = randomIntegers(1, Goal.NAMES.length - 1, LABEL_COUNT - 1);
         goals.clear();
-        System.out.println(randIcons);
+        //System.out.println(randIcons);
         character = new Character("Character", icons.get(0), testLayer1.getWidth()-64, testLayer1.getHeight()-64);
         for(int i = 0; i < LABEL_COUNT - 1; i++) {
-            System.out.println("kck.GUI.MainWindow.randomIcons() randIcons = " + randIcons);
-            System.out.println("kck.GUI.MainWindow.randomIcons() i == " + i);
+            //System.out.println("kck.GUI.MainWindow.randomIcons() randIcons = " + randIcons);
+            //System.out.println("kck.GUI.MainWindow.randomIcons() i == " + i);
             String name = Goal.NAMES[randIcons.get(i)];
-            System.err.println("RANDOM NAME = " + name);
+            //System.err.println("RANDOM NAME = " + name);
             goals.add(new Goal(name, icons.get(i+1)));
         }      
     }
@@ -252,9 +243,7 @@ public class MainWindow extends javax.swing.JFrame {
         for (int i = 0; i < goals.size() ; i++){
             if (goals.get(i).getName().equalsIgnoreCase(goal) && Math.abs(difMove(character.getX(), goals.get(i).getX())) < VIEW_RANGE && Math.abs(difMove(character.getY(), goals.get(i).getY())) < VIEW_RANGE) {
                 character.setMoveX(difMove(character.getX(), goals.get(i).getX()));
-                character.setMoveY(difMove(character.getY(), goals.get(i).getY()));          
-                System.out.println("X = " + character.getMoveX() + " Y = " + character.getMoveY());
-                System.out.println(VIEW_RANGE);
+                character.setMoveY(difMove(character.getY(), goals.get(i).getY()));
                 return true; 
             }
         }       
@@ -349,12 +338,12 @@ public class MainWindow extends javax.swing.JFrame {
         int rowCount = (int) Math.ceil(icons.size()/2.0);                   // dzieli ilość ikon na 2
         if(rowCount > 5) rowCount = 5;                                      // max ilosc wierszy = 5
         int columnCount = (int) Math.ceil(icons.size()/(double)rowCount);   // wyznacza ilosc kolumn
-        System.out.println(rowCount + " " + columnCount);
+        //System.out.println(rowCount + " " + columnCount);
         int x = 0, y =0, icon = 0;
         
         for(int i = 0; i < rowCount; i++) {
             for(int j = 0; j < columnCount; j++) {
-                System.err.println(x + " " + y);
+                //System.err.println(x + " " + y);
                 icons.get(icon).setLocation(x, y);
                 icon++;
                 if(icon > icons.size() - 1) {
@@ -391,8 +380,8 @@ public class MainWindow extends javax.swing.JFrame {
     }
     
     public ArrayList<Integer> randomIntegers(int min, int max, int size) {
-        System.err.println(min + " " + max + " " +  size);
-        System.err.println(Math.abs(max - min));
+        //System.err.println(min + " " + max + " " +  size);
+        //System.err.println(Math.abs(max - min));
         if(Math.abs(max - min) + 1 < size) {
             return null;
         }

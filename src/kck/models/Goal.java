@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package kck.models;
 
 import java.util.Collections;
@@ -13,13 +8,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import kck.GUI.MainWindow;
 
-/**
- *
- * @author arkus
- */
+
 public class Goal extends Object {
     
-    // TODO: add imgs path
     private static final String CHURCH = "/kck/GUI/IMG/church.png";
     private static final String PLACEHOLDER = "/kck/GUI/IMG/error.png";
     private static final String LAMP = "/kck/GUI/IMG/lamp.png";
@@ -141,7 +132,6 @@ public class Goal extends Object {
                 this.label.setText(name);
         }
         ImageIcon icon = createImageIcon(iconPath, this.name);
-        System.out.println(icon.toString());
         this.label.setIcon(icon);
     } 
         
