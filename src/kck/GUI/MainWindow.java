@@ -42,7 +42,7 @@ public class MainWindow extends javax.swing.JFrame {
     
     private final int DISTANCE = 128;
     private final int VIEW_RANGE = ((int) java.lang.Math.sqrt(2)*DISTANCE)+ 10;
-    private final int LABEL_COUNT = 18;
+    private final int LABEL_COUNT = 20;
     private final int ICON_HEIGHT = 64;
     private final int ICON_WIDTH = 64;
     private final int KEY_UP = 38;

@@ -108,7 +108,6 @@ przyim(cel, [ku|A], A).
 przyim(dop, [do|A], A).
 
 cel(dop, lamp, [lampy|A], A).
-cel(dop, lake, [jeziora|A], A).
 cel(dop, fountain, [fontanny|A], A).
 cel(dop, stadium, [boiska|A], A).
 cel(dop, tree, [drzewa|A], A).
@@ -117,15 +116,19 @@ cel(dop, house, [domu|A], A).
 cel(dop, tunnel, [tunelu|A], A).
 cel(dop, church, [kosciola|A], A).
 cel(dop, bench, [lawki|A], A).
-cel(dop, river, [rzeki|A], A).
-cel(dop, busstop, [przystanku|A], A).
+cel(dop, sign, [znaku|A], A).
 cel(dop, monument, [pomnika|A], A).
 cel(dop, mountain, [gory|A], A).
 cel(dop, car, [samochodu|A], A).
 cel(dop, rails, [torow|A], A).
 cel(dop, graveyard, [cmentarza|A], A).
+cel(dop, palm, [palmy|A], A).
+cel(dop, barrel, [beczkek|A], A).
+cel(dop, cactus, [kaktusa|A], A).
+cel(dop, snowman, [balwana|A], A).
+cel(dop, well, [studni|A], A).
+cel(dop, trunk, [pnia|A], A).
 cel(cel, lamp, [lampie|A], A).
-cel(cel, lake, [jezioru|A], A).
 cel(cel, fountain, [fontannie|A], A).
 cel(cel, stadium, [boisku|A], A).
 cel(cel, tree, [drzewu|A], A).
@@ -134,13 +137,18 @@ cel(cel, house, [domu|A], A).
 cel(cel, tunnel, [tunelu|A], A).
 cel(cel, church, [kosciolowi|A], A).
 cel(cel, bench, [lawce|A], A).
-cel(cel, river, [rzece|A], A).
-cel(cel, busstop, [przystankowi|A], A).
+cel(cel, sighn, [znakowi|A], A).
 cel(cel, monument, [pomnikowi|A], A).
 cel(cel, mountain, [gorze|A], A).
 cel(cel, car, [samochodowi|A], A).
 cel(cel, rails, [torom|A], A).
 cel(cel, graveyard, [cmantarzowi|A], A).
+cel(cel, paml, [palmie|A], A).
+cel(cel, barrels, [beczkom|A], A).
+cel(cel, cactus, [kaktusowi|A], A).
+cel(cel, snowman, [balwanowi|A], A).
+cel(cel, well, [studni|A], A).
+cel(cel, trunk, [pniu|A], A).
 
 verify(move(walk, _)).
 verify(move(_, walk)).
