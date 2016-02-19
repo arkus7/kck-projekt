@@ -27,9 +27,6 @@ public class PrologManager {
 
     public PrologManager() {
         initJPL();
-        if(!initialized) {
-//            PrologFileUpdater.updateFile("/kck/prolog/kck.pl");
-        }
     }
     
     public String getLocalizedGoal(String goalName) {
