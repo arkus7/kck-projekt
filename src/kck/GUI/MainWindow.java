@@ -34,6 +34,7 @@ public class MainWindow extends javax.swing.JFrame {
     public static int timer2 = 0;
     private int goalX;
     private int goalY;
+    private boolean goalReached = false;
     
     private final int DISTANCE = 128;
     private final int VIEW_RANGE = ((int) java.lang.Math.sqrt(2)*DISTANCE)+ 10;
@@ -117,15 +118,20 @@ public class MainWindow extends javax.swing.JFrame {
       
     
     private void reachedGoal(){
-        if (character.getX() == goalX && character.getY() == goalY){
-           int selectedoption = JOptionPane.showOptionDialog(testLayer1,"Dotarłeś do celu, chcesz zacząć nową gre?","Dotarłeś!!!",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null);
-           if (selectedoption == JOptionPane.YES_OPTION){
-                removeIcons();
-                addIcons();
-                randomIcons();
-                randomIconsLocation();
-                initGoal();
-           }
+        if (!goalReached){
+           if (character.getX() == goalX && character.getY() == goalY){
+                int selectedoption = JOptionPane.showOptionDialog(testLayer1,"Dotarłeś do celu, chcesz zacząć nową gre?","Dotarłeś!!!",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null);
+                if (selectedoption == JOptionPane.YES_OPTION){
+                    removeIcons();
+                    addIcons();
+                    randomIcons();
+                    randomIconsLocation();
+                    initGoal();
+                } else {
+                    goalReached = true;
+                    userGoal.setText("Aby rozpocząć nową grę kliknij przyciks ''Nowa Gra ''");
+                }
+            }
         }
     }
 
@@ -208,7 +214,7 @@ public class MainWindow extends javax.swing.JFrame {
         userOutput.setRows(5);
         jScrollPane2.setViewportView(userOutput);
 
-        testButton.setText("Reload");
+        testButton.setText("Nowa Gra");
         testButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 testButtonMouseClicked(evt);
@@ -324,6 +330,7 @@ public class MainWindow extends javax.swing.JFrame {
         randomIcons();
         randomIconsLocation();
         initGoal();
+        goalReached = false;
     }//GEN-LAST:event_testButtonMouseClicked
 
     private void userInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userInputKeyPressed
