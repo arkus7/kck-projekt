@@ -35,10 +35,10 @@ public class MainWindow extends javax.swing.JFrame {
     private int goalX;
     private int goalY;
     
-    private final int DISTANCE = 160;
+    private final int DISTANCE = 128;
     private final int VIEW_RANGE = ((int) java.lang.Math.sqrt(2)*DISTANCE)+ 10;
     private final int LABEL_COUNT = 16;
-    private final int MAX_ROWS = 3;
+    private final int MAX_ROWS = 4;
     private final int ICON_HEIGHT = 64;
     private final int ICON_WIDTH = 64;
     private final int KEY_UP = 38;
@@ -80,6 +80,7 @@ public class MainWindow extends javax.swing.JFrame {
         randomIconsLocation();
         randomIcons();
         initGoal();
+        //for (int i=0; i < goals.size();i++) System.err.println(goals.get(i).getName());
     }
 
     private void initFields() {
@@ -90,7 +91,8 @@ public class MainWindow extends javax.swing.JFrame {
     }
     
     private void initGoal(){
-        int number = randInt(1, goals.size() - 1);
+        int number = randInt(0, goals.size()-1);
+        System.err.println(number + " :: " + goals.get(number).getName());
         userGoal.setText("Twoim celem jest dojście do " + pm.getLocalizedGoal(goals.get(number).getName()));
         goalX = goals.get(number).getX();
         goalY = goals.get(number).getY();        
@@ -138,7 +140,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void removeIcons() {
         testLayer1.removeAll();
         testLayer1.repaint();
-        System.err.println("Layer cleared");
+        //System.err.println("Layer cleared");
         icons.clear();
     }
     
