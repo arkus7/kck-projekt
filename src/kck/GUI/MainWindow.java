@@ -74,10 +74,7 @@ public class MainWindow extends javax.swing.JFrame {
         
         timer = new Timer(DELAY_TIME, inputBlockade);
         
-        addIcons();
-        randomIconsLocation();
-        randomIcons();
-        initGoal();
+        startNewGame();
         for (int i=0; i < goals.size();i++) System.err.println(goals.get(i).getName());
     }
 
@@ -119,14 +116,10 @@ public class MainWindow extends javax.swing.JFrame {
            if (character.getX() == goalX && character.getY() == goalY){
                 int selectedoption = JOptionPane.showOptionDialog(testLayer1,"Dotarłeś do celu, chcesz zacząć nową gre?","Dotarłeś!!!",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,null,null);
                 if (selectedoption == JOptionPane.YES_OPTION){
-                    removeIcons();
-                    addIcons();
-                    randomIcons();
-                    randomIconsLocation();
-                    initGoal();
+                    startNewGame();
                 } else {
                     goalReached = true;
-                    userGoal.setText("Aby rozpocząć nową grę kliknij przyciks ''Nowa Gra ''");
+                    userGoal.setText("Aby rozpocząć nową grę kliknij przycisk \"Nowa gra\"");
                 }
             }
         }
@@ -149,16 +142,17 @@ public class MainWindow extends javax.swing.JFrame {
     private void addIcons() {
         for(int i = 0; i < LABEL_COUNT; i++) {
             String labelName = "goal" + String.valueOf(i);
-            testLabel = new JLabel(labelName);
-            testLabel.setText(labelName);
-            testLayer1.add(testLabel);
-            testLabel.setBounds(0,0, ICON_HEIGHT, ICON_WIDTH);
-            testLayer1.setLayer(testLabel, (i == 0 ? 10 : 5)); // agent 10, inne 5
-            icons.add(testLabel);
+            JLabel newLabel = new JLabel(labelName);
+            newLabel.setText(labelName);
+            testLayer1.add(newLabel);
+            newLabel.setBounds(0,0, ICON_HEIGHT, ICON_WIDTH);
+            testLayer1.setLayer(newLabel, (i == 0 ? 10 : 5)); // agent 10, inne 5
+            icons.add(newLabel);
         }
     }
 
     private void removeIcons() {
+        System.out.println("kck.GUI.MainWindow.removeIcons() removed icons: " + testLayer1.getComponentCount());
         testLayer1.removeAll();
         testLayer1.repaint();
         //System.err.println("Layer cleared");
@@ -322,13 +316,18 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_userInputFocusLost
 
     private void testButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_testButtonMouseClicked
+        startNewGame();
+    }//GEN-LAST:event_testButtonMouseClicked
+
+    private void startNewGame() {
         removeIcons();
         addIcons();
         randomIcons();
         randomIconsLocation();
-        initGoal();
+        initGoal();     
+        addGoalHover();
         goalReached = false;
-    }//GEN-LAST:event_testButtonMouseClicked
+    }
 
     private void userInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userInputKeyPressed
         // TODO add your handling code here:
@@ -427,9 +426,12 @@ public class MainWindow extends javax.swing.JFrame {
         return charPos - goalPos;
     }
         
-        
-        
-        
+        private void addGoalHover() {
+        goals.stream().forEach((g) -> {
+            g.addMouseListener();
+        });
+    }    
+    
     /**
      * @param args the command line arguments
      */

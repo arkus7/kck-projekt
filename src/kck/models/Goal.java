@@ -3,6 +3,7 @@ package kck.models;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.event.MouseInputListener;
 import kck.prolog.PrologManager;
 
@@ -131,7 +132,6 @@ public class Goal extends Object {
         }
         ImageIcon icon = createImageIcon(iconPath, this.name);
         this.label.setIcon(icon);
-        this.label.addMouseListener(showNameListener);
     } 
         
     public Goal(String name, JLabel label) {
@@ -141,22 +141,35 @@ public class Goal extends Object {
     
     private MouseInputListener showNameListener = new MouseInputListener() {
         PrologManager pm = new PrologManager();
+        JLabel text = new JLabel();
             @Override
             public void mouseEntered(MouseEvent e) {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                label.setIconTextGap(-64);
-                label.setText("<html><div style=\"background-color: white; font-size: 10px; text-align: center\">" + pm.getLocalizedGoal(name, PrologManager.WordCase.NOMINATIVE) + "</div></html>");
+                JLabel currentLabel = (JLabel) e.getComponent();
+                JLayeredPane layeredPane = (JLayeredPane) currentLabel.getParent();
+                text.setText(pm.getLocalizedGoal(name, PrologManager.WordCase.NOMINATIVE));
+                int offsetY = 64;
+                int minOffsetY = 20;
+                int maxY = 384;
+                int x = currentLabel.getX();
+                int y = currentLabel.getY() + (currentLabel.getY() + offsetY > maxY ? -minOffsetY : offsetY);
+                text.setBounds(x, y, 100, 20);
+                layeredPane.add(text);
+                layeredPane.setLayer(text, 15);
+                layeredPane.repaint();
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                label.setText("");
+                JLayeredPane layeredPane = (JLayeredPane) e.getComponent().getParent();
+                layeredPane.remove(text);
+                layeredPane.repaint();
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
             @Override
@@ -179,4 +192,7 @@ public class Goal extends Object {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
+    public void addMouseListener() {
+        this.label.addMouseListener(showNameListener);
+    }
 }
