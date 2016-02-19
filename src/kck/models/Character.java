@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package kck.models;
 
 import java.awt.event.ActionEvent;
@@ -12,10 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.Timer;
 import kck.GUI.MainWindow;
 
-/**
- *
- * @author Shirru
- */
+
 public class Character extends Object {
     private static final String C1N = "/kck/GUI/IMG/c1N.png";
     private static final String C1E = "/kck/GUI/IMG/c1E.png";
@@ -29,7 +21,7 @@ public class Character extends Object {
     private String turnSide = "north";
     
     public boolean canSee (){
-        System.out.println(moveX + " " + moveY + " " + turnSide);
+        //System.out.println(moveX + " " + moveY + " " + turnSide);
         switch (this.turnSide){
             case "north":
                 if ((moveX >= 0 && moveY >= 0) || (moveX <= 0 && moveY >= 0)){
@@ -132,10 +124,10 @@ public class Character extends Object {
     }
 
     public void setTurnSide(String turnSide) {
-        System.out.println("Przed : "+ turnSide);
-        System.out.println("przed : " +this.turnSide); 
+        //System.out.println("Przed : "+ turnSide);
+        //System.out.println("przed : " +this.turnSide); 
         this.turnSide = nextSide(turnSide);
-        System.out.println("po : " +this.turnSide);        
+        //System.out.println("po : " +this.turnSide);        
         switch(this.turnSide.toLowerCase()) {
             case "west":
             case "sw":
@@ -158,7 +150,6 @@ public class Character extends Object {
                 this.iconPath = C1N;
         }
         ImageIcon icon = createImageIcon(iconPath, this.name);
-        System.out.println(icon.toString());
         this.label.setIcon(icon);
     }
     
@@ -286,14 +277,12 @@ public class Character extends Object {
     public void setLabel(JLabel label) {
         this.label = label;
         ImageIcon icon = createImageIcon("/kck/GUI/IMG/c1N.png", this.name);
-        System.out.println(icon.toString());
         this.label.setIcon(icon);
     } 
  
     public Character(String name, JLabel label, int maxX, int maxY) {
         super(name, label);
         ImageIcon icon = createImageIcon("/kck/GUI/IMG/c1N.png", this.name);
-        System.out.println(icon.toString());
         this.label.setIcon(icon);
         this.maxX = maxX;
         this.maxY = maxY;

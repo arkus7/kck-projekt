@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package kck.models;
 
 import java.util.Collections;
@@ -13,13 +8,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import kck.GUI.MainWindow;
 
-/**
- *
- * @author arkus
- */
+
 public class Goal extends Object {
     
-    // TODO: add imgs path
     private static final String CHURCH = "/kck/GUI/IMG/church.png";
     private static final String PLACEHOLDER = "/kck/GUI/IMG/error.png";
     private static final String LAMP = "/kck/GUI/IMG/lamp.png";
@@ -33,12 +24,21 @@ public class Goal extends Object {
     private static final String CAR = "/kck/GUI/IMG/car.png";
     private static final String BENCH = "/kck/GUI/IMG/bench.png";
     private static final String GRAVEYARD = "/kck/GUI/IMG/graveyard.png";
-    private static final String RIVER = "/kck/GUI/IMG/river.png";
+    private static final String SIGN = "/kck/GUI/IMG/sign.png";    
+    private static final String PALM = "/kck/GUI/IMG/palm.png";    
+    private static final String BARRELS = "/kck/GUI/IMG/barrels.png";    
+    private static final String CACTUS = "/kck/GUI/IMG/cactus.png";
+    private static final String SNOWMAN = "/kck/GUI/IMG/snowman.png";    
+    private static final String WELL = "/kck/GUI/IMG/well.png";    
+    private static final String TRUNK = "/kck/GUI/IMG/trunk.png";       
+    private static final String RAILS = "/kck/GUI/IMG/rails.png";          
+    private static final String TUNNEL = "/kck/GUI/IMG/tunnel.png";
+    
+    
     
     public static final String[] NAMES = {
         "character",
         "lamp",
-        "lake",
         "church",
         "tree",
         "stone",
@@ -48,12 +48,17 @@ public class Goal extends Object {
         "stadium",
         "tunnel",
         "bench",
-        "river",
-        "busstop",
+        "sign",
         "monument",
         "car",
         "rails",
-        "graveyard"
+        "graveyard",
+        "palm",
+        "barrels",
+        "cactus",
+        "snowman",
+        "well",
+        "trunk"
     };
 
     public final void setLabel(JLabel label) {
@@ -95,12 +100,38 @@ public class Goal extends Object {
             case "graveyard":
                 this.iconPath = GRAVEYARD;
                 break;
+            case "sign":
+                this.iconPath = SIGN;
+                break;
+            case "palm":
+                this.iconPath = PALM;
+                break;
+            case "barrels":
+                this.iconPath = BARRELS;
+                break;
+            case "snowman":
+                this.iconPath = SNOWMAN;
+                break;
+            case "cactus":
+                this.iconPath = CACTUS;
+                break;
+            case "well":
+                this.iconPath = WELL;
+                break;
+            case "trunk":
+                this.iconPath = TRUNK;
+                break;
+            case "rails":
+                this.iconPath = RAILS;
+                break;
+            case "tunnel":
+                this.iconPath = TUNNEL;
+                break;
             default:
                 this.iconPath = "";
                 this.label.setText(name);
         }
         ImageIcon icon = createImageIcon(iconPath, this.name);
-        System.out.println(icon.toString());
         this.label.setIcon(icon);
     } 
         
