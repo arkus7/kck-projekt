@@ -80,7 +80,7 @@ public class MainWindow extends javax.swing.JFrame {
         randomIconsLocation();
         randomIcons();
         initGoal();
-        //for (int i=0; i < goals.size();i++) System.err.println(goals.get(i).getName());
+        for (int i=0; i < goals.size();i++) System.err.println(goals.get(i).getName());
     }
 
     private void initFields() {
@@ -91,12 +91,30 @@ public class MainWindow extends javax.swing.JFrame {
     }
     
     private void initGoal(){
-        int number = randInt(0, goals.size()-1);
-        System.err.println(number + " :: " + goals.get(number).getName());
-        userGoal.setText("Twoim celem jest dojście do " + pm.getLocalizedGoal(goals.get(number).getName()));
-        goalX = goals.get(number).getX();
-        goalY = goals.get(number).getY();        
+        int number;
+        int X = character.getX();
+        int Y = character.getY();
+        while(true)
+        {
+            number = randInt(0, goals.size()-1);
+            goalX = goals.get(number).getX();        
+            goalY = goals.get(number).getY();            
+            
+            if( X == goalX || X + DISTANCE == goalX || X - DISTANCE == goalX){
+                if (Y == goalY || Y + DISTANCE == goalY || Y - DISTANCE == goalY){
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }                         
+        userGoal.setText("Twoim celem jest dojście do " + pm.getLocalizedGoal(goals.get(number).getName()));       
     }
+
+
+            
+      
     
     private void reachedGoal(){
         if (character.getX() == goalX && character.getY() == goalY){
