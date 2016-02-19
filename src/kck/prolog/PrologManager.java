@@ -34,12 +34,15 @@ public class PrologManager {
             String query = "cel(dop, " + goalName + ", Y, []).";
             Query q = new Query(query);
             if(q.hasSolution()) {
-                return q.oneSolution().get("Y").toString();
+                String solution = q.oneSolution().get("Y").toString();
+                return solution.replaceAll("\\[", "")
+                        .replaceAll("\\]","")
+                        .replaceAll(" ", "");
             }
             return null;
         } else {
             try {
-                URL url = new URL(SERVER_URL + "goal?goal=" + goalName);
+                URL url = new URL(SERVER_URL + "goal?name=" + goalName);
                 URLConnection con = url.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                 String result = in.readLine();
