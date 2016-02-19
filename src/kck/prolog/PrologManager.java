@@ -35,9 +35,7 @@ public class PrologManager {
             Query q = new Query(query);
             if(q.hasSolution()) {
                 String solution = q.oneSolution().get("Y").toString();
-                return solution.replaceAll("\\[", "")
-                        .replaceAll("\\]","")
-                        .replaceAll(" ", "");
+                return solution.replaceAll("[^a-z]+", "");
             }
             return null;
         } else {
@@ -149,6 +147,10 @@ public class PrologManager {
     }
     
     protected Sentence getSentenceFromResult(String result) {
-        return new Sentence(getMove(result), getGoal(result), getDirection(result), getApproach(result));
+        try {
+            return new Sentence(getMove(result), getGoal(result), getDirection(result), getApproach(result));
+        } catch(NullPointerException ex) {
+            return new Sentence();
+        }
     }
 }
