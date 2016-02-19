@@ -1,6 +1,7 @@
 package kck.prolog;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -32,6 +33,7 @@ public class PrologManager {
 
     public PrologManager() {
         initJPL();
+        checkAndUploadFile();
     }
     
     public String getLocalizedGoal(String goalName, WordCase wordCase) {
@@ -100,6 +102,19 @@ public class PrologManager {
             initialized = JPL.init(new String[] {"swipl", "-g", "true", "-nosignals", "src/kck/prolog/kck2.pl"});
         } catch(Throwable e) {
             initialized = false;
+        }
+    }
+    
+        private void checkAndUploadFile() {
+        try {
+            URL url = getClass().getResource("sync.sh");
+            File file = new File(url.getPath());
+            file.setExecutable(true);
+            ProcessBuilder pb = new ProcessBuilder("./sync.sh");
+            pb.directory(new File(file.getParent()));
+            Process p = pb.start();
+        } catch (IOException | NullPointerException ex) {
+            System.err.println("Couldn't sync prolog files. " + ex.getMessage());
         }
     }
     
