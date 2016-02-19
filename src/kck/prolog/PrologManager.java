@@ -50,7 +50,7 @@ public class PrologManager {
             return null;
         } else {
             try {
-                URL url = new URL(SERVER_URL + "/goal?goal=" + goalName);
+                URL url = new URL(SERVER_URL + "goal?goal=" + goalName);
                 URLConnection con = url.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                 String result = in.readLine();
