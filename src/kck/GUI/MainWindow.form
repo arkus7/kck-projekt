@@ -100,7 +100,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="testButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Reload"/>
+        <Property name="text" type="java.lang.String" value="Nowa Gra"/>
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="testButtonMouseClicked"/>

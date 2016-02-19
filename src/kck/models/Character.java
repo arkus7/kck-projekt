@@ -18,7 +18,7 @@ public class Character extends Object {
     private int moveX,moveY,tempX,tempY;
     private final int DELAY_TIME = 5;
     private int maxX, maxY;
-    private String turnSide = "north";
+    private String turnSide = "south";
     
     public boolean canSee (){
         //System.out.println(moveX + " " + moveY + " " + turnSide);
@@ -276,7 +276,7 @@ public class Character extends Object {
     
     public void setLabel(JLabel label) {
         this.label = label;
-        ImageIcon icon = createImageIcon("/kck/GUI/IMG/c1N.png", this.name);
+        ImageIcon icon = createImageIcon("/kck/GUI/IMG/c1S.png", this.name);
         this.label.setIcon(icon);
     } 
  
