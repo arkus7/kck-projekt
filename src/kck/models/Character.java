@@ -282,7 +282,7 @@ public class Character extends Object {
  
     public Character(String name, JLabel label, int maxX, int maxY) {
         super(name, label);
-        ImageIcon icon = createImageIcon("/kck/GUI/IMG/c1N.png", this.name);
+        ImageIcon icon = createImageIcon("/kck/GUI/IMG/c1S.png", this.name);
         this.label.setIcon(icon);
         this.maxX = maxX;
         this.maxY = maxY;
