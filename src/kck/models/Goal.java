@@ -1,12 +1,10 @@
 package kck.models;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import javax.swing.Icon;
+import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import kck.GUI.MainWindow;
+import javax.swing.event.MouseInputListener;
+import kck.prolog.PrologManager;
 
 
 public class Goal extends Object {
@@ -133,6 +131,7 @@ public class Goal extends Object {
         }
         ImageIcon icon = createImageIcon(iconPath, this.name);
         this.label.setIcon(icon);
+        this.label.addMouseListener(showNameListener);
     } 
         
     public Goal(String name, JLabel label) {
@@ -140,6 +139,44 @@ public class Goal extends Object {
         setLabel(label);
     }
     
+    private MouseInputListener showNameListener = new MouseInputListener() {
+        PrologManager pm = new PrologManager();
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                label.setIconTextGap(-64);
+                label.setText("<html><div style=\"background-color: white; font-size: 10px; text-align: center\">" + pm.getLocalizedGoal(name, PrologManager.WordCase.NOMINATIVE) + "</div></html>");
+            }
 
-    
+            @Override
+            public void mouseExited(MouseEvent e) {
+                label.setText("");
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
 }

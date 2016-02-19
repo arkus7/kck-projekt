@@ -15,9 +15,9 @@ reply(Request) :-
     forall(zdanie(X,Sentence, []), format("~w", [X])).
 
 goal(Request) :-
-	http_parameters(Request, [ name(Goal, [ atom ])]), 
+	http_parameters(Request, [ name(Goal, [ atom ]), case(Case, [atom])]), 
 	format('Content-type: text/plain~n~n'),
-	forall(cel(dop, Goal, Y, []), format("~w", Y)).
+	forall(cel(Case, Goal, Y, []), format("~w", Y)).
 
 reload(Request) :-
     make,
@@ -154,6 +154,29 @@ cel(dop, cactus, [kaktusa|A], A).
 cel(dop, snowman, [balwana|A], A).
 cel(dop, well, [studni|A], A).
 cel(dop, trunk, [pnia|A], A).
+
+cel(mian, lamp, [lampa|A], A).
+cel(mian, fountain, [fontanna|A], A).
+cel(mian, stadium, [boisko|A], A).
+cel(mian, tree, [drzewo|A], A).
+cel(mian, stone, [kamien|A], A).
+cel(mian, house, [dom|A], A).
+cel(mian, tunnel, [tunel|A], A).
+cel(mian, church, [kosciol|A], A).
+cel(mian, bench, [lawka|A], A).
+cel(mian, sign, [znak|A], A).
+cel(mian, monument, [pomnik|A], A).
+cel(mian, mountain, [gora|A], A).
+cel(mian, car, [samochod|A], A).
+cel(mian, rails, [tory|A], A).
+cel(mian, graveyard, [cmentarz|A], A).
+cel(mian, palm, [palma|A], A).
+cel(mian, barrels, [beczki|A], A).
+cel(mian, cactus, [kaktus|A], A).
+cel(mian, snowman, [balwan|A], A).
+cel(mian, well, [studnia|A], A).
+cel(mian, trunk, [pien|A], A).
+
 cel(cel, lamp, [lampie|A], A).
 cel(cel, fountain, [fontannie|A], A).
 cel(cel, stadium, [boisku|A], A).

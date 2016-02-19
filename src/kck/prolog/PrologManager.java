@@ -24,14 +24,26 @@ public class PrologManager {
     private final String COMMA = ",";
     private final String SERVER_URL = "http://46.101.96.206:5000/";
     private boolean initialized = false;
+    
+    public static enum WordCase {
+        NOMINATIVE,
+        GENITIVE
+    }
 
     public PrologManager() {
         initJPL();
     }
     
-    public String getLocalizedGoal(String goalName) {
+    public String getLocalizedGoal(String goalName, WordCase wordCase) {
+        String caseStr;
+        switch(wordCase) {
+            case NOMINATIVE: caseStr = "mian";
+                break;
+            default:
+            case GENITIVE: caseStr = "dop";
+        }
         if(initialized) {
-            String query = "cel(dop, " + goalName + ", Y, []).";
+            String query = "cel(" + caseStr + ", " + goalName + ", Y, []).";
             Query q = new Query(query);
             if(q.hasSolution()) {
                 String solution = q.oneSolution().get("Y").toString();
@@ -40,7 +52,7 @@ public class PrologManager {
             return null;
         } else {
             try {
-                URL url = new URL(SERVER_URL + "goal?name=" + goalName);
+                URL url = new URL(SERVER_URL + "goal?name=" + goalName + "&case=" + caseStr);
                 URLConnection con = url.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                 String result = in.readLine();

@@ -5,12 +5,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import kck.models.Object;
 import kck.models.Goal;
 import kck.models.Character;
 import kck.models.Sentence;
@@ -93,7 +90,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void initGoal(){
         int number = randInt(0, goals.size()-1);
         System.err.println(number + " :: " + goals.get(number).getName());
-        userGoal.setText("Twoim celem jest dojście do " + pm.getLocalizedGoal(goals.get(number).getName()));
+        userGoal.setText("Twoim celem jest dojście do " + pm.getLocalizedGoal(goals.get(number).getName(), PrologManager.WordCase.GENITIVE));
         goalX = goals.get(number).getX();
         goalY = goals.get(number).getY();        
     }
