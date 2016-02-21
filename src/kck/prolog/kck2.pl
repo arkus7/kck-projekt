@@ -149,7 +149,7 @@ cel(dop, car, [samochodu|A], A).
 cel(dop, rails, [torow|A], A).
 cel(dop, graveyard, [cmentarza|A], A).
 cel(dop, palm, [palmy|A], A).
-cel(dop, barrels, [beczkek|A], A).
+cel(dop, barrels, [beczek|A], A).
 cel(dop, cactus, [kaktusa|A], A).
 cel(dop, snowman, [balwana|A], A).
 cel(dop, well, [studni|A], A).

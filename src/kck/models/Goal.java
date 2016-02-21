@@ -33,6 +33,16 @@ public class Goal extends Object {
     private static final String RAILS = "/kck/GUI/IMG/rails.png";          
     private static final String TUNNEL = "/kck/GUI/IMG/tunnel.png";
     
+    private boolean inViewRange;
+
+    public boolean isInViewRange() {
+        return inViewRange;
+    }
+
+    public void setInViewRange(boolean inViewRange) {
+        this.inViewRange = inViewRange;
+    }
+    
     
     
     public static final String[] NAMES = {

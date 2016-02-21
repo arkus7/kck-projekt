@@ -152,10 +152,8 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private void removeIcons() {
-        System.out.println("kck.GUI.MainWindow.removeIcons() removed icons: " + testLayer1.getComponentCount());
         testLayer1.removeAll();
         testLayer1.repaint();
-        //System.err.println("Layer cleared");
         icons.clear();
     }
     
@@ -254,55 +252,84 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
-    private boolean goalExist(String goal){
-        for (int i = 0; i < goals.size() ; i++){
-            if (goals.get(i).getName().equalsIgnoreCase(goal) && Math.abs(difMove(character.getX(), goals.get(i).getX())) < VIEW_RANGE && Math.abs(difMove(character.getY(), goals.get(i).getY())) < VIEW_RANGE) {
-                character.setMoveX(difMove(character.getX(), goals.get(i).getX()));
-                character.setMoveY(difMove(character.getY(), goals.get(i).getY()));
-                return true; 
+    private Goal getGoal(String name) {
+        for(int i = 0; i < goals.size(); i++) {
+            if(goals.get(i).getName().equalsIgnoreCase(name)) {
+                return goals.get(i);
             }
-        }       
+        }
+        return null;
+    }
+    
+    private boolean goalExist(Goal goal) {
+        if(goal != null) {
+            return true;
+        }
         return false;
     }
+    
+    private void checkCharacterViewRange() {
+        for(Goal g : goals) {
+            if(Math.abs(difMove(character.getX(), g.getX())) < VIEW_RANGE 
+                    && Math.abs(difMove(character.getY(), g.getY())) < VIEW_RANGE) {
+                g.setInViewRange(true);
+            } else {
+                g.setInViewRange(false);
+            }
+        }
+    }
+    
+//    private boolean goalExist(String goal){
+//        for (int i = 0; i < goals.size() ; i++){
+//            if (goals.get(i).getName().equalsIgnoreCase(goal) && Math.abs(difMove(character.getX(), goals.get(i).getX())) < VIEW_RANGE && Math.abs(difMove(character.getY(), goals.get(i).getY())) < VIEW_RANGE) {
+//                character.setMoveX(difMove(character.getX(), goals.get(i).getX()));
+//                character.setMoveY(difMove(character.getY(), goals.get(i).getY()));
+//                return true; 
+//            }
+//        }       
+//        return false;
+//    }
      
     
     private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
-     Sentence sentance = pm.getResult(userInput.getText());
-     
-     if (sentance.isCorrect()){   
+    checkCharacterViewRange();
+    Sentence sentance = pm.getResult(userInput.getText());
+    inputLog = inputLog + "\nU: " + userInput.getText();
+    Goal goal = getGoal(sentance.getGoal());
+    if (sentance.isCorrect()){   
         if (sentance.getMove().equalsIgnoreCase("walk") && !sentance.getDirection().isEmpty() && sentance.getGoal().isEmpty()){
             character.moveToDirection(sentance.getDirection(), DISTANCE);       //np idź na zachód
             timer.start();
             inputLog = inputLog + "\n" + userInput.getText();
         } else if (sentance.getMove().equalsIgnoreCase("turn") && !sentance.getDirection().equalsIgnoreCase(null) && sentance.getGoal().isEmpty()){
             character.setTurnSide(sentance.getDirection());                      // np. skręć w lewo; skręć na zachód
-            inputLog = inputLog + "\n" + userInput.getText();
-        } else if (goalExist(sentance.getGoal())){                               //jeśli zdanie nie załapało się wyżej to sprawdza czy cel istnieje
-            userOutput.setText(inputLog);
-            if (!sentance.getDirection().isEmpty()){                            // sprawdza czy w zdaniu jest kierunek
-                character.setTurnSide(sentance.getDirection());                 //ustawia kierunek
+        } else if (goalExist(goal)){                               //jeśli zdanie nie załapało się wyżej to sprawdza czy cel istnieje
+            if(goal.isInViewRange()) {
+                setCharacterMove(goal);
+                userOutput.setText(inputLog);
+                if (!sentance.getDirection().isEmpty()){                            // sprawdza czy w zdaniu jest kierunek
+                    character.setTurnSide(sentance.getDirection());                 //ustawia kierunek
+                }
+                if (character.canSee()){                                            //sprawdza czy agent widzi cel
+                    character.moveStraightToGoal(); //start timera
+                    timer.start();
+                    inputLog = inputLog + "\nU: " + userInput.getText();
+                    userInput.setText("");
+                } else {
+                    inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę celu"; 
+                    //TODO: czy ten else sie kiedys wykonuje?
+                } 
+            } else {
+                inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.GENITIVE); 
             }
-            if (character.canSee()){                                            //sprawdza czy agent widzi cel
-                character.moveStraightToGoal(); //start timera
-                timer.start();
-                inputLog = inputLog + "\n" + userInput.getText();
-                userInput.setText("");
-            } else{
-                inputLog = inputLog + "\n" + userInput.getText() + " - Nie widzę celu"; 
-            } 
         } else {
-            inputLog = inputLog + "\n" + userInput.getText() + " - nie ma takiego celu"; 
+            inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie ma takiego celu"; 
         }
      } else{
-         inputLog = inputLog + "\n" + userInput.getText() + " - nie rozumiem polecenia";
+         inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie rozumiem polecenia";
      }
         userOutput.setText(inputLog);
         userInput.setText("");
-
-     
-        
     }//GEN-LAST:event_userInputActionPerformed
 
     private void userInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userInputFocusGained
@@ -479,4 +506,9 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextField userInput;
     private javax.swing.JTextArea userOutput;
     // End of variables declaration//GEN-END:variables
+
+    private void setCharacterMove(Goal goal) {
+        character.setMoveX(difMove(character.getX(), goal.getX()));
+        character.setMoveY(difMove(character.getY(), goal.getY()));
+    }
 }
