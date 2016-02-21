@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import kck.models.Goal;
 import kck.models.Character;
+import kck.models.Question;
 import kck.models.Sentence;
 import kck.prolog.PrologManager;
 
@@ -271,7 +272,8 @@ public class MainWindow extends javax.swing.JFrame {
     private void checkCharacterViewRange() {
         for(Goal g : goals) {
             if(Math.abs(difMove(character.getX(), g.getX())) < VIEW_RANGE 
-                    && Math.abs(difMove(character.getY(), g.getY())) < VIEW_RANGE) {
+                    && Math.abs(difMove(character.getY(), g.getY())) < VIEW_RANGE
+                    && character.canSee(g)) {
                 g.setInViewRange(true);
             } else {
                 g.setInViewRange(false);
@@ -293,8 +295,9 @@ public class MainWindow extends javax.swing.JFrame {
     
     private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
     checkCharacterViewRange();
-    Sentence sentance = pm.getResult(userInput.getText());
-    inputLog = inputLog + "\nU: " + userInput.getText();
+    String input = userInput.getText();
+    Sentence sentance = pm.getSentenceResult(input);
+    inputLog = inputLog + "\nU: " + input;
     Goal goal = getGoal(sentance.getGoal());
     if (sentance.isCorrect()){   
         if (sentance.getMove().equalsIgnoreCase("walk") && !sentance.getDirection().isEmpty() && sentance.getGoal().isEmpty()){
@@ -313,21 +316,32 @@ public class MainWindow extends javax.swing.JFrame {
                 if (character.canSee()){                                            //sprawdza czy agent widzi cel
                     character.moveStraightToGoal(); //start timera
                     timer.start();
-                    inputLog = inputLog + "\nU: " + userInput.getText();
-                    userInput.setText("");
                 } else {
                     inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę celu"; 
                     //TODO: czy ten else sie kiedys wykonuje?
                 } 
             } else {
-                inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.GENITIVE); 
+                inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.GENITIVE);
+                inputLog += "\nA: " + "Powiedz mi, jak mam do " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.KIND) + " dojść";
             }
         } else {
             inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie ma takiego celu"; 
         }
-     } else{
-         inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie rozumiem polecenia";
-     }
+     } else {
+        Question question = pm.getQuestionResult(input);
+        if(question.isCorrect()) {
+            if(question.getCzas().equalsIgnoreCase("what") && question.getOrz().equalsIgnoreCase("see")) {
+                inputLog += "\nA: Obiekty, które widzę to:\n";
+                for(Goal g : goals) {
+                    if(g.isInViewRange()) {
+                        inputLog += "\t" + pm.getLocalizedGoal(g.getName(), PrologManager.WordCase.NOMINATIVE) + "\n";
+                    }
+                }
+            }
+        } else {
+            inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie rozumiem polecenia";
+        }
+    }
         userOutput.setText(inputLog);
         userInput.setText("");
     }//GEN-LAST:event_userInputActionPerformed

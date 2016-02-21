@@ -78,6 +78,39 @@ public class Character extends Object {
             }
         return false;
     }
+    
+    public boolean canSee (Goal goal){
+        //System.out.println(toMoveX + " " + toMoveY + " " + turnSide);
+        int toMoveX = this.getX() - goal.getX();
+        int toMoveY = this.getY() - goal.getY();
+        switch (this.turnSide){
+            case "north":
+                if ((toMoveX >= 0 && toMoveY >= 0) || (toMoveX <= 0 && toMoveY >= 0)){
+                    return true;
+                }
+                break;
+            case "west":
+            case "sw":
+            case "nw":
+                if ((toMoveX >= 0 && toMoveY >= 0) || (toMoveX >= 0 && toMoveY <= 0)){
+                    return true;
+                }
+                break;
+            case "south":
+                if ((toMoveX >= 0 && toMoveY <= 0) || (toMoveX <= 0 && toMoveY <= 0)){
+                    return true;
+                }
+                break;
+            case "east":
+            case "se":
+            case "ne":
+                if ((toMoveX <= 0 && toMoveY >= 0) || (toMoveX <= 0 && toMoveY <= 0)){             
+                    return true;   
+                }
+                break;
+            }
+        return false;
+    }
 
     public String getTurnSide() {
         return turnSide;

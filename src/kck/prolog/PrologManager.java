@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import kck.models.Question;
 import kck.models.Sentence;
 import org.jpl7.JPL;
 import org.jpl7.Query;
@@ -26,15 +27,17 @@ public class PrologManager {
     private final String SERVER_URL = "http://46.101.96.206:5000/";
     private final String SENTENCE_URL = "sentence";
     private final String FIRST_WORD = "?w=";
-    private final String NEXT_WORD = "w=";
+    private final String NEXT_WORD = "&w=";
     private final String GOAL_URL = "goal";
     private final String GOAL_NAME = "?name=";
     private final String GOAL_CASE = "&case=";
+    private final String QUESTION_URL = "question";
     private boolean initialized = false;
     
     public static enum WordCase {
         NOMINATIVE,
-        GENITIVE
+        GENITIVE,
+        KIND
     }
 
     public PrologManager() {
@@ -46,6 +49,8 @@ public class PrologManager {
         String caseStr;
         switch(wordCase) {
             case NOMINATIVE: caseStr = "mian";
+                break;
+            case KIND: caseStr = "rodzaj";
                 break;
             default:
             case GENITIVE: caseStr = "dop";
@@ -74,33 +79,62 @@ public class PrologManager {
         return null;
     }
     
-    public Sentence getResult(String sentence) { 
+    public Sentence getSentenceResult(String sentence) { 
         sentence = normalizeSentence(sentence);
         String[] words = sentence.split(" ");
         if(initialized) {
             String query = "zdanie(X, [" + String.join(",", words) + "], []).";
+                System.out.println("Query: " + query);
+                Query q = new Query(query);
+                if(q.hasSolution()) {
+                    String queryResult = q.oneSolution().get("X").toString();
+                    System.out.println("Result: " + queryResult);
+                    return getSentenceFromResult(queryResult);
+                }
+            } else {
+                try {
+                    URL url = new URL(SERVER_URL + SENTENCE_URL + FIRST_WORD + String.join(NEXT_WORD, words));
+                    URLConnection con = url.openConnection();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+                    String result = in.readLine();
+                    System.err.println("result = " + result);
+                    return getSentenceFromResult(result);
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(PrologManager.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(PrologManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        return new Sentence();
+    }
+    
+    public Question getQuestionResult(String sentence) {
+        boolean question = sentence.contains("?");
+        sentence = normalizeSentence(sentence);
+        String[] words = sentence.split(" ");
+        if(initialized) {
+            String query = "(X, [" + String.join(",", words) + "], []).";
+            query = "pytanie" + query;
             System.out.println("Query: " + query);
             Query q = new Query(query);
             if(q.hasSolution()) {
-                String queryResult = q.oneSolution().get("X").toString();
-                System.out.println("Result: " + queryResult);
-                return getSentenceFromResult(queryResult);
+                System.out.println(q.oneSolution().get("X").toString());
+                String result =  q.oneSolution().get("X").toString();
+                return new Question(result);
             }
+            return new Question();
         } else {
             try {
-                URL url = new URL(SERVER_URL + FIRST_WORD + String.join(NEXT_WORD, words));
+                URL url = new URL(SERVER_URL + QUESTION_URL + FIRST_WORD + String.join(NEXT_WORD, words));
                 URLConnection con = url.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                 String result = in.readLine();
-                System.err.println("result = " + result);
-                return getSentenceFromResult(result);
-            } catch (MalformedURLException ex) {
-                Logger.getLogger(PrologManager.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(PrologManager.class.getName()).log(Level.SEVERE, null, ex);
+                return new Question(result);
+            } catch(IOException ex) {
+                
             }
+            return new Question();
         }
-        return new Sentence();
     }
 
     private void initJPL() {
@@ -119,6 +153,7 @@ public class PrologManager {
             ProcessBuilder pb = new ProcessBuilder("./sync.sh");
             pb.directory(new File(file.getParent()));
             Process p = pb.start();
+            System.err.println("Synced prolog files succesfully.");
         } catch (IOException | NullPointerException ex) {
             System.err.println("Couldn't sync prolog files. " + ex.getMessage());
         }
@@ -176,6 +211,7 @@ public class PrologManager {
                 .replaceAll("ś", "s")
                 .replaceAll("ć", "c")
                 .replaceAll("ń", "n")
+                .replace("?", "")
                 .replaceAll("[^a-z ]+", "");
     }
     
