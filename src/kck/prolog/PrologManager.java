@@ -24,6 +24,12 @@ public class PrologManager {
     private final String BRACKET_END = ")";
     private final String COMMA = ",";
     private final String SERVER_URL = "http://46.101.96.206:5000/";
+    private final String SENTENCE_URL = "sentence";
+    private final String FIRST_WORD = "?w=";
+    private final String NEXT_WORD = "w=";
+    private final String GOAL_URL = "goal";
+    private final String GOAL_NAME = "?name=";
+    private final String GOAL_CASE = "&case=";
     private boolean initialized = false;
     
     public static enum WordCase {
@@ -54,7 +60,7 @@ public class PrologManager {
             return null;
         } else {
             try {
-                URL url = new URL(SERVER_URL + "goal?name=" + goalName + "&case=" + caseStr);
+                URL url = new URL(SERVER_URL + GOAL_URL + GOAL_NAME + goalName + GOAL_CASE + caseStr);
                 URLConnection con = url.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                 String result = in.readLine();
@@ -71,9 +77,9 @@ public class PrologManager {
     public Sentence getResult(String sentence) { 
         sentence = normalizeSentence(sentence);
         String[] words = sentence.split(" ");
-        String query = "zdanie(X, [" + String.join(",", words) + "], []).";
-        System.out.println("Query: " + query);
         if(initialized) {
+            String query = "zdanie(X, [" + String.join(",", words) + "], []).";
+            System.out.println("Query: " + query);
             Query q = new Query(query);
             if(q.hasSolution()) {
                 String queryResult = q.oneSolution().get("X").toString();
@@ -82,7 +88,7 @@ public class PrologManager {
             }
         } else {
             try {
-                URL url = new URL(SERVER_URL + "?w=" + String.join("&w=", words));
+                URL url = new URL(SERVER_URL + FIRST_WORD + String.join(NEXT_WORD, words));
                 URLConnection con = url.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                 String result = in.readLine();
