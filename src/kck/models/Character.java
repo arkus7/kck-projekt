@@ -187,6 +187,7 @@ public class Character extends Object {
     }
     
     public void moveToDirection(String direction, int lenght){
+        direction = nextSide(direction);
         switch (direction)
         {
             case "north":

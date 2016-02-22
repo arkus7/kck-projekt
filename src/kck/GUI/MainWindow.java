@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -25,6 +26,7 @@ public class MainWindow extends javax.swing.JFrame {
     private Character character;
     private List<Integer> exclude;
     private List<JLabel> icons;
+    private List<JLabel> map;
     private List<String> history;
     private int historyIndex = 0;
     private final int DELAY_TIME = 5;
@@ -72,18 +74,68 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow() {
         initComponents();
         initFields();
-        
         timer = new Timer(DELAY_TIME, inputBlockade);
         
         startNewGame();
         for (int i=0; i < goals.size();i++) System.err.println(goals.get(i).getName());
     }
-
+    
+    
     private void initFields() {
         goals = new ArrayList<>();
         exclude = new ArrayList<>();
         icons = new ArrayList<>();
         history = new ArrayList<>();
+        map = new ArrayList<>();
+    }
+  
+    
+    //// to jest ta funkcje skopiowana z Object.java
+    protected ImageIcon createImageIcon(String path, String description) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL, description);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
+    
+    private void initMap(){
+        int count = 0;
+        ImageIcon icon = null;
+        for (int i = 0; i < 9; i++){
+            for (int j = 0; j < 9; j++){
+                JLabel newLabel = new JLabel();
+                newLabel.setBounds(0,0, ICON_HEIGHT, ICON_WIDTH);
+                switch (i % 2){
+                    case 0:
+                        switch(j % 2){
+                            case 0:
+                                icon = createImageIcon("/kck/GUI/IMG/MapPathCros.png", "nia choj");
+                                break;
+                            case 1:
+                                icon = new ImageIcon("/kck/GUI/IMG/MapPathSide.png");
+                                break;                        
+                        }
+                    case 1:
+                        switch(j % 2){
+                            case 0:
+                                icon = new ImageIcon("/kck/GUI/IMG/MapPathUp.png");
+                                break;
+                            case 1:
+                                icon = new ImageIcon("/kck/GUI/IMG/MapPathGrass.png");
+                                break;                        
+                        }
+                }
+                newLabel.setText("bakłażan");
+                newLabel.setIcon(icon);
+                newLabel.setVisible(true);
+                newLabel.setLocation(i*64, j*64);
+                testLayer1.add(newLabel);  
+                testLayer1.setLayer(newLabel, 1); // agent 10, inne 5
+            }
+        }
     }
     
     private void initGoal(){
@@ -361,11 +413,12 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_testButtonMouseClicked
 
     private void startNewGame() {
-        removeIcons();
+        removeIcons();         
+        initMap();
         addIcons();
         randomIcons();
         randomIconsLocation();
-        initGoal();     
+        initGoal();  
         addGoalHover();
         goalReached = false;
     }
