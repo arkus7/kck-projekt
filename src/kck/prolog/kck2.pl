@@ -248,26 +248,26 @@ verify(move(walk, _, _)).
 verify(move(_, walk, _)).
 verify(move(_, _, walk)).
 verify(move(turn, A)) :-
-	(   A=sl
-	;   A=sr
-	;   A=shr
-	;   A=shl
+	(   A=app(sl)
+	;   A=app(sr)
+	;   A=app(shr)
+	;   A=app(shl)
 	).
 verify(move(turn, A, _)) :-
-	(   A=sl
-	;   A=sr
-	;   A=shr
-	;   A=shl
+	(   A=app(sl)
+	;   A=app(sr)
+	;   A=app(shr)
+	;   A=app(shl)
 	).
 verify(move(turn, _, A)) :-
-	(   A=sl
-	;   A=sr
-	;   A=shr
-	;   A=shl
+	(   A=app(sl)
+	;   A=app(sr)
+	;   A=app(shr)
+	;   A=app(shl)
 	).
 verify(move(_, A, turn)) :-
-	(   A=sl
-	;   A=sr
-	;   A=shr
-	;   A=shl
+	(   A=app(sl)
+	;   A=app(sr)
+	;   A=app(shr)
+	;   A=app(shl)
 	).

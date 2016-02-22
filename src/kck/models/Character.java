@@ -1,7 +1,10 @@
 package kck.models;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.Timer;
@@ -19,6 +22,17 @@ public class Character extends Object {
     private final int DELAY_TIME = 5;
     private int maxX, maxY;
     private String turnSide = "south";
+    private Goal goal;
+    private List<Point> curvePoints;
+
+    public Goal getGoal() {
+        return goal;
+    }
+
+    public void setGoal(Goal goal, String curveType) {
+        this.goal = goal;
+        this.setCurvePoints(curveType);
+    }
     
     public boolean canSee (){
         //System.out.println(moveX + " " + moveY + " " + turnSide);
@@ -243,6 +257,10 @@ public class Character extends Object {
         new Timer(DELAY_TIME, straightToGoal).start();
     }
     
+    public void turnToGoal() {
+        new Timer(DELAY_TIME, turnToGoalTimer).start();
+    }
+    
     
     ActionListener straightToGoal = new ActionListener() {
         public void actionPerformed(ActionEvent evt) { // po tym kod który ma się wykonać co odstęp czasu          
@@ -276,11 +294,20 @@ public class Character extends Object {
         }
     };
     
-    ActionListener softToGoal = new ActionListener() {
+    ActionListener turnToGoalTimer = new ActionListener() {
+        int k = 0;
         public void actionPerformed(ActionEvent evt) {
         //wywoływany kod tutaj
-        
-        
+            int x = getX();
+            int y = getY();
+            setLocation(curvePoints.get(k).x, curvePoints.get(k).y);
+            if(k < curvePoints.size() - 1) {
+                k++;
+            } else {
+                setLocation(goal.x, goal.y);
+                k = 0;
+                ((Timer)evt.getSource()).stop();
+            }
         }};
     
     ActionListener sharpToGoal = new ActionListener() {
@@ -321,6 +348,28 @@ public class Character extends Object {
         this.maxY = maxY;
     }
     
+    private void setCurvePoints(String type) {
+        List<Point> points = new ArrayList<>();
+        Point start = new Point(this.x, this.y);
+        Point end = new Point(goal.getX(), goal.getY());
+        Point controlOffset = new Point();
+        int offset = (type.contains("sh") ? 128 : 64);
+        if(Math.abs(end.y - start.y) == 0) {    // poziomy łuk
+            controlOffset = new Point((end.x - start.x) / 2, 
+                    (type.contains("l") ? offset : - offset));
+        } else if(Math.abs(end.x - start.x) == 0) { // pionowy łuk
+            controlOffset = new Point((type.contains("r") ? offset : - offset), 
+                    (end.y - start.y) / 2);
+        }
+        Point controlPoint = new Point(start.x + controlOffset.x, start.y + controlOffset.y);
+        for(double t = 0.0; t < 1.0; t+= 0.002) {
+            int x = (int) (Math.pow(1 - t, 2) * start.x + 2 * (1 - t) * t * controlPoint.x + Math.pow(t, 2) * end.x);
+            int y = (int) (Math.pow(1 - t, 2) * start.y + 2 * (1 - t) * t * controlPoint.y + Math.pow(t, 2) * end.y);
+            points.add(new Point(x,y));
+        }
+        System.err.println(points);
+        this.curvePoints = points;
+    }
 
 }
     

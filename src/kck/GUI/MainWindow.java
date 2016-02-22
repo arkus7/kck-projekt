@@ -77,7 +77,6 @@ public class MainWindow extends javax.swing.JFrame {
         timer = new Timer(DELAY_TIME, inputBlockade);
         
         startNewGame();
-        getCurvePoints(goals.get(0));
         for (int i=0; i < goals.size();i++) System.err.println(goals.get(i).getName());
     }
 
@@ -306,8 +305,12 @@ public class MainWindow extends javax.swing.JFrame {
             character.moveToDirection(sentance.getDirection(), DISTANCE);       //np idź na zachód
             timer.start();
             inputLog = inputLog + "\n" + userInput.getText();
-        } else if (sentance.getMove().equalsIgnoreCase("turn") && !sentance.getDirection().equalsIgnoreCase(null) && sentance.getGoal().isEmpty()){
+        } else if (sentance.getMove().equalsIgnoreCase("turn") && !sentance.getDirection().equalsIgnoreCase(null) && sentance.getGoal().isEmpty() && sentance.getApproach().isEmpty()){
             character.setTurnSide(sentance.getDirection());                      // np. skręć w lewo; skręć na zachód
+        } else if(sentance.getMove().equalsIgnoreCase("turn") && sentance.getApproach() != null && !sentance.getGoal().isEmpty()) {
+            Goal g = getGoal(sentance.getGoal());
+            character.setGoal(g, sentance.getApproach());
+            character.turnToGoal();
         } else if (goalExist(goal)){                               //jeśli zdanie nie załapało się wyżej to sprawdza czy cel istnieje
             if(goal.isInViewRange()) {
                 setCharacterMove(goal);
@@ -510,27 +513,6 @@ public class MainWindow extends javax.swing.JFrame {
                 new MainWindow().setVisible(true);
             }
         });
-    }
-    
-    private List<Point> getCurvePoints(Goal goal) {
-        List<Point> points = new ArrayList<>();
-        Point start = new Point(character.getX(), character.getY());
-        Point end = new Point(goal.getX(), goal.getY());
-        Point controlPoint1 = new Point(start.x, start.y + DISTANCE);
-        Point controlPoint2 = new Point(end.x, end.y + DISTANCE);
-        for(double t = 0.0; t < 1.0; t+= 0.05) {
-            int x = (int) ((int) start.getX() * Math.pow(1 - t, 3) 
-                    + 3 * controlPoint1.getX() * t * Math.pow(1 - t, 2) 
-                    + 3 * controlPoint2.getX() * Math.pow(t, 2)
-                    + end.getX() * Math.pow(t, 3));
-            int y = (int) ((int) start.getY() * Math.pow(1 - t, 3) 
-                    + 3 * controlPoint1.getY() * t * Math.pow(1 - t, 2) 
-                    + 3 * controlPoint2.getY() * Math.pow(t, 2)
-                    + end.getY() * Math.pow(t, 3)); 
-            points.add(new Point(x,y));
-        }
-        System.err.println(points);
-        return points;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
