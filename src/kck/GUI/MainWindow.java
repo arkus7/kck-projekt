@@ -115,18 +115,20 @@ public class MainWindow extends javax.swing.JFrame {
                                 icon = createImageIcon("/kck/GUI/IMG/MapPathCros.png", "nia choj");
                                 break;
                             case 1:
-                                icon = new ImageIcon("/kck/GUI/IMG/MapPathSide.png");
+                                icon = createImageIcon("/kck/GUI/IMG/MapPathSide.png", "");
                                 break;                        
                         }
+                        break;
                     case 1:
                         switch(j % 2){
                             case 0:
-                                icon = new ImageIcon("/kck/GUI/IMG/MapPathUp.png");
+                                icon = createImageIcon("/kck/GUI/IMG/MapPathUp.png", "");
                                 break;
                             case 1:
-                                icon = new ImageIcon("/kck/GUI/IMG/MapPathGrass.png");
+                                icon = createImageIcon("/kck/GUI/IMG/MapPathGrass.png", "");
                                 break;                        
                         }
+                        break;
                 }
                 newLabel.setText("bakłażan");
                 newLabel.setIcon(icon);
