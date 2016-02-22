@@ -29,9 +29,21 @@ public class Character extends Object {
         return goal;
     }
 
-    public void setGoal(Goal goal, String curveType) {
+    public void setGoal(Goal goal, String approach) {
         this.goal = goal;
-        this.setCurvePoints(curveType);
+        this.generateCurvePoints(approach);
+    }
+
+    public List<Point> getCurvePoints() {
+        return curvePoints;
+    }
+
+    public void setCurvePoints(String approach) {
+        this.generateCurvePoints(approach);
+    }
+
+    public void setGoal(Goal goal) {
+        this.goal = goal;
     }
     
     public boolean canSee (){
@@ -200,6 +212,64 @@ public class Character extends Object {
         this.label.setIcon(icon);
     }
     
+    public void setTurnSide() {
+        if(goal != null) {
+            int moveX = this.x - goal.x;
+            int moveY = this.y - goal.y;
+            
+            switch (this.turnSide){
+            case "north":
+                if ((moveX >= 0 && moveY >= 0) || (moveX <= 0 && moveY >= 0)){
+                    if (moveY == 0  && moveX > 0 ) {
+                        this.label.setIcon(createImageIcon(C1W, this.name));
+                        this.turnSide = "west";
+                    } else if (moveY == 0  && moveX < 0 ){
+                        this.label.setIcon(createImageIcon(C1E, this.name));
+                        this.turnSide = "east";
+                    }
+                }
+                break;
+            case "west":
+            case "sw":
+            case "nw":
+                if ((moveX >= 0 && moveY >= 0) || (moveX >= 0 && moveY <= 0)){
+                    if (moveX == 0  && moveY > 0 ) {
+                        this.label.setIcon(createImageIcon(C1N, this.name));
+                        this.turnSide = "north";
+                    } else if (moveX == 0  && moveY < 0 ) {
+                        this.label.setIcon(createImageIcon(C1S, this.name));
+                        this.turnSide = "south";
+                    }
+                }
+                break;
+            case "south":
+                if ((moveX >= 0 && moveY <= 0) || (moveX <= 0 && moveY <= 0)){
+                    if (moveY == 0  && moveX > 0 ) {
+                        this.label.setIcon(createImageIcon(C1W, this.name));
+                        this.turnSide = "west";
+                    } else if (moveY == 0  && moveX < 0 ){
+                        this.label.setIcon(createImageIcon(C1E, this.name));
+                        this.turnSide = "east";
+                    }
+                }
+                break;
+            case "east":
+            case "se":
+            case "ne":
+                if ((moveX <= 0 && moveY >= 0) || (moveX <= 0 && moveY <= 0)){
+                    if (moveX == 0  && moveY > 0 ) {
+                        this.label.setIcon(createImageIcon(C1N, this.name));
+                        turnSide = "north";
+                    } else if (moveX == 0  && moveY < 0 ){
+                        this.label.setIcon(createImageIcon(C1S, this.name));
+                        turnSide = "south";
+                    }                     
+                }
+                break;
+            }
+        }
+    }
+    
     public void moveToDirection(String direction, int lenght){
         switch (direction)
         {
@@ -303,9 +373,13 @@ public class Character extends Object {
             setLocation(curvePoints.get(k).x, curvePoints.get(k).y);
             if(k < curvePoints.size() - 1) {
                 k++;
+                MainWindow.timer1 = curvePoints.size();
             } else {
                 setLocation(goal.x, goal.y);
-                k = 0;
+                if(MainWindow.timer1 > 0) {
+                    MainWindow.timer1 = 0;
+                }
+                k = 0;           
                 ((Timer)evt.getSource()).stop();
             }
         }};
@@ -348,18 +422,44 @@ public class Character extends Object {
         this.maxY = maxY;
     }
     
-    private void setCurvePoints(String type) {
+    private void generateCurvePoints(String type) {
         List<Point> points = new ArrayList<>();
         Point start = new Point(this.x, this.y);
         Point end = new Point(goal.getX(), goal.getY());
         Point controlOffset = new Point();
         int offset = (type.contains("sh") ? 128 : 64);
+        switch(turnSide) {
+            case "south":
+            case "east":
+                offset *= -1;
+            break;
+        }
         if(Math.abs(end.y - start.y) == 0) {    // poziomy łuk
             controlOffset = new Point((end.x - start.x) / 2, 
                     (type.contains("l") ? offset : - offset));
         } else if(Math.abs(end.x - start.x) == 0) { // pionowy łuk
             controlOffset = new Point((type.contains("r") ? offset : - offset), 
                     (end.y - start.y) / 2);
+        } else if(end.y - start.y < 0) { // na polnoc
+            if(end.x - start.x > 0) { // na wschod
+                if(type.contains("r")) {
+                    controlOffset = new Point(offset, 0);   // prawy
+                } else {
+                    controlOffset = new Point(0, - offset); // lewy
+                }
+            } else if(end.x - start.x < 0) { // na zachod
+                if(type.contains("r")) {
+                    controlOffset = new Point(0, -offset);  // prawy
+                } else {
+                    controlOffset = new Point(-offset, 0);  // lewy
+                }
+            }
+        } else if(end.y - start.y > 0) { // na poludnie 
+            if(end.x - start.x > 0) { // na wschod
+                controlOffset = new Point((type.contains("l")? - offset : offset), 0);
+            } else if(end.x - start.x < 0) { // na zachod
+                controlOffset = new Point(0, (type.contains("l")? - offset : offset));
+            }
         }
         Point controlPoint = new Point(start.x + controlOffset.x, start.y + controlOffset.y);
         for(double t = 0.0; t < 1.0; t+= 0.002) {
