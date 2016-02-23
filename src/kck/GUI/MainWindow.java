@@ -14,6 +14,7 @@ import kck.models.Character;
 import kck.models.Question;
 import kck.models.Sentence;
 import kck.prolog.PrologManager;
+import sun.security.util.Length;
 
 /**
  *
@@ -354,7 +355,8 @@ public class MainWindow extends javax.swing.JFrame {
     inputLog = inputLog + "\nU: " + input;
     Goal goal = getGoal(sentance.getGoal());
     if (sentance.isCorrect()){   
-        if (sentance.getMove().equalsIgnoreCase("walk") && !sentance.getDirection().isEmpty() && sentance.getGoal().isEmpty()){
+        if(sentance.getApproach().equalsIgnoreCase("straight")) character.moveToDirection(character.getTurnSide(), DISTANCE);
+        else if (sentance.getMove().equalsIgnoreCase("walk") && !sentance.getDirection().isEmpty() && sentance.getGoal().isEmpty()){
             character.moveToDirection(sentance.getDirection(), DISTANCE);       //np idź na zachód
             timer.start();
         } else if (sentance.getMove().equalsIgnoreCase("turn") && !sentance.getDirection().equalsIgnoreCase(null) && sentance.getGoal().isEmpty()){
