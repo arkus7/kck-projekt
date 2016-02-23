@@ -360,7 +360,9 @@ public class MainWindow extends javax.swing.JFrame {
                 character.setTurnSide(sentence.getDirection());
                 checkCharacterViewRange();
             }
-            if (sentence.getMove().equalsIgnoreCase("walk") && !sentence.getDirection().isEmpty() && sentence.getGoal().isEmpty()){
+            if(sentence.getApproach().equalsIgnoreCase("straight")){
+              character.moveToDirection(character.getTurnSide(), DISTANCE); 
+            } else if (sentence.getMove().equalsIgnoreCase("walk") && !sentence.getDirection().isEmpty() && sentence.getGoal().isEmpty()){
                 character.moveToDirection(sentence.getDirection(), DISTANCE);       //np idź na zachód
                 timer.start();
                 inputLog = inputLog + "\n" + userInput.getText();
