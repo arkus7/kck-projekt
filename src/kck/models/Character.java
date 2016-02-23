@@ -23,23 +23,24 @@ public class Character extends Object {
     private int maxX, maxY;
     private String turnSide = "south";
     private Goal goal;
+    private Point endPoint;
     private List<Point> curvePoints;
-
+    private final int DISTANCE = 128;
     public Goal getGoal() {
         return goal;
     }
 
-    public void setGoal(Goal goal, String approach) {
+    public void setGoal(Goal goal, String direction, String approach) {
         this.goal = goal;
-        this.generateCurvePoints(approach);
+        this.generateCurvePoints(direction, approach);
     }
 
     public List<Point> getCurvePoints() {
         return curvePoints;
     }
 
-    public void setCurvePoints(String approach) {
-        this.generateCurvePoints(approach);
+    public void setCurvePoints(String direction, String approach) {
+        this.generateCurvePoints(direction, approach);
     }
 
     public void setGoal(Goal goal) {
@@ -375,11 +376,14 @@ public class Character extends Object {
                 k++;
                 MainWindow.timer1 = curvePoints.size();
             } else {
-                setLocation(goal.x, goal.y);
+                if(goal != null) {
+                    setLocation(endPoint.x, endPoint.y);
+                }
                 if(MainWindow.timer1 > 0) {
                     MainWindow.timer1 = 0;
                 }
-                k = 0;           
+                k = 0;
+                goal = null;
                 ((Timer)evt.getSource()).stop();
             }
         }};
@@ -422,12 +426,48 @@ public class Character extends Object {
         this.maxY = maxY;
     }
     
-    private void generateCurvePoints(String type) {
+    private void generateCurvePoints(String direction, String type) {
         List<Point> points = new ArrayList<>();
         Point start = new Point(this.x, this.y);
-        Point end = new Point(goal.getX(), goal.getY());
+        Point end;
         Point controlOffset = new Point();
-        int offset = (type.contains("sh") ? 128 : 64);
+        int offset = (type.contains("sh") ? DISTANCE : DISTANCE/2);
+        if(goal != null) {
+            end = new Point(goal.getX(), goal.getY());
+        } else if(!direction.isEmpty()) {
+            switch(direction) {
+                case "north":
+                end = new Point(start.x, start.y - DISTANCE);
+                break;
+            case "nw":
+                end = new Point(start.x - DISTANCE, start.y - DISTANCE);
+                break;
+            case "west":
+                end = new Point(start.x - DISTANCE, start.y);
+                break;
+            case "sw": 
+                end = new Point(start.x - DISTANCE, start.y + DISTANCE);
+                break;
+            case "south":
+                end = new Point(start.x, start.y + DISTANCE);
+                break;
+            case "se":
+                end = new Point(start.x + DISTANCE, start.y + DISTANCE);
+                break;
+            case "east":
+                end = new Point(start.x + DISTANCE, start.y);
+                break;
+            case "ne": 
+                end = new Point(start.x + DISTANCE, start.y - DISTANCE);
+                break;
+            default: 
+                end = new Point();
+                break;
+            }
+        } else {
+            end = new Point();
+        }
+        endPoint = end;
         switch(turnSide) {
             case "south":
             case "east":
@@ -470,6 +510,5 @@ public class Character extends Object {
         System.err.println(points);
         this.curvePoints = points;
     }
-
 }
     

@@ -325,22 +325,31 @@ public class MainWindow extends javax.swing.JFrame {
                     inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.GENITIVE);
                     inputLog += "\nA: " + "Powiedz mi, jak mam do " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.KIND) + " dojść";
                 }
-            } else if(sentance.getApproach() != null && !sentance.getGoal().isEmpty()) {
-                Goal g = getGoalFromName(sentance.getGoal());
-                if(g.isInViewRange()) {
-                    if(!sentance.getDirection().isEmpty()) {
-                        character.setGoal(g, sentance.getApproach());
-                        character.setTurnSide(sentance.getDirection());
+            } else if(sentance.getApproach() != null) {
+                if(!sentance.getGoal().isEmpty()) {
+                    Goal g = getGoalFromName(sentance.getGoal());
+                    if(g.isInViewRange()) {
+                        if(!sentance.getDirection().isEmpty()) {
+                            character.setGoal(g, sentance.getDirection(), sentance.getApproach());
+                            character.setTurnSide(sentance.getDirection());
+                        } else {
+                            character.setGoal(g);
+                            character.setTurnSide();
+                            character.setCurvePoints(null, sentance.getApproach());
+                        }
+                        character.turnToGoal();
+                        timer.start();
                     } else {
-                        character.setGoal(g);
-                        character.setTurnSide();
-                        character.setCurvePoints(sentance.getApproach());
+                        inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.GENITIVE);
+                        inputLog += "\nA: " + "Powiedz mi, jak mam do " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.KIND) + " dojść";
                     }
-                    character.turnToGoal();
-                    timer.start();
                 } else {
-                    inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.GENITIVE);
-                    inputLog += "\nA: " + "Powiedz mi, jak mam do " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.KIND) + " dojść";
+                    if(!sentance.getDirection().isEmpty()) {
+                        character.setTurnSide(sentance.getDirection());
+                        character.setCurvePoints(sentance.getDirection(), sentance.getApproach());
+                        character.turnToGoal();
+                        timer.start();
+                    }
                 }
             } else {
                 inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie ma takiego celu"; 
