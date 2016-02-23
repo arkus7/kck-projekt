@@ -307,7 +307,7 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private Goal getGoal(String name) {
+    private Goal getGoalFromName(String name) {
         for(int i = 0; i < goals.size(); i++) {
             if(goals.get(i).getName().equalsIgnoreCase(name)) {
                 return goals.get(i);
@@ -348,52 +348,84 @@ public class MainWindow extends javax.swing.JFrame {
      
     
     private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
-    checkCharacterViewRange();
-    String input = userInput.getText();
-    Sentence sentance = pm.getSentenceResult(input);
-    inputLog = inputLog + "\nU: " + input;
-    Goal goal = getGoal(sentance.getGoal());
-    if (sentance.isCorrect()){   
-        if (sentance.getMove().equalsIgnoreCase("walk") && !sentance.getDirection().isEmpty() && sentance.getGoal().isEmpty()){
-            character.moveToDirection(sentance.getDirection(), DISTANCE);       //np idź na zachód
-            timer.start();
-        } else if (sentance.getMove().equalsIgnoreCase("turn") && !sentance.getDirection().equalsIgnoreCase(null) && sentance.getGoal().isEmpty()){
-            character.setTurnSide(sentance.getDirection());                      // np. skręć w lewo; skręć na zachód
-        } else if (goalExist(goal)){                               //jeśli zdanie nie załapało się wyżej to sprawdza czy cel istnieje
-            if(goal.isInViewRange()) {
-                setCharacterMove(goal);
-                if (!sentance.getDirection().isEmpty()){                            // sprawdza czy w zdaniu jest kierunek
-                    character.setTurnSide(sentance.getDirection());                 //ustawia kierunek
-                }
-                if (character.canSee()){                                            //sprawdza czy agent widzi cel
-                    character.moveStraightToGoal(); //start timera
-                    timer.start();
-                } else {
-                    inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę celu"; 
-                    //TODO: czy ten else sie kiedys wykonuje?
-                } 
-            } else {
-                inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.GENITIVE);
-                inputLog += "\nA: " + "Powiedz mi, jak mam do " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.KIND) + " dojść";
+        checkCharacterViewRange();
+        String input = userInput.getText();
+        Sentence sentence = pm.getSentenceResult(input);
+        inputLog = inputLog + "\nU: " + input;
+        Goal goal = getGoalFromName(sentence.getGoal());
+        if (sentence.isCorrect()){ 
+            if(!sentence.getDirection().isEmpty()) {
+                character.setTurnSide(sentence.getDirection());
+                checkCharacterViewRange();
             }
-        } else {
-            inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie ma takiego celu"; 
-        }
-     } else {
-        Question question = pm.getQuestionResult(input);
-        if(question.isCorrect()) {
-            if(question.getCzas().equalsIgnoreCase("what") && question.getOrz().equalsIgnoreCase("see")) {
-                inputLog += "\nA: Obiekty, które widzę to:\n";
-                for(Goal g : goals) {
+            if (sentence.getMove().equalsIgnoreCase("walk") && !sentence.getDirection().isEmpty() && sentence.getGoal().isEmpty()){
+                character.moveToDirection(sentence.getDirection(), DISTANCE);       //np idź na zachód
+                timer.start();
+                inputLog = inputLog + "\n" + userInput.getText();
+            } else if (sentence.getMove().equalsIgnoreCase("turn") && !sentence.getDirection().equalsIgnoreCase(null) && sentence.getGoal().isEmpty() && sentence.getApproach().isEmpty()){
+                character.setTurnSide(sentence.getDirection());                      // np. skręć w lewo; skręć na zachód
+            } else if (goalExist(goal) && sentence.getMove().equalsIgnoreCase("walk") && sentence.getApproach().isEmpty()){                               //jeśli zdanie nie załapało się wyżej to sprawdza czy cel istnieje
+                if(goal.isInViewRange()) {
+                    setCharacterMove(goal);
+                    userOutput.setText(inputLog);
+                    if (!sentence.getDirection().isEmpty()){                            // sprawdza czy w zdaniu jest kierunek
+                        character.setTurnSide(sentence.getDirection());                 //ustawia kierunek
+                    }
+                    if (character.canSee()){                                            //sprawdza czy agent widzi cel
+                        character.moveStraightToGoal(); //start timera
+                        timer.start();
+                    } else {
+                        inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę celu"; 
+                        //TODO: czy ten else sie kiedys wykonuje?
+                    } 
+                } else {
+                    inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.GENITIVE);
+                    inputLog += "\nA: " + "Powiedz mi, jak mam do " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.KIND) + " dojść";
+                }
+            } else if(sentence.getApproach() != null) {
+                if(!sentence.getGoal().isEmpty()) {
+                    Goal g = getGoalFromName(sentence.getGoal());
                     if(g.isInViewRange()) {
-                        inputLog += "\t" + pm.getLocalizedGoal(g.getName(), PrologManager.WordCase.NOMINATIVE) + "\n";
+                        if(!sentence.getDirection().isEmpty()) {
+                            character.setGoal(g, sentence.getDirection(), sentence.getApproach());
+                            character.setTurnSide(sentence.getDirection());
+                        } else {
+                            character.setGoal(g);
+                            character.setTurnSide();
+                            character.setCurvePoints(null, sentence.getApproach());
+                        }
+                        character.turnToGoal();
+                        timer.start();
+                    } else {
+                        inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.GENITIVE);
+                        inputLog += "\nA: " + "Powiedz mi, jak mam do " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.KIND) + " dojść";
+                    }
+                } else {
+                    if(!sentence.getDirection().isEmpty()) {
+                        character.setTurnSide(sentence.getDirection());
+                        character.setCurvePoints(sentence.getDirection(), sentence.getApproach());
+                        character.turnToGoal();
+                        timer.start();
                     }
                 }
+            } else {
+                inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie ma takiego celu"; 
             }
         } else {
-            inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie rozumiem polecenia";
+            Question question = pm.getQuestionResult(input);
+            if(question.isCorrect()) {
+                if(question.getCzas().equalsIgnoreCase("what") && question.getOrz().equalsIgnoreCase("see")) {
+                    inputLog += "\nA: Obiekty, które widzę to:\n";
+                    for(Goal g : goals) {
+                        if(g.isInViewRange()) {
+                            inputLog += "\t" + pm.getLocalizedGoal(g.getName(), PrologManager.WordCase.NOMINATIVE) + "\n";
+                        }
+                    }
+                }
+            } else {
+                inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie rozumiem polecenia";
+            }
         }
-    }
         userOutput.setText(inputLog);
         userInput.setText("");
     }//GEN-LAST:event_userInputActionPerformed
@@ -562,8 +594,6 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
     }
-    
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane2;
