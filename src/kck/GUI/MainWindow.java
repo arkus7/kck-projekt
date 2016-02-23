@@ -5,11 +5,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import kck.models.Goal;
 import kck.models.Character;
+import kck.models.Question;
 import kck.models.Sentence;
 import kck.prolog.PrologManager;
 
@@ -24,6 +26,7 @@ public class MainWindow extends javax.swing.JFrame {
     private Character character;
     private List<Integer> exclude;
     private List<JLabel> icons;
+    private List<JLabel> map;
     private List<String> history;
     private int historyIndex = 0;
     private final int DELAY_TIME = 5;
@@ -54,7 +57,6 @@ public class MainWindow extends javax.swing.JFrame {
             userInput.setEnabled(false);
             timer1--;
             timer2--;
-            //System.out.println(timer1+ " " + timer2);
             if(timer1 <= 0 && timer2 <= 0){
                 testButton.setEnabled(true);
                 userInput.setEnabled(true);
@@ -71,18 +73,67 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow() {
         initComponents();
         initFields();
-        
         timer = new Timer(DELAY_TIME, inputBlockade);
         
         startNewGame();
         for (int i=0; i < goals.size();i++) System.err.println(goals.get(i).getName());
     }
-
+    
+    
     private void initFields() {
         goals = new ArrayList<>();
         exclude = new ArrayList<>();
         icons = new ArrayList<>();
         history = new ArrayList<>();
+        map = new ArrayList<>();
+    }
+  
+    protected ImageIcon createImageIcon(String path, String description) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL, description);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
+    
+    private void initMap(){
+        int count = 0;
+        ImageIcon icon = null;
+        for (int i = 0; i < 9; i++){
+            for (int j = 0; j < 7; j++){
+                JLabel newLabel = new JLabel();
+                newLabel.setBounds(0,0, ICON_HEIGHT, ICON_WIDTH);
+                switch (i % 2){
+                    case 0:
+                        switch(j % 2){
+                            case 0:
+                                icon = createImageIcon("/kck/GUI/IMG/MapPathCros.png", "");
+                                break;
+                            case 1:
+                                icon = createImageIcon("/kck/GUI/IMG/MapPathUp.png", "");
+                                break;                        
+                        }
+                        break;
+                    case 1:
+                        switch(j % 2){
+                            case 0:
+                                icon = createImageIcon("/kck/GUI/IMG/MapPathSide.png", "");
+                                break;
+                            case 1:
+                                icon = createImageIcon("/kck/GUI/IMG/MapPathGrass.png", "");
+                                break;                        
+                        }
+                        break;
+                }
+                newLabel.setIcon(icon);
+                newLabel.setVisible(true);
+                newLabel.setLocation(i*64, j*64);
+                testLayer1.add(newLabel);  
+                testLayer1.setLayer(newLabel, 1);
+            }
+        }
     }
     
     private void initGoal(){
@@ -107,10 +158,6 @@ public class MainWindow extends javax.swing.JFrame {
         userGoal.setText("Twoim celem jest dojście do " + pm.getLocalizedGoal(goals.get(number).getName(), PrologManager.WordCase.GENITIVE));       
     }
 
-
-            
-      
-    
     private void reachedGoal(){
         if (!goalReached){
            if (character.getX() == goalX && character.getY() == goalY){
@@ -128,13 +175,9 @@ public class MainWindow extends javax.swing.JFrame {
     private void randomIcons() {
         ArrayList<Integer> randIcons = randomIntegers(1, Goal.NAMES.length - 1, LABEL_COUNT - 1);
         goals.clear();
-        //System.out.println(randIcons);
         character = new Character("Character", icons.get(0), testLayer1.getWidth()-64, testLayer1.getHeight()-64);
         for(int i = 0; i < LABEL_COUNT - 1; i++) {
-            //System.out.println("kck.GUI.MainWindow.randomIcons() randIcons = " + randIcons);
-            //System.out.println("kck.GUI.MainWindow.randomIcons() i == " + i);
             String name = Goal.NAMES[randIcons.get(i)];
-            //System.err.println("RANDOM NAME = " + name);
             goals.add(new Goal(name, icons.get(i+1)));
         }      
     }
@@ -152,10 +195,8 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private void removeIcons() {
-        System.out.println("kck.GUI.MainWindow.removeIcons() removed icons: " + testLayer1.getComponentCount());
         testLayer1.removeAll();
         testLayer1.repaint();
-        //System.err.println("Layer cleared");
         icons.clear();
     }
     
@@ -254,56 +295,124 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
-    private boolean goalExist(String goal){
-        for (int i = 0; i < goals.size() ; i++){
-            if (goals.get(i).getName().equalsIgnoreCase(goal) && Math.abs(difMove(character.getX(), goals.get(i).getX())) < VIEW_RANGE && Math.abs(difMove(character.getY(), goals.get(i).getY())) < VIEW_RANGE) {
-                character.setMoveX(difMove(character.getX(), goals.get(i).getX()));
-                character.setMoveY(difMove(character.getY(), goals.get(i).getY()));
-                return true; 
+    private Goal getGoalFromName(String name) {
+        for(int i = 0; i < goals.size(); i++) {
+            if(goals.get(i).getName().equalsIgnoreCase(name)) {
+                return goals.get(i);
             }
-        }       
+        }
+        return null;
+    }
+    
+    private boolean goalExist(Goal goal) {
+        if(goal != null) {
+            return true;
+        }
         return false;
     }
-     
+    
+    private void checkCharacterViewRange() {
+        for(Goal g : goals) {
+            if(Math.abs(difMove(character.getX(), g.getX())) < VIEW_RANGE 
+                    && Math.abs(difMove(character.getY(), g.getY())) < VIEW_RANGE
+                    && character.canSee(g)) {
+                g.setInViewRange(true);
+            } else {
+                g.setInViewRange(false);
+            }
+        }
+    }     
     
     private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
-     Sentence sentance = pm.getResult(userInput.getText());
-     
-     if (sentance.isCorrect()){   
-        if (sentance.getMove().equalsIgnoreCase("walk") && !sentance.getDirection().isEmpty() && sentance.getGoal().isEmpty()){
-            character.moveToDirection(sentance.getDirection(), DISTANCE);       //np idź na zachód
-            timer.start();
-            inputLog = inputLog + "\n" + userInput.getText();
-        } else if (sentance.getMove().equalsIgnoreCase("turn") && !sentance.getDirection().equalsIgnoreCase(null) && sentance.getGoal().isEmpty()){
-            character.setTurnSide(sentance.getDirection());                      // np. skręć w lewo; skręć na zachód
-            inputLog = inputLog + "\n" + userInput.getText();
-        } else if (goalExist(sentance.getGoal())){                               //jeśli zdanie nie załapało się wyżej to sprawdza czy cel istnieje
-            userOutput.setText(inputLog);
-            if (!sentance.getDirection().isEmpty()){                            // sprawdza czy w zdaniu jest kierunek
-                character.setTurnSide(sentance.getDirection());                 //ustawia kierunek
-            }
-            if (character.canSee()){                                            //sprawdza czy agent widzi cel
-                character.moveStraightToGoal(); //start timera
+
+        checkCharacterViewRange();
+        String input = userInput.getText();
+        Sentence sentence = pm.getSentenceResult(input);
+        inputLog = inputLog + "\nU: " + input;
+        Goal goal = getGoalFromName(sentence.getGoal());
+        if (sentence.isCorrect()){ 
+            if(sentence.getApproach().equalsIgnoreCase("straight")){
+              character.moveToDirection(character.getTurnSide(), DISTANCE); 
+            } else if (sentence.getMove().equalsIgnoreCase("walk") && !sentence.getDirection().isEmpty() && sentence.getGoal().isEmpty()){
+                character.moveToDirection(sentence.getDirection(), DISTANCE);       //np idź na zachód
                 timer.start();
                 inputLog = inputLog + "\n" + userInput.getText();
-                userInput.setText("");
-            } else{
-                inputLog = inputLog + "\n" + userInput.getText() + " - Nie widzę celu"; 
-            } 
+            } else if (sentence.getMove().equalsIgnoreCase("turn") && !sentence.getDirection().equalsIgnoreCase(null) && sentence.getGoal().isEmpty() && sentence.getApproach().isEmpty()){
+                character.setTurnSide(sentence.getDirection());                      // np. skręć w lewo; skręć na zachód
+            } else if (goalExist(goal) && sentence.getMove().equalsIgnoreCase("walk") && sentence.getApproach().isEmpty()){ //jeśli zdanie nie załapało się wyżej to sprawdza czy cel istnieje                              
+                checkViewRangeInDirection(sentence);
+                if(goal.isInViewRange()) {
+                    setCharacterMove(goal);
+                    userOutput.setText(inputLog);
+                    if (!sentence.getDirection().isEmpty()){                            // sprawdza czy w zdaniu jest kierunek
+                        character.setTurnSide(sentence.getDirection());                 //ustawia kierunek
+                    }
+                    if (character.canSee()){                                            //sprawdza czy agent widzi cel
+                        character.moveStraightToGoal(); //start timera
+                        timer.start();
+                    } else {
+                        inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę celu"; 
+                        //TODO: czy ten else sie kiedys wykonuje?
+                    } 
+                } else {
+                    inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.GENITIVE);
+                    inputLog += "\nA: " + "Powiedz mi, jak mam do " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.KIND) + " dojść";
+                }
+            } else if(sentence.getApproach() != null) {
+                checkViewRangeInDirection(sentence);
+                if(!sentence.getGoal().isEmpty()) {
+                    Goal g = getGoalFromName(sentence.getGoal());
+                    if(g.isInViewRange()) {
+                        if(!sentence.getDirection().isEmpty()) {
+                            character.setGoal(g, sentence.getDirection(), sentence.getApproach());
+                            character.setTurnSide(sentence.getDirection());
+                        } else {
+                            character.setGoal(g);
+                            character.setTurnSide();
+                            character.setCurvePoints(null, sentence.getApproach());
+                        }
+                        character.turnToGoal();
+                        timer.start();
+                    } else {
+                        inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.GENITIVE);
+                        inputLog += "\nA: " + "Powiedz mi, jak mam do " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.KIND) + " dojść";
+                    }
+                } else {
+                    if(!sentence.getDirection().isEmpty()) {
+                        character.setTurnSide(sentence.getDirection());
+                        character.setCurvePoints(sentence.getDirection(), sentence.getApproach());
+                        character.turnToGoal();
+                        timer.start();
+                    }
+                }
+            } else {
+                inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie ma takiego celu"; 
+            }
         } else {
-            inputLog = inputLog + "\n" + userInput.getText() + " - nie ma takiego celu"; 
+            Question question = pm.getQuestionResult(input);
+            if(question.isCorrect()) {
+                if(question.getCzas().equalsIgnoreCase("what") && question.getOrz().equalsIgnoreCase("see")) {
+                    inputLog += "\nA: Obiekty, które widzę to:\n";
+                    for(Goal g : goals) {
+                        if(g.isInViewRange()) {
+                            inputLog += "\t" + pm.getLocalizedGoal(g.getName(), PrologManager.WordCase.NOMINATIVE) + "\n";
+                        }
+                    }
+                }
+            } else {
+                inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie rozumiem polecenia";
+            }
         }
-     } else{
-         inputLog = inputLog + "\n" + userInput.getText() + " - nie rozumiem polecenia";
-     }
         userOutput.setText(inputLog);
         userInput.setText("");
-
-     
-        
     }//GEN-LAST:event_userInputActionPerformed
+
+    private void checkViewRangeInDirection(Sentence sentence) {
+        if(!sentence.getDirection().isEmpty()) {
+            character.setTurnSide(sentence.getDirection());
+            checkCharacterViewRange();
+        }
+    }
 
     private void userInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userInputFocusGained
         // TODO add your handling code here:
@@ -320,11 +429,12 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_testButtonMouseClicked
 
     private void startNewGame() {
-        removeIcons();
+        removeIcons();         
+        initMap();
         addIcons();
         randomIcons();
         randomIconsLocation();
-        initGoal();     
+        initGoal();  
         addGoalHover();
         goalReached = false;
     }
@@ -403,8 +513,6 @@ public class MainWindow extends javax.swing.JFrame {
     }
     
     public ArrayList<Integer> randomIntegers(int min, int max, int size) {
-        //System.err.println(min + " " + max + " " +  size);
-        //System.err.println(Math.abs(max - min));
         if(Math.abs(max - min) + 1 < size) {
             return null;
         }
@@ -468,8 +576,6 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
     }
-    
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane2;
@@ -479,4 +585,9 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextField userInput;
     private javax.swing.JTextArea userOutput;
     // End of variables declaration//GEN-END:variables
+
+    private void setCharacterMove(Goal goal) {
+        character.setMoveX(difMove(character.getX(), goal.getX()));
+        character.setMoveY(difMove(character.getY(), goal.getY()));
+    }
 }

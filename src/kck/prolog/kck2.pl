@@ -5,6 +5,8 @@
 :- http_handler(root(.), reply, []).
 :- http_handler(root(reload), reload, []).
 :- http_handler(root(goal), goal, []).
+:- http_handler(root(sentence), sentence, []).
+:- http_handler(root(question), question, []).
 
 server(Port) :-
         http_server(http_dispatch, [port(Port)]).
@@ -23,6 +25,16 @@ reload(Request) :-
     make,
     format('Content-type: text/plain~n~n'),
     format('Reloaded succesfully').
+
+sentence(Request) :-
+    http_parameters(Request, [w(Words, [list(atom)])]),
+    format('Content-type: text/plain~n~n'),
+    forall(zdanie(X, Words, []), format("~w~n", [X])).
+
+question(Request) :-
+    http_parameters(Request, [w(Words, [list(atom)])]),
+    format('Content-type: text/plain~n~n'),
+    forall(pytanie(X, Words, []), format("~w~n", [X])).
 
 :- discontiguous kier/3. % removes warning
 
@@ -84,6 +96,15 @@ zdanie(move(A, C, D), B, F) :-
 zdanie(move(D, A, B), C, F) :-
 	kier(A, B, C, E),
 	czas(D, E, F).
+
+pytanie(question(A, C), B, E) :-
+	qczas(A, B, D),
+	qorz(C, D, E).
+
+qczas(czas(what), [co|A], A).
+qczas(czas(what), [a,co|A], A).
+qorz(orz(see), [widzisz|A], A).
+qorz(orz(see), [widze|A], A).
 
 czas(walk, [idz|A], A).
 czas(turn, [skrec|A], A).
@@ -149,11 +170,33 @@ cel(dop, car, [samochodu|A], A).
 cel(dop, rails, [torow|A], A).
 cel(dop, graveyard, [cmentarza|A], A).
 cel(dop, palm, [palmy|A], A).
-cel(dop, barrels, [beczkek|A], A).
+cel(dop, barrels, [beczek|A], A).
 cel(dop, cactus, [kaktusa|A], A).
 cel(dop, snowman, [balwana|A], A).
 cel(dop, well, [studni|A], A).
 cel(dop, trunk, [pnia|A], A).
+
+cel(rodzaj, lamp, [niej|A], A).
+cel(rodzaj, fountain, [niej|A], A).
+cel(rodzaj, stadium, [niego|A], A).
+cel(rodzaj, tree, [niego|A], A).
+cel(rodzaj, stone, [niego|A], A).
+cel(rodzaj, house, [niego|A], A).
+cel(rodzaj, tunnel, [niego|A], A).
+cel(rodzaj, church, [niego|A], A).
+cel(rodzaj, bench, [niej|A], A).
+cel(rodzaj, sign, [niego|A], A).
+cel(rodzaj, monument, [niego|A], A).
+cel(rodzaj, mountain, [niej|A], A).
+cel(rodzaj, car, [niego|A], A).
+cel(rodzaj, rails, [nich|A], A).
+cel(rodzaj, graveyard, [niego|A], A).
+cel(rodzaj, palm, [niej|A], A).
+cel(rodzaj, barrels, [nich|A], A).
+cel(rodzaj, cactus, [niego|A], A).
+cel(rodzaj, snowman, [niego|A], A).
+cel(rodzaj, well, [niej|A], A).
+cel(rodzaj, trunk, [niego|A], A).
 
 cel(mian, lamp, [lampa|A], A).
 cel(mian, fountain, [fontanna|A], A).
@@ -205,26 +248,26 @@ verify(move(walk, _, _)).
 verify(move(_, walk, _)).
 verify(move(_, _, walk)).
 verify(move(turn, A)) :-
-	(   A=sl
-	;   A=sr
-	;   A=shr
-	;   A=shl
+	(   A=app(sl)
+	;   A=app(sr)
+	;   A=app(shr)
+	;   A=app(shl)
 	).
 verify(move(turn, A, _)) :-
-	(   A=sl
-	;   A=sr
-	;   A=shr
-	;   A=shl
+	(   A=app(sl)
+	;   A=app(sr)
+	;   A=app(shr)
+	;   A=app(shl)
 	).
 verify(move(turn, _, A)) :-
-	(   A=sl
-	;   A=sr
-	;   A=shr
-	;   A=shl
+	(   A=app(sl)
+	;   A=app(sr)
+	;   A=app(shr)
+	;   A=app(shl)
 	).
 verify(move(_, A, turn)) :-
-	(   A=sl
-	;   A=sr
-	;   A=shr
-	;   A=shl
+	(   A=app(sl)
+	;   A=app(sr)
+	;   A=app(shr)
+	;   A=app(shl)
 	).

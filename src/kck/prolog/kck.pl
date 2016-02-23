@@ -124,3 +124,11 @@ verify(move(turn,X)) :- X=sl ; X=sr; X=shr; X=shl.
 verify(move(turn,X,_)) :- X=sl ; X=sr; X=shr; X=shl.
 verify(move(turn,_,X)) :- X=sl ; X=sr; X=shr; X=shl.
 verify(move(_,X,turn)) :- X=sl ; X=sr; X=shr; X=shl.
+
+% qczas(czas(how)) --> [jak].
+qczas(czas(what))--> [co].
+
+qorz(orz(see)) --> [widzisz].
+
+pytanie(question(X,Y)) --> qczas(X), qorz(Y).
+
