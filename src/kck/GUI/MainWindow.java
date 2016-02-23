@@ -307,7 +307,7 @@ public class MainWindow extends javax.swing.JFrame {
                 inputLog = inputLog + "\n" + userInput.getText();
             } else if (sentance.getMove().equalsIgnoreCase("turn") && !sentance.getDirection().equalsIgnoreCase(null) && sentance.getGoal().isEmpty() && sentance.getApproach().isEmpty()){
                 character.setTurnSide(sentance.getDirection());                      // np. skręć w lewo; skręć na zachód
-            } else if (goalExist(goal) && sentance.getMove().equalsIgnoreCase("walk")){                               //jeśli zdanie nie załapało się wyżej to sprawdza czy cel istnieje
+            } else if (goalExist(goal) && sentance.getMove().equalsIgnoreCase("walk") && sentance.getApproach().isEmpty()){                               //jeśli zdanie nie załapało się wyżej to sprawdza czy cel istnieje
                 if(goal.isInViewRange()) {
                     setCharacterMove(goal);
                     userOutput.setText(inputLog);

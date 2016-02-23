@@ -502,7 +502,7 @@ public class Character extends Object {
             }
         }
         Point controlPoint = new Point(start.x + controlOffset.x, start.y + controlOffset.y);
-        for(double t = 0.0; t < 1.0; t+= 0.002) {
+        for(double t = 0.0; t < 1.0; t+= 0.005) {
             int x = (int) (Math.pow(1 - t, 2) * start.x + 2 * (1 - t) * t * controlPoint.x + Math.pow(t, 2) * end.x);
             int y = (int) (Math.pow(1 - t, 2) * start.y + 2 * (1 - t) * t * controlPoint.y + Math.pow(t, 2) * end.y);
             points.add(new Point(x,y));
