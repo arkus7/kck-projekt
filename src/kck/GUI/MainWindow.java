@@ -333,7 +333,7 @@ public class MainWindow extends javax.swing.JFrame {
         if (sentence.isCorrect()){ 
             if(sentence.getApproach().equalsIgnoreCase("straight")){
               character.moveToDirection(character.getTurnSide(), DISTANCE); 
-            } else if (sentence.getMove().equalsIgnoreCase("walk") && !sentence.getDirection().isEmpty() && sentence.getGoal().isEmpty()){
+            } else if (sentence.getMove().equalsIgnoreCase("walk") && !sentence.getDirection().isEmpty() && sentence.getGoal().isEmpty() && sentence.getApproach().isEmpty()){
                 character.moveToDirection(sentence.getDirection(), DISTANCE);       //np idź na zachód
                 timer.start();
                 inputLog = inputLog + "\n" + userInput.getText();
@@ -358,6 +358,11 @@ public class MainWindow extends javax.swing.JFrame {
                     inputLog = inputLog + "\nA: \"" + userInput.getText() + "\" - nie widzę " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.GENITIVE);
                     inputLog += "\nA: " + "Powiedz mi, jak mam do " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.KIND) + " dojść";
                 }
+            } else if(sentence.getMove().equalsIgnoreCase("walk") && !sentence.getApproach().isEmpty() && !sentence.getApproach().equalsIgnoreCase("straight") && !sentence.getDirection().isEmpty()) {
+                character.setTurnSide(sentence.getDirection());
+                character.setCurvePoints(sentence.getDirection(), sentence.getApproach());
+                character.turnToGoal();
+                timer.start();
             } else if(sentence.getApproach() != null) {
                 checkViewRangeInDirection(sentence);
                 if(!sentence.getGoal().isEmpty()) {
