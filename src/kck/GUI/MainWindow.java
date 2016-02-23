@@ -300,7 +300,11 @@ public class MainWindow extends javax.swing.JFrame {
         Sentence sentance = pm.getSentenceResult(input);
         inputLog = inputLog + "\nU: " + input;
         Goal goal = getGoalFromName(sentance.getGoal());
-        if (sentance.isCorrect()){   
+        if (sentance.isCorrect()){ 
+            if(!sentance.getDirection().isEmpty()) {
+                character.setTurnSide(sentance.getDirection());
+                checkCharacterViewRange();
+            }
             if (sentance.getMove().equalsIgnoreCase("walk") && !sentance.getDirection().isEmpty() && sentance.getGoal().isEmpty()){
                 character.moveToDirection(sentance.getDirection(), DISTANCE);       //np idź na zachód
                 timer.start();
