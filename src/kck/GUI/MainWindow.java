@@ -58,7 +58,6 @@ public class MainWindow extends javax.swing.JFrame {
             userInput.setEnabled(false);
             timer1--;
             timer2--;
-            //System.out.println(timer1+ " " + timer2);
             if(timer1 <= 0 && timer2 <= 0){
                 testButton.setEnabled(true);
                 userInput.setEnabled(true);
@@ -90,8 +89,6 @@ public class MainWindow extends javax.swing.JFrame {
         map = new ArrayList<>();
     }
   
-    
-    //// to jest ta funkcje skopiowana z Object.java
     protected ImageIcon createImageIcon(String path, String description) {
         java.net.URL imgURL = getClass().getResource(path);
         if (imgURL != null) {
@@ -131,12 +128,11 @@ public class MainWindow extends javax.swing.JFrame {
                         }
                         break;
                 }
-                newLabel.setText("bakłażan");
                 newLabel.setIcon(icon);
                 newLabel.setVisible(true);
                 newLabel.setLocation(i*64, j*64);
                 testLayer1.add(newLabel);  
-                testLayer1.setLayer(newLabel, 1); // agent 10, inne 5
+                testLayer1.setLayer(newLabel, 1);
             }
         }
     }
@@ -163,10 +159,6 @@ public class MainWindow extends javax.swing.JFrame {
         userGoal.setText("Twoim celem jest dojście do " + pm.getLocalizedGoal(goals.get(number).getName(), PrologManager.WordCase.GENITIVE));       
     }
 
-
-            
-      
-    
     private void reachedGoal(){
         if (!goalReached){
            if (character.getX() == goalX && character.getY() == goalY){
@@ -184,13 +176,9 @@ public class MainWindow extends javax.swing.JFrame {
     private void randomIcons() {
         ArrayList<Integer> randIcons = randomIntegers(1, Goal.NAMES.length - 1, LABEL_COUNT - 1);
         goals.clear();
-        //System.out.println(randIcons);
         character = new Character("Character", icons.get(0), testLayer1.getWidth()-64, testLayer1.getHeight()-64);
         for(int i = 0; i < LABEL_COUNT - 1; i++) {
-            //System.out.println("kck.GUI.MainWindow.randomIcons() randIcons = " + randIcons);
-            //System.out.println("kck.GUI.MainWindow.randomIcons() i == " + i);
             String name = Goal.NAMES[randIcons.get(i)];
-            //System.err.println("RANDOM NAME = " + name);
             goals.add(new Goal(name, icons.get(i+1)));
         }      
     }
@@ -334,19 +322,7 @@ public class MainWindow extends javax.swing.JFrame {
                 g.setInViewRange(false);
             }
         }
-    }
-    
-//    private boolean goalExist(String goal){
-//        for (int i = 0; i < goals.size() ; i++){
-//            if (goals.get(i).getName().equalsIgnoreCase(goal) && Math.abs(difMove(character.getX(), goals.get(i).getX())) < VIEW_RANGE && Math.abs(difMove(character.getY(), goals.get(i).getY())) < VIEW_RANGE) {
-//                character.setMoveX(difMove(character.getX(), goals.get(i).getX()));
-//                character.setMoveY(difMove(character.getY(), goals.get(i).getY()));
-//                return true; 
-//            }
-//        }       
-//        return false;
-//    }
-     
+    }     
     
     private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
 
@@ -533,8 +509,6 @@ public class MainWindow extends javax.swing.JFrame {
     }
     
     public ArrayList<Integer> randomIntegers(int min, int max, int size) {
-        //System.err.println(min + " " + max + " " +  size);
-        //System.err.println(Math.abs(max - min));
         if(Math.abs(max - min) + 1 < size) {
             return null;
         }

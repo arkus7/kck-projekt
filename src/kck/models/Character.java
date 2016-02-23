@@ -16,7 +16,6 @@ public class Character extends Object {
     private static final String C1E = "/kck/GUI/IMG/c1E.png";
     private static final String C1S = "/kck/GUI/IMG/c1S.png";
     private static final String C1W = "/kck/GUI/IMG/c1W.png";
-    //private static final String CHURCH = "/kck/GUI/church.png";
         
     private int moveX,moveY,tempX,tempY;
     private final int DELAY_TIME = 5;
@@ -48,7 +47,6 @@ public class Character extends Object {
     }
     
     public boolean canSee (){
-        //System.out.println(moveX + " " + moveY + " " + turnSide);
         switch (this.turnSide){
             case "north":
                 if ((moveX >= 0 && moveY >= 0) || (moveX <= 0 && moveY >= 0)){
@@ -107,7 +105,6 @@ public class Character extends Object {
     }
     
     public boolean canSee (Goal goal){
-        //System.out.println(toMoveX + " " + toMoveY + " " + turnSide);
         int toMoveX = this.getX() - goal.getX();
         int toMoveY = this.getY() - goal.getY();
         switch (this.turnSide){
@@ -336,7 +333,6 @@ public class Character extends Object {
     
     ActionListener straightToGoal = new ActionListener() {
         public void actionPerformed(ActionEvent evt) { // po tym kod który ma się wykonać co odstęp czasu          
-//        System.out.println(moveX+ " " + moveY);
             if (moveX != 0){
                 if (moveX > 0){
                     moveX = moveX - 1;
@@ -369,7 +365,6 @@ public class Character extends Object {
     ActionListener turnToGoalTimer = new ActionListener() {
         int k = 0;
         public void actionPerformed(ActionEvent evt) {
-        //wywoływany kod tutaj
             int x = getX();
             int y = getY();
             setLocation(curvePoints.get(k).x, curvePoints.get(k).y);
@@ -388,11 +383,6 @@ public class Character extends Object {
                 ((Timer)evt.getSource()).stop();
             }
         }};
-    
-    ActionListener sharpToGoal = new ActionListener() {
-        public void actionPerformed(ActionEvent evt) {
-        //wywoływany kod tutaj
-        }};  
    
     public int getMoveX() {
         return moveX;
@@ -508,7 +498,6 @@ public class Character extends Object {
             int y = (int) (Math.pow(1 - t, 2) * start.y + 2 * (1 - t) * t * controlPoint.y + Math.pow(t, 2) * end.y);
             points.add(new Point(x,y));
         }
-        System.err.println(points);
         this.curvePoints = points;
     }
 }
