@@ -1,9 +1,14 @@
 package kck.models;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Label;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.SwingConstants;
 import javax.swing.event.MouseInputListener;
 import kck.prolog.PrologManager;
 
@@ -154,16 +159,18 @@ public class Goal extends Object {
         JLabel text = new JLabel();
             @Override
             public void mouseEntered(MouseEvent e) {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 JLabel currentLabel = (JLabel) e.getComponent();
                 JLayeredPane layeredPane = (JLayeredPane) currentLabel.getParent();
                 text.setText(pm.getLocalizedGoal(name, PrologManager.WordCase.NOMINATIVE));
                 int offsetY = 64;
                 int minOffsetY = 20;
                 int maxY = 384;
-                int x = currentLabel.getX();
+                int x = currentLabel.getX() - 20;
                 int y = currentLabel.getY() + (currentLabel.getY() + offsetY > maxY ? -minOffsetY : offsetY);
                 text.setBounds(x, y, 100, 20);
+                text.setHorizontalAlignment(SwingConstants.CENTER);
+                text.setForeground(Color.WHITE);
+                text.setFont(new Font("Arial", Font.BOLD, 16));
                 layeredPane.add(text);
                 layeredPane.setLayer(text, 15);
                 layeredPane.repaint();
@@ -194,12 +201,12 @@ public class Goal extends Object {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
             }
         };
     public void addMouseListener() {
