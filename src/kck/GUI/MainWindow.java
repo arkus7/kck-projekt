@@ -14,7 +14,6 @@ import kck.models.Character;
 import kck.models.Question;
 import kck.models.Sentence;
 import kck.prolog.PrologManager;
-import sun.security.util.Length;
 
 /**
  *
@@ -332,10 +331,6 @@ public class MainWindow extends javax.swing.JFrame {
         inputLog = inputLog + "\nU: " + input;
         Goal goal = getGoalFromName(sentence.getGoal());
         if (sentence.isCorrect()){ 
-            if(!sentence.getDirection().isEmpty()) {
-                character.setTurnSide(sentence.getDirection());
-                checkCharacterViewRange();
-            }
             if(sentence.getApproach().equalsIgnoreCase("straight")){
               character.moveToDirection(character.getTurnSide(), DISTANCE); 
             } else if (sentence.getMove().equalsIgnoreCase("walk") && !sentence.getDirection().isEmpty() && sentence.getGoal().isEmpty()){
@@ -344,7 +339,8 @@ public class MainWindow extends javax.swing.JFrame {
                 inputLog = inputLog + "\n" + userInput.getText();
             } else if (sentence.getMove().equalsIgnoreCase("turn") && !sentence.getDirection().equalsIgnoreCase(null) && sentence.getGoal().isEmpty() && sentence.getApproach().isEmpty()){
                 character.setTurnSide(sentence.getDirection());                      // np. skręć w lewo; skręć na zachód
-            } else if (goalExist(goal) && sentence.getMove().equalsIgnoreCase("walk") && sentence.getApproach().isEmpty()){                               //jeśli zdanie nie załapało się wyżej to sprawdza czy cel istnieje
+            } else if (goalExist(goal) && sentence.getMove().equalsIgnoreCase("walk") && sentence.getApproach().isEmpty()){ //jeśli zdanie nie załapało się wyżej to sprawdza czy cel istnieje                              
+                checkViewRangeInDirection(sentence);
                 if(goal.isInViewRange()) {
                     setCharacterMove(goal);
                     userOutput.setText(inputLog);
@@ -363,6 +359,7 @@ public class MainWindow extends javax.swing.JFrame {
                     inputLog += "\nA: " + "Powiedz mi, jak mam do " + pm.getLocalizedGoal(goal.getName(), PrologManager.WordCase.KIND) + " dojść";
                 }
             } else if(sentence.getApproach() != null) {
+                checkViewRangeInDirection(sentence);
                 if(!sentence.getGoal().isEmpty()) {
                     Goal g = getGoalFromName(sentence.getGoal());
                     if(g.isInViewRange()) {
@@ -409,6 +406,13 @@ public class MainWindow extends javax.swing.JFrame {
         userOutput.setText(inputLog);
         userInput.setText("");
     }//GEN-LAST:event_userInputActionPerformed
+
+    private void checkViewRangeInDirection(Sentence sentence) {
+        if(!sentence.getDirection().isEmpty()) {
+            character.setTurnSide(sentence.getDirection());
+            checkCharacterViewRange();
+        }
+    }
 
     private void userInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userInputFocusGained
         // TODO add your handling code here:
