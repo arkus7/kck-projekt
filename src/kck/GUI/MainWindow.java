@@ -14,6 +14,7 @@ import kck.models.Character;
 import kck.models.Question;
 import kck.models.Sentence;
 import kck.prolog.PrologManager;
+import sun.security.util.Length;
 
 /**
  *
@@ -324,6 +325,7 @@ public class MainWindow extends javax.swing.JFrame {
     }     
     
     private void userInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userInputActionPerformed
+
         checkCharacterViewRange();
         String input = userInput.getText();
         Sentence sentence = pm.getSentenceResult(input);
