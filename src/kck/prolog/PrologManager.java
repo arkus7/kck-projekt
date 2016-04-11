@@ -42,7 +42,7 @@ public class PrologManager {
 
     public PrologManager() {
         initJPL();
-        checkAndUploadFile();
+//        checkAndUploadFile();
     }
     
     public String getLocalizedGoal(String goalName, WordCase wordCase) {
