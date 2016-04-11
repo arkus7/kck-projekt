@@ -447,14 +447,14 @@ public class MainWindow extends javax.swing.JFrame {
     private void userInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userInputKeyPressed
         // TODO add your handling code here:
         switch(evt.getKeyCode()) {
-            case KEY_DOWN:
+            case KEY_UP:
                 if(history.size() > 0 && historyIndex > 0) {
                     userInput.setText(history.get(--historyIndex));
                 } else if(history.size() > 0 && historyIndex == 0) {
                     userInput.setText(history.get(0));
                }
                 break;
-            case KEY_UP:
+            case KEY_DOWN:
                 if(history.size() - 1 > historyIndex) {
                     userInput.setText(history.get(++historyIndex));
                 } else {
