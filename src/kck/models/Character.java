@@ -427,7 +427,7 @@ public class Character extends Object {
             end = new Point(goal.getX(), goal.getY());
         } else if(!direction.isEmpty()) {
             switch(direction) {
-                case "north":
+            case "north":
                 end = new Point(start.x, start.y - DISTANCE);
                 break;
             case "nw":
@@ -450,6 +450,54 @@ public class Character extends Object {
                 break;
             case "ne": 
                 end = new Point(start.x + DISTANCE, start.y - DISTANCE);
+                break;
+            case "left":
+                switch (this.turnSide){
+                    case "north":
+                    case "nw":
+                    case "ne":
+                        end = new Point(start.x + DISTANCE, start.y);
+                        break;
+                    case "west":
+                        end = new Point(start.x, start.y - DISTANCE);
+                        break;
+                    case "south":
+                    case "se":
+                    case "sw":
+                        end = new Point(start.x - DISTANCE, start.y);
+                        break;
+                    case "east":
+                        end = new Point(start.x, start.y + DISTANCE);
+                        break;
+                    default:
+                        end = new Point(start.x, start.y - DISTANCE);
+                        break;
+                }
+//                setTurnSide(this.turnSide);
+                break;
+            case "right":
+                switch (this.turnSide){
+                    case "north":
+                    case "nw":
+                    case "ne":
+                        end = new Point(start.x - DISTANCE, start.y);
+                        break;
+                    case "east":
+                        end = new Point(start.x, start.y - DISTANCE);
+                        break;
+                    case "south":
+                    case "se":
+                    case "sw":
+                        end = new Point(start.x + DISTANCE, start.y);
+                        break;
+                    case "west":
+                        end = new Point(start.x, start.y + DISTANCE);
+                        break;
+                    default:
+                        end = new Point(start.x, start.y - DISTANCE);
+                        break;
+                }
+//                setTurnSide(this.turnSide);
                 break;
             default: 
                 end = new Point();
