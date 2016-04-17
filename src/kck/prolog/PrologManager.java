@@ -130,7 +130,7 @@ public class PrologManager {
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                 String result = in.readLine();
                 return new Question(result);
-            } catch(IOException ex) {
+            } catch(Throwable thr) {
                 
             }
             return new Question();
