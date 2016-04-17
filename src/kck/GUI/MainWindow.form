@@ -30,7 +30,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="testButton" pref="384" max="32767" attributes="0"/>
+                  <Component id="newGameButton" pref="384" max="32767" attributes="0"/>
                   <Component id="userInput" max="32767" attributes="0"/>
                   <Component id="userGoal" max="32767" attributes="0"/>
               </Group>
@@ -40,7 +40,7 @@
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
-              <Component id="testLayer1" min="-2" pref="612" max="-2" attributes="0"/>
+              <Component id="mainLayer" min="-2" pref="612" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -49,7 +49,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-              <Component id="testLayer1" min="-2" pref="455" max="-2" attributes="0"/>
+              <Component id="mainLayer" min="-2" pref="455" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jScrollPane2" min="-2" pref="118" max="-2" attributes="0"/>
@@ -58,7 +58,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="userInput" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="testButton" min="-2" pref="49" max="-2" attributes="0"/>
+                      <Component id="newGameButton" min="-2" pref="49" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
@@ -92,18 +92,18 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JLayeredPane" name="testLayer1">
+    <Container class="javax.swing.JLayeredPane" name="mainLayer">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
     </Container>
-    <Component class="javax.swing.JButton" name="testButton">
+    <Component class="javax.swing.JButton" name="newGameButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Nowa Gra"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="testButtonMouseClicked"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="newGameButtonMouseClicked"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="userGoal">
